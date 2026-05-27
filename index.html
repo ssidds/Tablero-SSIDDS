@@ -6,14 +6,7 @@
 <title>Tablero de Proyectos — Grupo Proyecto Sur</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;
-  --amarillo:#FFCB00;--amarillo2:#e6b800;
-  --verde:#8DE2D6;--verde2:#5ec9ba;
-  --bg:#f2f6f9;--card:#fff;--border:#dce8ef;
-  --text:#153244;--muted:#6b8395;
-  --r:12px;--r2:8px;
-}
+:root{--azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;--amarillo:#FFCB00;--amarillo2:#e6b800;--verde:#8DE2D6;--verde2:#5ec9ba;--bg:#f2f6f9;--card:#fff;--border:#dce8ef;--text:#153244;--muted:#6b8395;--r:12px;--r2:8px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .hdr{background:var(--azul);position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(21,50,68,.35)}
@@ -24,24 +17,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .hdr-txt p{color:var(--verde);font-size:11px;margin-top:1px}
 .hdr-r{display:flex;align-items:center;gap:10px}
 .upd{font-size:11px;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace}
-.btn-upd{background:var(--amarillo);color:var(--azul);border:none;padding:7px 14px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-upd{background:var(--amarillo);color:var(--azul);border:none;padding:7px 14px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
 .btn-upd:hover{background:var(--amarillo2)}
 .main{max-width:1380px;margin:0 auto;padding:24px 28px}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.kpi{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:16px 18px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
-.kpi:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(21,50,68,.08)}
+.kpi{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:16px 18px;position:relative;overflow:hidden;transition:transform .15s}
+.kpi:hover{transform:translateY(-2px)}
 .kpi::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
-.kpi.t::after{background:var(--azul)}.kpi.e::after{background:#00c896}
-.kpi.s::after{background:#a89dc8}.kpi.l::after{background:var(--amarillo)}
+.kpi.t::after{background:var(--azul)}.kpi.e::after{background:#00c896}.kpi.s::after{background:#a89dc8}.kpi.l::after{background:var(--amarillo)}
 .kpi-n{font-size:34px;font-weight:600;line-height:1;margin-bottom:3px}
-.kpi.t .kpi-n{color:var(--azul)}.kpi.e .kpi-n{color:#00a87e}
-.kpi.s .kpi-n{color:#7a6fa8}.kpi.l .kpi-n{color:#c49900}
+.kpi.t .kpi-n{color:var(--azul)}.kpi.e .kpi-n{color:#00a87e}.kpi.s .kpi-n{color:#7a6fa8}.kpi.l .kpi-n{color:#c49900}
 .kpi-l{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.07em}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .box{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px 20px}
 .box-t{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px}
 .bar-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bar-lbl{font-size:11px;color:var(--muted);width:150px;flex-shrink:0}
+.bar-lbl{font-size:11px;color:var(--muted);width:160px;flex-shrink:0}
 .bar-trk{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
 .bar-f{height:100%;border-radius:4px;transition:width .5s}
 .bar-n{font-size:11px;font-weight:600;font-family:'DM Mono',monospace;width:22px;text-align:right;color:var(--text)}
@@ -52,12 +43,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .srch-w{position:relative;flex:1;min-width:180px}
 .srch-w svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
-.srch{width:100%;padding:8px 12px 8px 34px;font-size:12px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.srch{width:100%;padding:8px 12px 8px 34px;font-size:12px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-family:'DM Sans',sans-serif;outline:none}
 .srch:focus{border-color:var(--azul)}
 .pills{display:flex;gap:6px;flex-wrap:wrap}
 .pill{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-weight:500;transition:all .15s;white-space:nowrap}
-.pill:hover{border-color:var(--azul);color:var(--azul)}
-.pill.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.pill:hover{border-color:var(--azul);color:var(--azul)}.pill.on{background:var(--azul);color:#fff;border-color:var(--azul)}
 .cnt-lbl{font-size:11px;color:var(--muted);margin-bottom:10px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;overflow:hidden}
@@ -65,9 +55,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .card-top{height:4px}
 .card-body{padding:14px 16px}
 .card-nm{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.3}
-.bdg{display:inline-block;font-size:10px;padding:2px 9px;border-radius:20px;font-weight:600;margin-bottom:7px;letter-spacing:.02em}
-.b-ej{background:#e0f7f0;color:#006b4f}.b-sb{background:#f0edf8;color:#4a3d78}
-.b-fin{background:#e8f4de;color:#2d5a10}.b-def{background:#e8ecf4;color:#1a3a7a}
+.bdg{display:inline-block;font-size:10px;padding:2px 9px;border-radius:20px;font-weight:600;margin-bottom:7px}
+.b-ej{background:#e0f7f0;color:#006b4f}.b-sb{background:#f0edf8;color:#4a3d78}.b-fin{background:#e8f4de;color:#2d5a10}.b-def{background:#e8ecf4;color:#1a3a7a}.b-tra{background:#fde8d8;color:#7a3010}.b-lit{background:#fff8e0;color:#8a6a00}
 .card-st{font-size:10px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border);padding-top:7px;margin-top:5px}
 .card-ht{font-size:10px;color:var(--azul2);margin-top:5px;font-weight:500}
 .card-ht::before{content:'→ ';color:var(--verde2)}
@@ -80,7 +69,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ov.open{display:flex}
 .modal{background:var(--card);border-radius:16px;max-width:660px;width:100%;max-height:88vh;overflow-y:auto;position:relative}
 .m-hdr{background:var(--azul);padding:22px 26px 18px;border-radius:16px 16px 0 0;position:relative}
-.m-cls{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.m-cls{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center}
 .m-cls:hover{background:rgba(255,255,255,.25)}
 .m-tit{font-size:17px;font-weight:600;color:#fff;margin-bottom:9px;padding-right:36px;line-height:1.3}
 .m-body{padding:22px 26px}
@@ -91,8 +80,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .m-val{font-size:11px;color:var(--text);line-height:1.6}
 .m-val.acc{color:var(--azul2);font-weight:500}
 .m-ft{display:flex;justify-content:center;padding-top:4px}
-.btn-v{background:var(--amarillo);color:var(--azul);border:none;padding:10px 30px;border-radius:var(--r2);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.btn-v:hover{background:var(--amarillo2);transform:translateY(-1px)}
+.btn-v{background:var(--amarillo);color:var(--azul);border:none;padding:10px 30px;border-radius:var(--r2);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-v:hover{background:var(--amarillo2)}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}.main{padding:16px}}
 </style>
 </head>
@@ -112,7 +101,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 </div>
-
 <div class="main">
   <div id="err" class="err" style="display:none"></div>
   <div id="ldg" class="loading"><div class="spin"></div><div>Cargando proyectos...</div></div>
@@ -138,7 +126,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="cards" id="cards"></div>
   </div>
 </div>
-
 <div class="ov" id="ov" onclick="cls(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="m-hdr">
@@ -160,87 +147,75 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 </div>
-
 <script>
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=0&single=true&output=csv";
 
-// Detectar estado desde el campo Status
+// Parser CSV RFC 4180 completo — maneja campos con saltos de línea y comas dentro de comillas
+function parseCSV(txt){
+  const records=[];
+  let i=0,field='',row=[],inQ=false;
+  while(i<txt.length){
+    const c=txt[i];
+    if(inQ){
+      if(c==='"'){
+        if(txt[i+1]==='"'){field+='"';i+=2;} // comilla escapada
+        else{inQ=false;i++;}
+      } else {field+=c;i++;}
+    } else {
+      if(c==='"'){inQ=true;i++;}
+      else if(c===','){row.push(field);field='';i++;}
+      else if(c==='\r'&&txt[i+1]==='\n'){row.push(field);records.push(row);field='';row=[];i+=2;}
+      else if(c==='\n'){row.push(field);records.push(row);field='';row=[];i++;}
+      else{field+=c;i++;}
+    }
+  }
+  if(field||row.length){row.push(field);records.push(row);}
+  return records;
+}
+
 function detectarEstado(status){
   const s=(status||'').toLowerCase();
   if(s.includes('stand by')||s.includes('stand-by')) return 'En stand-by';
-  if(s.includes('finaliz')||s.includes('obra finalizada')) return 'Finalizado';
-  if(s.includes('en obra')||s.includes('ejecución')||s.includes('ejecucion')||s.includes('en ejecución')) return 'En ejecución';
-  if(s.includes('licitaci')||s.includes('licitator')||s.includes('apertura de oferta')||s.includes('adjudic')) return 'En licitación';
-  if(s.includes('tramit')||s.includes('permiso')) return 'En tramitación de permisos';
-  if(s.includes('armado')||s.includes('elaboraci')) return 'En armado de proyecto';
-  if(s.includes('ajuste')||s.includes('espera')||s.includes('pendiente')||s.includes('definici')) return 'En ajustes del proyecto';
-  return 'En definición';
+  if(s.includes('obra finalizada')||s.includes('fin de obra')&&s.includes('✅')) return 'Finalizado';
+  if(s.includes('en obra')||s.includes('en ejecución')||s.includes('en ejecucion')) return 'En ejecución';
+  if(s.includes('adjudicaci')&&!s.includes('espera')) return 'En licitación';
+  if(s.includes('licitaci')||s.includes('apertura de oferta')||s.includes('llamado a licitación')) return 'En licitación';
+  if(s.includes('tramit')||s.includes('permiso en curso')) return 'En tramitación de permisos';
+  if(s.includes('armado de documentación')||s.includes('armado de proyecto')||s.includes('en elaboración')) return 'En armado de proyecto';
+  return 'En ajustes del proyecto';
 }
 
-const COLORES={
-  'En ejecución':'#00c896','En licitación':'#FFCB00','En stand-by':'#a89dc8',
-  'Finalizado':'#8DE2D6','En armado de proyecto':'#5470b8',
-  'En ajustes del proyecto':'#3a5da8','En tramitación de permisos':'#e07830',
-  'En definición':'#888'
-};
-const BDGMAP={
-  'En ejecución':{c:'b-ej',l:'En ejecución'},
-  'En licitación':{c:'b-def',l:'En licitación'},
-  'En stand-by':{c:'b-sb',l:'En stand-by'},
-  'Finalizado':{c:'b-fin',l:'Finalizado'},
-  'En armado de proyecto':{c:'b-def',l:'En armado de proyecto'},
-  'En ajustes del proyecto':{c:'b-def',l:'En ajustes del proyecto'},
-  'En tramitación de permisos':{c:'b-def',l:'En tramitación de permisos'},
-  'En definición':{c:'b-def',l:'En definición'}
-};
+const COLORES={'En ejecución':'#00c896','En licitación':'#FFCB00','En stand-by':'#a89dc8','Finalizado':'#8DE2D6','En armado de proyecto':'#5470b8','En ajustes del proyecto':'#3a5da8','En tramitación de permisos':'#e07830'};
+const BDGMAP={'En ejecución':{c:'b-ej',l:'En ejecución'},'En licitación':{c:'b-lit',l:'En licitación'},'En stand-by':{c:'b-sb',l:'En stand-by'},'Finalizado':{c:'b-fin',l:'Finalizado'},'En armado de proyecto':{c:'b-def',l:'En armado de proyecto'},'En ajustes del proyecto':{c:'b-def',l:'En ajustes del proyecto'},'En tramitación de permisos':{c:'b-tra',l:'En tramitación de permisos'}};
+
+// Columnas del sheet:
+// 0=Proyecto, 1=Fecha carga, 2=Status, 3=Pasos/Hitos, 4=Accionable Marce
+// 5=Próx paso, 6=Próximo hito y fecha, 7=Actores, 8=Monto, 9=Envío
+const COL={PROYECTO:0,STATUS:2,ACCIONABLE:4,HITO:6,ACTORES:7,MONTO:8};
 
 let DATA=[],FILTRO='Todos',BUSQ='';
-
-function parseCSV(txt){
-  const rows=[];
-  // Split respetando campos entre comillas
-  function splitLine(line){
-    const fields=[];let cur='',inQ=false;
-    for(let i=0;i<line.length;i++){
-      const c=line[i];
-      if(c==='"'){
-        if(inQ&&line[i+1]==='"'){cur+='"';i++;}
-        else inQ=!inQ;
-      } else if(c===','&&!inQ){fields.push(cur);cur='';}
-      else cur+=c;
-    }
-    fields.push(cur);
-    return fields;
-  }
-  const lines=txt.split('\n');
-  for(let i=1;i<lines.length;i++){
-    if(!lines[i].trim()) continue;
-    const f=splitLine(lines[i]);
-    const nombre=(f[0]||'').trim();
-    if(!nombre||nombre==='Proyecto') continue;
-    const status=(f[2]||'').trim();
-    rows.push({
-      nombre,
-      estado: detectarEstado(status),
-      status,
-      accionable:(f[4]||'').trim(),
-      hito:      (f[6]||'').trim(),
-      actores:   (f[7]||'').trim(),
-      monto:     (f[8]||'').trim(),
-    });
-  }
-  return rows;
-}
 
 async function init(){
   document.getElementById('ldg').style.display='block';
   document.getElementById('app').style.display='none';
   document.getElementById('err').style.display='none';
   try{
-    const r=await fetch(CSV_URL);
+    const r=await fetch(CSV_URL+'&t='+Date.now());
     if(!r.ok) throw new Error('Error '+r.status);
     const txt=await r.text();
-    DATA=parseCSV(txt);
+    const records=parseCSV(txt);
+    // La primera fila son los encabezados, las demás son datos
+    DATA=records.slice(1)
+      .filter(f=>f[COL.PROYECTO]&&f[COL.PROYECTO].trim()&&f[COL.PROYECTO].trim()!=='Proyecto')
+      .map(f=>({
+        nombre:    f[COL.PROYECTO].trim(),
+        status:    (f[COL.STATUS]||'').trim(),
+        estado:    detectarEstado((f[COL.STATUS]||'').trim()),
+        accionable:(f[COL.ACCIONABLE]||'').trim(),
+        hito:      (f[COL.HITO]||'').trim(),
+        actores:   (f[COL.ACTORES]||'').trim(),
+        monto:     (f[COL.MONTO]||'').trim(),
+      }));
     document.getElementById('upd').textContent='Actualizado: '+new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
     document.getElementById('ldg').style.display='none';
     document.getElementById('app').style.display='block';
@@ -249,7 +224,7 @@ async function init(){
     document.getElementById('ldg').style.display='none';
     const el=document.getElementById('err');
     el.style.display='block';
-    el.textContent='No se pudo cargar el Google Sheet. Verificá que esté publicado correctamente. Detalle: '+e.message;
+    el.textContent='No se pudo cargar el Google Sheet. Detalle: '+e.message;
   }
 }
 
@@ -260,21 +235,17 @@ function render(){
   document.getElementById('k1').textContent=DATA.filter(p=>p.estado==='En ejecución').length;
   document.getElementById('k2').textContent=DATA.filter(p=>p.estado==='En stand-by').length;
   document.getElementById('k3').textContent=DATA.filter(p=>p.estado==='Finalizado').length;
-
   const ests=[...new Set(DATA.map(p=>p.estado).filter(Boolean))].sort((a,b)=>cnt(b)-cnt(a));
   const max=Math.max(...ests.map(e=>cnt(e)),1);
   document.getElementById('bars').innerHTML=ests.map(e=>{
     const c=cnt(e),w=Math.round(c/max*100),col=COLORES[e]||'#153244';
     return `<div class="bar-item"><span class="bar-lbl">${e}</span><div class="bar-trk"><div class="bar-f" style="width:${w}%;background:${col}"></div></div><span class="bar-n">${c}</span></div>`;
   }).join('');
-
-  const hits=DATA.filter(p=>p.hito&&p.hito.trim()&&p.hito!=='—'&&!p.hito.toLowerCase().startsWith('a/')).slice(0,8);
+  const hits=DATA.filter(p=>p.hito&&p.hito.trim()&&!p.hito.toLowerCase().startsWith('a/')).slice(0,8);
   document.getElementById('hitos').innerHTML=hits.length
-    ?hits.map(p=>`<div class="hito-row"><span class="hito-nm">${p.nombre}</span><span class="hito-dt">${p.hito.split('—')[0].trim().substring(0,28)}</span></div>`).join('')
-    :`<p style="color:var(--muted);font-size:11px;padding:8px 0">Sin hitos próximos cargados</p>`;
-
-  const allE=['Todos',...ests];
-  document.getElementById('pills').innerHTML=allE.map(e=>
+    ?hits.map(p=>`<div class="hito-row"><span class="hito-nm">${p.nombre}</span><span class="hito-dt">${p.hito.replace(/\n/g,' ').substring(0,28)}</span></div>`).join('')
+    :`<p style="color:var(--muted);font-size:11px;padding:8px 0">Sin hitos cargados</p>`;
+  document.getElementById('pills').innerHTML=['Todos',...ests].map(e=>
     `<span class="pill${FILTRO===e?' on':''}" onclick="setF('${e.replace(/'/g,"\\'")}')">${e}${e!=='Todos'?' ('+cnt(e)+')':''}</span>`
   ).join('');
   renderCards();
@@ -294,15 +265,15 @@ function renderCards(){
   document.getElementById('cards').innerHTML=f.map(p=>{
     const b=BDGMAP[p.estado]||{c:'b-def',l:p.estado};
     const accent=COLORES[p.estado]||'#153244';
-    const st=(p.status||'').substring(0,85);
-    const ht=(p.hito||'').split('—')[0].trim();
+    const st=p.status.replace(/\n/g,' ').substring(0,85);
+    const ht=p.hito.replace(/\n/g,' ').substring(0,50);
     return `<div class="card" onclick="openM('${p.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
       <div class="card-top" style="background:${accent}"></div>
       <div class="card-body">
         <div class="card-nm">${p.nombre}</div>
         <span class="bdg ${b.c}">${b.l}</span>
         ${st?`<div class="card-st">${st}${p.status.length>85?'...':''}</div>`:''}
-        ${ht&&ht!=='—'?`<div class="card-ht">${ht.substring(0,50)}</div>`:''}
+        ${ht?`<div class="card-ht">${ht}</div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -313,8 +284,7 @@ function openM(nm){
   if(!p)return;
   const b=BDGMAP[p.estado]||{c:'b-def',l:p.estado};
   document.getElementById('mt').textContent=p.nombre;
-  const mb=document.getElementById('mb');
-  mb.className='bdg '+b.c;mb.textContent=b.l;
+  const mb=document.getElementById('mb');mb.className='bdg '+b.c;mb.textContent=b.l;
   document.getElementById('ms').textContent=p.status||'—';
   document.getElementById('mh').textContent=p.hito||'—';
   document.getElementById('mm').textContent=p.monto||'—';
