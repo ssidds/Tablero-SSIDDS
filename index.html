@@ -369,8 +369,7 @@ function renderIndicadores(){
   var alertas=DATA.filter(function(p){return p.accionable&&p.accionable.trim()&&p.accionable!=="N/A"&&p.accionable!=="--";});
   document.getElementById("alerts-cnt").textContent=alertas.length;
   document.getElementById("alerts-list").innerHTML=alertas.map(function(p){
-    return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(/
-/g," ").substring(0,100)+'</div></div></div>';
+    return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(//g," ").substring(0,100)+'</div></div></div>';
   }).join("");
 }
 
