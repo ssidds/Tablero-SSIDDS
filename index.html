@@ -3,142 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tablero de Proyectos -- SSIDDS</title>
+<title>Tablero de Proyectos - SSIDDS</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;--amarillo:#FFCB00;--amarillo2:#e6b800;--verde:#8DE2D6;--bg:#f2f6f9;--card:#fff;--border:#dce8ef;--text:#153244;--muted:#6b8395;--r:12px;--r2:8px}
+:root{--azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;--am:#FFCB00;--am2:#e6b800;--vd:#8DE2D6;--bg:#f2f6f9;--card:#fff;--border:#dce8ef;--text:#153244;--mt:#6b8395;--r:12px;--r2:8px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-.hdr{background:var(--azul);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
+body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+.hdr{background:var(--azul);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .hdr-logo{display:flex;align-items:center;gap:12px}
-.logo-badge{background:var(--amarillo);color:var(--azul);font-weight:700;font-size:13px;padding:5px 8px;border-radius:5px}
+.logo-badge{background:var(--am);color:var(--azul);font-weight:700;font-size:13px;padding:5px 8px;border-radius:5px}
 .hdr-txt h1{color:#fff;font-size:13px;font-weight:500}
-.hdr-txt p{color:var(--verde);font-size:10px;margin-top:1px}
+.hdr-txt p{color:var(--vd);font-size:10px;margin-top:1px}
 .hdr-r{display:flex;align-items:center;gap:10px}
-.upd{font-size:10px;color:rgba(255,255,255,.4);font-family:"DM Mono",monospace}
-.btn-upd{background:var(--amarillo);color:var(--azul);border:none;padding:6px 12px;border-radius:var(--r2);font-size:11px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif}
-.btn-upd:hover{background:var(--amarillo2)}
+.upd{font-size:10px;color:rgba(255,255,255,.4);font-family:DM Mono,monospace}
+.btn-upd{background:var(--am);color:var(--azul);border:none;padding:6px 12px;border-radius:var(--r2);font-size:11px;font-weight:600;cursor:pointer}
 .app{display:flex;flex:1;overflow:hidden}
 .sidebar{width:180px;flex-shrink:0;background:var(--azul);display:flex;flex-direction:column}
 .sb-logo{padding:14px 14px 12px;border-bottom:0.5px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
 .sb-logo-img{width:44px;height:44px;object-fit:contain;border-radius:4px}
 .sb-logo-txt{color:#fff;font-size:11px;font-weight:500;line-height:1.4}
-.sb-logo-txt small{color:var(--verde);font-size:9px;font-weight:400;display:block}
+.sb-logo-txt small{color:var(--vd);font-size:9px;display:block}
 .sb-sec{font-size:9px;color:rgba(255,255,255,.25);padding:10px 14px 3px;text-transform:uppercase;letter-spacing:.08em}
-.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;transition:all .15s;border-left:2px solid transparent}
+.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;border-left:2px solid transparent}
 .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
-.sb-item.active{background:rgba(141,226,214,.12);color:var(--verde);border-left-color:var(--verde)}
+.sb-item.active{background:rgba(141,226,214,.12);color:var(--vd);border-left-color:var(--vd)}
 .sb-item i{font-size:15px}
 .content{flex:1;overflow-y:auto;position:relative}
 .bg-torre{position:absolute;right:0;bottom:0;height:100%;opacity:.08;pointer-events:none;z-index:0;object-fit:contain;object-position:bottom right}
-.section{padding:20px;position:relative;z-index:1}
-.s-title{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+.sec{padding:20px;position:relative;z-index:1}
+.s-ttl{font-size:10px;font-weight:500;color:var(--mt);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.kpi{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;position:relative;overflow:hidden;transition:transform .15s}
-.kpi:hover{transform:translateY(-2px)}
+.kpi{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;position:relative;overflow:hidden}
 .kpi::after{content:"";position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
-.kpi.t::after{background:var(--azul)}.kpi.e::after{background:#00c896}.kpi.s::after{background:#a89dc8}.kpi.f::after{background:var(--amarillo)}
+.kpi.t::after{background:var(--azul)}.kpi.e::after{background:#00c896}.kpi.s::after{background:#a89dc8}.kpi.f::after{background:var(--am)}
 .kpi-n{font-size:32px;font-weight:600;line-height:1;margin-bottom:3px}
 .kpi.t .kpi-n{color:var(--azul)}.kpi.e .kpi-n{color:#00a87e}.kpi.s .kpi-n{color:#7a6fa8}.kpi.f .kpi-n{color:#c49900}
-.kpi-l{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.kpi-l{font-size:10px;color:var(--mt);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .box{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:16px 18px}
-.box-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.box-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mt);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .bar-item{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.bar-l{font-size:11px;color:var(--muted);width:160px;flex-shrink:0}
+.bar-l{font-size:11px;color:var(--mt);width:160px;flex-shrink:0}
 .bar-trk{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
-.bar-f{height:100%;border-radius:4px;transition:width .5s}
-.bar-n{font-size:11px;font-weight:600;font-family:"DM Mono",monospace;width:20px;text-align:right;color:var(--text)}
-.carousel-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px}
-.car-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.car-arrows{display:flex;gap:5px}
-.car-arrow{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.car-arrow i{font-size:12px;color:var(--muted)}
-.hito-card{border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center;transition:opacity .25s,transform .25s}
-.h-proyecto{font-size:11px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.3}
-.h-dia{font-size:32px;font-weight:600;line-height:1}
-.h-mes{font-size:11px;color:var(--muted);margin-top:2px;margin-bottom:8px}
-.h-desc{font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;line-height:1.4}
-.hc-urgente{background:#fef8f8}.hc-urgente .h-dia{color:#a32d2d}
-.hc-pronto{background:#fff8e0}.hc-pronto .h-dia{color:#8a6a00}
-.hc-normal{background:var(--bg)}.hc-normal .h-dia{color:var(--azul)}
-.car-dots{display:flex;justify-content:center;gap:4px;margin-top:8px}
-.car-dot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .2s}
-.car-dot.on{background:var(--azul);width:14px;border-radius:3px}
-.car-prog{height:2px;background:var(--border);border-radius:1px;margin-top:6px;overflow:hidden}
-.car-prog-f{height:100%;background:var(--azul);border-radius:1px}
-.alerts-box{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px}
-.alerts-cnt{background:#fcebeb;color:#a32d2d;font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px}
-.alerts-list{max-height:160px;overflow-y:auto}
-.alerts-list::-webkit-scrollbar{width:3px}
-.alerts-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.alert-row{display:flex;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border);align-items:flex-start}
-.alert-row:last-child{border-bottom:none}
-.alert-ic{width:22px;height:22px;border-radius:var(--r2);background:#faeeda;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.alert-ic i{font-size:12px;color:#854F0B}
-.alert-proy{font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px}
-.alert-txt{font-size:10px;color:var(--muted);line-height:1.4}
-.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-.srch-w{position:relative;flex:1;min-width:200px}
-.srch-w i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted);pointer-events:none}
-.srch{width:100%;padding:8px 12px 8px 32px;font-size:12px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-family:"DM Sans",sans-serif;outline:none}
-.srch:focus{border-color:var(--azul)}
-.filters-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.flt{font-size:11px;padding:6px 28px 6px 10px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--muted);cursor:pointer;font-family:"DM Sans",sans-serif;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b8395'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-.flt:focus{border-color:var(--azul)}
-.pills-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.pill{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-weight:500;transition:all .15s;white-space:nowrap}
-.pill:hover{border-color:var(--azul);color:var(--azul)}.pill.on{background:var(--azul);color:#fff;border-color:var(--azul)}
-.cnt-lbl{font-size:11px;color:var(--muted);margin-bottom:10px}
+.bar-f{height:100%;border-radius:4px}
+.bar-n{font-size:11px;font-weight:600;font-family:DM Mono,monospace;width:20px;text-align:right;color:var(--text)}
+.cw{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ca{display:flex;gap:5px}
+.cb{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cb i{font-size:12px;color:var(--mt)}
+.hc{border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center}
+.hp{font-size:11px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.3}
+.hd{font-size:32px;font-weight:600;line-height:1}
+.hm{font-size:11px;color:var(--mt);margin-top:2px;margin-bottom:8px}
+.hx{font-size:11px;color:var(--mt);border-top:1px solid var(--border);padding-top:8px;line-height:1.4}
+.hc-u{background:#fef8f8}.hc-u .hd{color:#a32d2d}
+.hc-p{background:#fff8e0}.hc-p .hd{color:#8a6a00}
+.hc-n{background:var(--bg)}.hc-n .hd{color:var(--azul)}
+.cdots{display:flex;justify-content:center;gap:4px;margin-top:8px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer}
+.cdot.on{background:var(--azul);width:14px;border-radius:3px}
+.cprog{height:2px;background:var(--border);border-radius:1px;margin-top:6px;overflow:hidden}
+.cpf{height:100%;background:var(--azul);border-radius:1px}
+.ab{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px}
+.ac{background:#fcebeb;color:#a32d2d;font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px}
+.al{max-height:160px;overflow-y:auto}
+.al::-webkit-scrollbar{width:3px}
+.al::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.ar{display:flex;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border);align-items:flex-start}
+.ar:last-child{border-bottom:none}
+.ai{width:22px;height:22px;border-radius:var(--r2);background:#faeeda;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai i{font-size:12px;color:#854F0B}
+.ap{font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px}
+.at{font-size:10px;color:var(--mt);line-height:1.4}
+.tb{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.sw{position:relative;flex:1;min-width:200px}
+.sw i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--mt);pointer-events:none}
+.si{width:100%;padding:8px 12px 8px 32px;font-size:12px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-family:DM Sans,sans-serif;outline:none}
+.si:focus{border-color:var(--azul)}
+.fr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fl{font-size:11px;padding:6px 28px 6px 10px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--mt);cursor:pointer;font-family:DM Sans,sans-serif;outline:none;appearance:none}
+.fl:focus{border-color:var(--azul)}
+.pr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pl{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--mt);cursor:pointer;font-weight:500;white-space:nowrap}
+.pl:hover{border-color:var(--azul);color:var(--azul)}.pl.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.cl{font-size:11px;color:var(--mt);margin-bottom:10px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;overflow:hidden}
-.card:hover{border-color:var(--azul);box-shadow:0 4px 16px rgba(21,50,68,.08);transform:translateY(-1px)}
-.card-top{height:4px}
-.card-body{padding:12px 14px}
-.card-nm{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);cursor:pointer;overflow:hidden}
+.card:hover{border-color:var(--azul);box-shadow:0 4px 16px rgba(21,50,68,.08)}
+.ct{height:4px}
+.cb2{padding:12px 14px}
+.cn{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
 .bdg{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;font-weight:600;margin-bottom:6px}
-.b-ej{background:#e0f7f0;color:#006b4f}.b-lic{background:#fff8e0;color:#8a6a00}
-.b-sb{background:#f0edf8;color:#4a3d78}.b-fin{background:#e8f4de;color:#2d5a10}
-.b-arm{background:#e8ecf4;color:#1a3a7a}.b-aj{background:#edf0f8;color:#2a3f8a}
-.b-tra{background:#fde8d8;color:#7a3010}
-.card-st{font-size:10px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border);padding-top:6px;margin-top:4px}
-.card-ht{font-size:10px;color:var(--azul2);margin-top:5px;font-weight:500}
-.card-ht::before{content:"-> ";color:#5ec9ba}
-.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;grid-column:1/-1}
+.bej{background:#e0f7f0;color:#006b4f}.blic{background:#fff8e0;color:#8a6a00}
+.bsb{background:#f0edf8;color:#4a3d78}.bfin{background:#e8f4de;color:#2d5a10}
+.barm{background:#e8ecf4;color:#1a3a7a}.baj{background:#edf0f8;color:#2a3f8a}
+.btra{background:#fde8d8;color:#7a3010}
+.cst{font-size:10px;color:var(--mt);line-height:1.4;border-top:1px solid var(--border);padding-top:6px;margin-top:4px}
+.cht{font-size:10px;color:var(--azul2);margin-top:5px;font-weight:500}
+.empty{text-align:center;padding:40px;color:var(--mt);font-size:13px;grid-column:1/-1}
 .ov{display:none;position:absolute;inset:0;background:rgba(21,50,68,.6);z-index:50;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
 .ov.open{display:flex}
 .modal{background:var(--card);border-radius:16px;max-width:640px;width:100%;margin-top:10px;position:relative}
-.m-hdr{background:var(--azul);padding:20px 24px 16px;border-radius:16px 16px 0 0;position:relative}
-.m-cls{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.m-cls:hover{background:rgba(255,255,255,.25)}
-.m-tit{font-size:16px;font-weight:600;color:#fff;margin-bottom:8px;padding-right:32px;line-height:1.3}
-.m-body{padding:20px 24px}
-.m-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
-.m-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.m-card{background:var(--bg);border-radius:var(--r2);padding:12px 14px;border:1px solid var(--border)}
-.m-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.m-val{font-size:11px;color:var(--text);line-height:1.6}
-.m-val.acc{color:var(--azul2);font-weight:500}
-.btn-v{background:var(--amarillo);color:var(--azul);border:none;padding:10px 28px;border-radius:var(--r2);font-size:12px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;display:block;margin:0 auto}
-.btn-v:hover{background:var(--amarillo2)}
+.mh{background:var(--azul);padding:20px 24px 16px;border-radius:16px 16px 0 0;position:relative}
+.mc{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.mt2{font-size:16px;font-weight:600;color:#fff;margin-bottom:8px;padding-right:32px;line-height:1.3}
+.mb{padding:20px 24px}
+.mg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.mg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.mcd{background:var(--bg);border-radius:var(--r2);padding:12px 14px;border:1px solid var(--border)}
+.ml{font-size:10px;font-weight:600;color:var(--mt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mv{font-size:11px;color:var(--text);line-height:1.6}
+.mv.acc{color:var(--azul2);font-weight:500}
+.bv{background:var(--am);color:var(--azul);border:none;padding:10px 28px;border-radius:var(--r2);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:block;margin:0 auto}
 #map{height:calc(100vh - 140px);border-radius:var(--r);border:1px solid var(--border)}
-.loading{text-align:center;padding:60px;color:var(--muted)}
+.ldg{text-align:center;padding:60px;color:var(--mt)}
 .spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--azul);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 14px}
 @keyframes sp{to{transform:rotate(360deg)}}
-.err-box{background:#fff8f8;border:1px solid #fdd;border-radius:var(--r);padding:16px;color:#a32d2d;font-size:12px;margin-bottom:16px}
+.eb{background:#fff8f8;border:1px solid #fdd;border-radius:var(--r);padding:16px;color:#a32d2d;font-size:12px;margin-bottom:16px}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div class="hdr-logo">
     <div class="logo-badge">BA</div>
-    <div class="hdr-txt">
-      <h1>Tablero de Proyectos</h1>
-      <p>Subsecretaria de Integracion y Desarrollo del Sur</p>
-    </div>
+    <div class="hdr-txt"><h1>Tablero de Proyectos</h1><p>Subsecretaria de Integracion y Desarrollo del Sur</p></div>
   </div>
   <div class="hdr-r">
     <span class="upd" id="upd">Cargando...</span>
@@ -156,14 +148,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);dis
     <div class="sb-item" onclick="nav('proy',this)"><i class="ti ti-layout-grid" aria-hidden="true"></i> Proyectos</div>
     <div class="sb-item" onclick="nav('mapa',this)"><i class="ti ti-map-pin" aria-hidden="true"></i> Mapa</div>
   </div>
-  <div class="content" id="main-content">
-    <div id="sec-ind">
+  <div class="content">
+    <div id="sind">
       <img class="bg-torre" src="torre.png" alt="" aria-hidden="true">
-      <div class="section">
-        <div class="s-title">Indicadores generales</div>
-        <div id="err-box" class="err-box" style="display:none"></div>
-        <div id="ldg" class="loading"><div class="spin"></div><div>Cargando proyectos...</div></div>
-        <div id="ind-content" style="display:none">
+      <div class="sec">
+        <div class="s-ttl">Indicadores generales</div>
+        <div id="eb" class="eb" style="display:none"></div>
+        <div id="ldg" class="ldg"><div class="spin"></div><div>Cargando proyectos...</div></div>
+        <div id="ind-c" style="display:none">
           <div class="kpi-grid">
             <div class="kpi t"><div class="kpi-n" id="k0">0</div><div class="kpi-l">Proyectos totales</div></div>
             <div class="kpi e"><div class="kpi-n" id="k1">0</div><div class="kpi-l">En ejecucion</div></div>
@@ -176,291 +168,281 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);dis
               <div id="bars"></div>
             </div>
             <div>
-              <div class="carousel-wrap" style="margin-bottom:12px">
-                <div class="car-header">
+              <div class="cw" style="margin-bottom:12px">
+                <div class="ch">
                   <div class="box-t" style="margin:0"><i class="ti ti-calendar" aria-hidden="true"></i> Proximos hitos</div>
                   <div style="display:flex;align-items:center;gap:6px">
-                    <span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace" id="car-cnt">1/10</span>
-                    <div class="car-arrows">
-                      <button class="car-arrow" onclick="carNav(-1)" aria-label="Anterior"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
-                      <button class="car-arrow" onclick="carNav(1)" aria-label="Siguiente"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+                    <span style="font-size:10px;color:var(--mt);font-family:DM Mono,monospace" id="ccnt">1/10</span>
+                    <div class="ca">
+                      <button class="cb" onclick="carNav(-1)" aria-label="Anterior"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+                      <button class="cb" onclick="carNav(1)" aria-label="Siguiente"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
                     </div>
                   </div>
                 </div>
-                <div id="hito-card" class="hito-card hc-normal">
-                  <div class="h-proyecto" id="hc-proy"></div>
-                  <div class="h-dia" id="hc-dia"></div>
-                  <div class="h-mes" id="hc-mes"></div>
-                  <div class="h-desc" id="hc-desc"></div>
+                <div id="hcard" class="hc hc-n">
+                  <div class="hp" id="hp"></div>
+                  <div class="hd" id="hd"></div>
+                  <div class="hm" id="hm"></div>
+                  <div class="hx" id="hx"></div>
                 </div>
-                <div class="car-dots" id="car-dots"></div>
-                <div class="car-prog"><div class="car-prog-f" id="car-prog" style="width:0%"></div></div>
+                <div class="cdots" id="cdots"></div>
+                <div class="cprog"><div class="cpf" id="cpf" style="width:0%"></div></div>
               </div>
-              <div class="alerts-box">
-                <div class="box-t" style="margin-bottom:10px">
-                  <i class="ti ti-bell" aria-hidden="true"></i> Accionable Marce
-                  <span class="alerts-cnt" id="alerts-cnt">0</span>
-                </div>
-                <div class="alerts-list" id="alerts-list"></div>
+              <div class="ab">
+                <div class="box-t" style="margin-bottom:10px"><i class="ti ti-bell" aria-hidden="true"></i> Accionable Marce <span class="ac" id="acnt">0</span></div>
+                <div class="al" id="alist"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="sec-proy" style="display:none">
+    <div id="sproy" style="display:none">
       <img class="bg-torre" src="torre.png" alt="" aria-hidden="true">
-      <div class="section">
-        <div class="s-title">Todos los proyectos</div>
-        <div class="toolbar">
-          <div class="srch-w">
-            <i class="ti ti-search" aria-hidden="true"></i>
-            <input class="srch" type="text" placeholder="Buscar proyecto, accionable o actores..." oninput="buscar(this.value)">
-          </div>
+      <div class="sec">
+        <div class="s-ttl">Todos los proyectos</div>
+        <div class="tb">
+          <div class="sw"><i class="ti ti-search" aria-hidden="true"></i><input class="si" type="text" placeholder="Buscar proyecto, accionable o actores..." oninput="buscar(this.value)"></div>
         </div>
-        <div class="filters-row">
-          <select class="flt" id="flt-etapa" onchange="renderCards()"><option value="">Etapa del proyecto</option></select>
-          <select class="flt" id="flt-tematica" onchange="renderCards()">
-            <option value="">Tematica</option>
-            <option>Infraestructura y movilidad</option><option>Deportes</option>
-            <option>Educacion y empleo</option><option>Comercial y gastronomico</option>
-            <option>Ambiental</option><option>Vivienda</option>
-            <option>Salud</option><option>Desarrollo urbano</option>
-          </select>
-          <select class="flt" id="flt-inversion" onchange="renderCards()">
-            <option value="">Tipo de inversion</option>
-            <option>Publica</option><option>Privada</option><option>Mixta</option><option>No valorizada</option>
-          </select>
-          <select class="flt" id="flt-comuna" onchange="renderCards()">
-            <option value="">Comuna</option>
-            <option>Comuna 1</option><option>Comuna 4</option><option>Comuna 8</option><option>Comuna 9</option>
-          </select>
-          <select class="flt" id="flt-barrio" onchange="renderCards()">
-            <option value="">Barrio</option>
-            <option>La Boca</option><option>Barracas</option><option>Nueva Pompeya</option>
-            <option>Parque Patricios</option><option>Constitucion</option><option>Villa Soldati</option>
-            <option>Villa Riachuelo</option><option>Villa Lugano</option>
-            <option>Liniers</option><option>Mataderos</option><option>Parque Avellaneda</option>
-          </select>
+        <div class="fr">
+          <select class="fl" id="fe" onchange="renderCards()"><option value="">Etapa del proyecto</option></select>
+          <select class="fl" id="ft" onchange="renderCards()"><option value="">Tematica</option><option>Infraestructura y movilidad</option><option>Deportes</option><option>Educacion y empleo</option><option>Comercial y gastronomico</option><option>Ambiental</option><option>Vivienda</option><option>Salud</option><option>Desarrollo urbano</option></select>
+          <select class="fl" id="fi" onchange="renderCards()"><option value="">Tipo de inversion</option><option>Publica</option><option>Privada</option><option>Mixta</option><option>No valorizada</option></select>
+          <select class="fl" id="fc" onchange="renderCards()"><option value="">Comuna</option><option>Comuna 1</option><option>Comuna 4</option><option>Comuna 8</option><option>Comuna 9</option></select>
+          <select class="fl" id="fb" onchange="renderCards()"><option value="">Barrio</option><option>La Boca</option><option>Barracas</option><option>Nueva Pompeya</option><option>Parque Patricios</option><option>Constitucion</option><option>Villa Soldati</option><option>Villa Riachuelo</option><option>Villa Lugano</option><option>Liniers</option><option>Mataderos</option><option>Parque Avellaneda</option></select>
         </div>
-        <div class="pills-row" id="pills"></div>
-        <div class="cnt-lbl" id="cnt-lbl"></div>
+        <div class="pr" id="pills"></div>
+        <div class="cl" id="clbl"></div>
         <div class="cards" id="cards"></div>
       </div>
     </div>
-    <div id="sec-mapa" style="display:none">
-      <div class="section" style="height:calc(100vh - 120px)">
-        <div class="s-title" style="margin-bottom:10px">Mapa de proyectos</div>
+    <div id="smapa" style="display:none">
+      <div class="sec" style="height:calc(100vh - 120px)">
+        <div class="s-ttl" style="margin-bottom:10px">Mapa de proyectos</div>
         <div id="map"></div>
       </div>
     </div>
-    <div class="ov" id="modal-ov" onclick="closeModal(event)">
+    <div class="ov" id="mov" onclick="closeM(event)">
       <div class="modal" onclick="event.stopPropagation()">
-        <div class="m-hdr">
-          <button class="m-cls" onclick="closeModalBtn()">x</button>
-          <div class="m-tit" id="m-tit"></div>
-          <span class="bdg" id="m-bdg"></span>
+        <div class="mh">
+          <button class="mc" onclick="closeM()">x</button>
+          <div class="mt2" id="mtit"></div>
+          <span class="bdg" id="mbdg"></span>
         </div>
-        <div class="m-body">
-          <div class="m-g3">
-            <div class="m-card"><div class="m-lbl">Status</div><div class="m-val" id="m-status"></div></div>
-            <div class="m-card"><div class="m-lbl">Proximo hito</div><div class="m-val acc" id="m-hito"></div></div>
-            <div class="m-card"><div class="m-lbl">Monto de inversion</div><div class="m-val acc" id="m-monto"></div></div>
+        <div class="mb">
+          <div class="mg3">
+            <div class="mcd"><div class="ml">Status</div><div class="mv" id="mst"></div></div>
+            <div class="mcd"><div class="ml">Proximo hito</div><div class="mv acc" id="mhi"></div></div>
+            <div class="mcd"><div class="ml">Monto de inversion</div><div class="mv acc" id="mmo"></div></div>
           </div>
-          <div class="m-g2">
-            <div class="m-card"><div class="m-lbl">Accionable Marce</div><div class="m-val" id="m-acc"></div></div>
-            <div class="m-card"><div class="m-lbl">Actores involucrados</div><div class="m-val" id="m-actores"></div></div>
+          <div class="mg2">
+            <div class="mcd"><div class="ml">Accionable Marce</div><div class="mv" id="mac"></div></div>
+            <div class="mcd"><div class="ml">Actores involucrados</div><div class="mv" id="mact"></div></div>
           </div>
-          <button class="btn-v" onclick="closeModalBtn()">Volver a proyectos</button>
+          <button class="bv" onclick="closeM()">Volver a proyectos</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
-var CSV_URL="https://corsproxy.io/?https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=0&single=true&output=csv";
-var PINES_DATA=[{"name":"Mercado de Hacienda","lat":-34.664361,"lon":-58.495351,"color":"pink"},{"name":"CTC","lat":-34.66942,"lon":-58.439809,"color":"pink"},{"name":"Patio Gastron\u00f3mico Lago Lugano","lat":-34.680001,"lon":-58.449173,"color":"yellow"},{"name":"Mudanza Pistas + Licencias - Parque Indoamericano","lat":-34.669192,"lon":-58.461103,"color":"pink"},{"name":"Polo log\u00edstico","lat":-34.668604,"lon":-58.44759,"color":"blue"},{"name":"Bajada Autopista C\u00e1mpora","lat":-34.66742,"lon":-58.447429,"color":"pink"},{"name":"Club Asociaci\u00f3n del Sur","lat":-34.667023,"lon":-58.463147,"color":"blue"},{"name":"Viviendas Barrio Ol\u00edmpico","lat":-34.675657,"lon":-58.453937,"color":"blue"},{"name":"Estacionamiento Barrio Ol\u00edmpico - Manzana O","lat":-34.677321,"lon":-58.45098,"color":"blue"},{"name":"Alcaid\u00eda 27 de Febrero","lat":-34.675537,"lon":-58.438339,"color":"yellow"},{"name":"IUSE - UE","lat":-34.674367,"lon":-58.443945,"color":"blue"},{"name":"Centro de Rehabilitaci\u00f3n","lat":-34.675258,"lon":-58.444256,"color":"blue"},{"name":"Hotel","lat":-34.674124,"lon":-58.444712,"color":"blue"},{"name":"Estadio Mary Ter\u00e1n","lat":-34.677133,"lon":-58.446189,"color":"blue"},{"name":"Aulas Modulares","lat":-34.671507,"lon":-58.443799,"color":"yellow"},{"name":"Polo Farmac\u00e9utico","lat":-34.670465,"lon":-58.457936,"color":"blue"},{"name":"Biotenk","lat":-34.671209,"lon":-58.460052,"color":"blue"},{"name":"Panalab","lat":-34.669935,"lon":-58.45649,"color":"blue"},{"name":"Nuevo predio Monroe Americana","lat":-34.655271,"lon":-58.452821,"color":"pink"},{"name":"Ascensores Torre Espacial","lat":-34.672836,"lon":-58.449822,"color":"yellow"},{"name":"Centro Metropolitano de Eventos","lat":-34.670668,"lon":-58.44723,"color":"blue"},{"name":"Predio Ferr\u00e9","lat":-34.667102,"lon":-58.432801,"color":"pink"},{"name":"Profesi\u00f3n Sur","lat":-34.675852,"lon":-58.486358,"color":"pink"},{"name":"Empleabilidad","lat":-34.67604,"lon":-58.466815,"color":"pink"},{"name":"Parque de la Ribera - OSPESE","lat":-34.699261,"lon":-58.459074,"color":"pink"},{"name":"Mudanza UGIS","lat":-34.673465,"lon":-58.457336,"color":"pink"},{"name":"Centro Integral de Discapacidad","lat":-34.678756,"lon":-58.464056,"color":"yellow"},{"name":"Polo Educativo","lat":-34.67901,"lon":-58.463824,"color":"yellow"},{"name":"Golf Club Jos\u00e9 Jurado","lat":-34.679278,"lon":-58.458425,"color":"pink"},{"name":"Viviendas Sindicales - Sindicato Taxistas","lat":-34.679359,"lon":-58.452331,"color":"blue"},{"name":"Cinemark","lat":-34.676125,"lon":-58.458416,"color":"blue"},{"name":"Era Cret\u00e1cica 3","lat":-34.675643,"lon":-58.460899,"color":"pink"},{"name":"Lote 123D - Arq. GIOIA | AMERISE","lat":-34.674864,"lon":-58.454158,"color":"blue"},{"name":"Aut\u00f3dromo","lat":-34.691835,"lon":-58.457862,"color":"yellow"},{"name":"Calle lindera a 123N","lat":-34.677686,"lon":-58.451424,"color":"yellow"},{"name":"Retome Av. Fern\u00e1ndez de la Cruz","lat":-34.667716,"lon":-58.45275,"color":"pink"},{"name":"Apertura Calle Corrales","lat":-34.648072,"lon":-58.422506,"color":"pink"},{"name":"Club Social y Deportivo Unidos de Pompeya","lat":-34.650488,"lon":-58.417061,"color":"pink"},{"name":"Plaza Nueva Pompeya","lat":-34.651987,"lon":-58.415935,"color":"pink"},{"name":"Corredor S\u00e1enz","lat":-34.653212,"lon":-58.4164,"color":"pink"},{"name":"Revitalizaci\u00f3n Calle Necochea","lat":-34.63522,"lon":-58.357283,"color":"yellow"},{"name":"Puerto Pampa","lat":-34.62779,"lon":-58.360109,"color":"pink"},{"name":"Viviendas Gianotti-Zanetti","lat":-34.63363,"lon":-58.360082,"color":"blue"},{"name":"Reordenamiento Urbano Dique 0","lat":-34.627302,"lon":-58.358381,"color":"yellow"},{"name":"Barrio Chino La Boca","lat":-34.645979,"lon":-58.365372,"color":"pink"},{"name":"Anfiteatros - Plaza Islas Malvinas","lat":-34.626606,"lon":-58.360419,"color":"pink"},{"name":"Servicios P\u00fabicos en Plazas - Parque Patricios","lat":-34.638683,"lon":-58.407079,"color":"pink"},{"name":"Servicios P\u00fablicos en Plazas - Parque Espa\u00f1a","lat":-34.633809,"lon":-58.38559,"color":"pink"},{"name":"Cochabamba - Viviendas Polic\u00eda","lat":-34.623951,"lon":-58.382321,"color":"blue"},{"name":"Avenidas Porte\u00f1as 2 - Av. Mart\u00edn Garc\u00eda","lat":-34.630738,"lon":-58.371742,"color":"yellow"},{"name":"Estacionamientos Subterr\u00e1neos - Predio Lavard\u00e9n","lat":-34.640777,"lon":-58.400475,"color":"blue"},{"name":"Flotantes en Vuelta de Rocha","lat":-34.640403,"lon":-58.359434,"color":"pink"},{"name":"Col\u00f3n F\u00e1brica - Dulce de Leche","lat":-34.641334,"lon":-58.360906,"color":"blue"},{"name":"Puente Transbordador","lat":-34.638643,"lon":-58.356285,"color":"pink"},{"name":"Remo en Barracas","lat":-34.657579,"lon":-58.383794,"color":"pink"},{"name":"Estacionamientos Subterr\u00e1neos - Parque Espa\u00f1a","lat":-34.633617,"lon":-58.38504,"color":"blue"},{"name":"Hermetia - Planta de Reciclaje","lat":-34.653599,"lon":-58.381364,"color":"pink"},{"name":"Polo de Reciclaje","lat":-34.650958,"lon":-58.372957,"color":"pink"},{"name":"Anfiteatros - Parque Lezama","lat":-34.625503,"lon":-58.369361,"color":"pink"},{"name":"Viviendas Clase Media - Av. La Plata 2241","lat":-34.640668,"lon":-58.423791,"color":"yellow"},{"name":"Viviendas Clase Media - Av. Varela 2951","lat":-34.657282,"lon":-58.437077,"color":"yellow"},{"name":"Rueda de la Ciudad","lat":-34.62253,"lon":-58.364197,"color":"pink"},{"name":"Carrusel flotante","lat":-34.622038,"lon":-58.364267,"color":"pink"},{"name":"Parque Jos\u00e9 Evaristo Uriburu","lat":-34.642209,"lon":-58.41113,"color":"yellow"},{"name":"Trambus Av. Roca","lat":-34.660874,"lon":-58.431061,"color":"pink"},{"name":"Obra Premetro","lat":-34.685815,"lon":-58.462812,"color":"yellow"},{"name":"Carrefour","lat":-34.678881,"lon":-58.450709,"color":"blue"},{"name":"Au. Dellepiane","lat":-34.669785,"lon":-58.475363,"color":"yellow"},{"name":"CTC - Monta\u00f1a","lat":-34.670409,"lon":-58.435546,"color":"pink"},{"name":"Parque de la Ciudad","lat":-34.67317,"lon":-58.452434,"color":"yellow"},{"name":"Avenidas Porte\u00f1as 2 - Av. P\u00e9rez Galdos","lat":-34.630056,"lon":-58.359156,"color":"yellow"}];
-var COLORES={"En ejecucion":"#00c896","En licitacion":"#FFCB00","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En tramitacion de permisos":"#e07830"};
-var BDGMAP={"En ejecucion":{c:"b-ej",l:"En ejecucion"},"En licitacion":{c:"b-lic",l:"En licitacion"},"En stand-by":{c:"b-sb",l:"En stand-by"},"Finalizado":{c:"b-fin",l:"Finalizado"},"En armado de proyecto":{c:"b-arm",l:"En armado de proyecto"},"En ajustes del proyecto":{c:"b-aj",l:"En ajustes del proyecto"},"En tramitacion de permisos":{c:"b-tra",l:"En tramitacion de permisos"}};
-var DATA=[],FILTRO="Todos",BUSQ="",CAR_IDX=0,CAR_TIMER=null,HITOS=[],MAP_INIT=false;
 
-function parseCSV(txt){
-  var rows=[],row=[],f="",inQ=false,c,i;
-  for(i=0;i<txt.length;i++){
-    c=txt.charCodeAt(i);
-    if(inQ){
-      if(c===34&&txt.charCodeAt(i+1)===34){f+='"';i++;}
-      else if(c===34){inQ=false;}
-      else{f+=txt[i];}
+var CSV="https://corsproxy.io/?https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=0&single=true&output=csv";
+var PINES=[{"name":"Mercado de Hacienda","lat":-34.664361,"lon":-58.495351,"color":"pink"},{"name":"CTC","lat":-34.66942,"lon":-58.439809,"color":"pink"},{"name":"Patio Gastron\u00f3mico Lago Lugano","lat":-34.680001,"lon":-58.449173,"color":"yellow"},{"name":"Mudanza Pistas + Licencias - Parque Indoamericano","lat":-34.669192,"lon":-58.461103,"color":"pink"},{"name":"Polo log\u00edstico","lat":-34.668604,"lon":-58.44759,"color":"blue"},{"name":"Bajada Autopista C\u00e1mpora","lat":-34.66742,"lon":-58.447429,"color":"pink"},{"name":"Club Asociaci\u00f3n del Sur","lat":-34.667023,"lon":-58.463147,"color":"blue"},{"name":"Viviendas Barrio Ol\u00edmpico","lat":-34.675657,"lon":-58.453937,"color":"blue"},{"name":"Estacionamiento Barrio Ol\u00edmpico - Manzana O","lat":-34.677321,"lon":-58.45098,"color":"blue"},{"name":"Alcaid\u00eda 27 de Febrero","lat":-34.675537,"lon":-58.438339,"color":"yellow"},{"name":"IUSE - UE","lat":-34.674367,"lon":-58.443945,"color":"blue"},{"name":"Centro de Rehabilitaci\u00f3n","lat":-34.675258,"lon":-58.444256,"color":"blue"},{"name":"Hotel","lat":-34.674124,"lon":-58.444712,"color":"blue"},{"name":"Estadio Mary Ter\u00e1n","lat":-34.677133,"lon":-58.446189,"color":"blue"},{"name":"Aulas Modulares","lat":-34.671507,"lon":-58.443799,"color":"yellow"},{"name":"Polo Farmac\u00e9utico","lat":-34.670465,"lon":-58.457936,"color":"blue"},{"name":"Biotenk","lat":-34.671209,"lon":-58.460052,"color":"blue"},{"name":"Panalab","lat":-34.669935,"lon":-58.45649,"color":"blue"},{"name":"Nuevo predio Monroe Americana","lat":-34.655271,"lon":-58.452821,"color":"pink"},{"name":"Ascensores Torre Espacial","lat":-34.672836,"lon":-58.449822,"color":"yellow"},{"name":"Centro Metropolitano de Eventos","lat":-34.670668,"lon":-58.44723,"color":"blue"},{"name":"Predio Ferr\u00e9","lat":-34.667102,"lon":-58.432801,"color":"pink"},{"name":"Profesi\u00f3n Sur","lat":-34.675852,"lon":-58.486358,"color":"pink"},{"name":"Empleabilidad","lat":-34.67604,"lon":-58.466815,"color":"pink"},{"name":"Parque de la Ribera - OSPESE","lat":-34.699261,"lon":-58.459074,"color":"pink"},{"name":"Mudanza UGIS","lat":-34.673465,"lon":-58.457336,"color":"pink"},{"name":"Centro Integral de Discapacidad","lat":-34.678756,"lon":-58.464056,"color":"yellow"},{"name":"Polo Educativo","lat":-34.67901,"lon":-58.463824,"color":"yellow"},{"name":"Golf Club Jos\u00e9 Jurado","lat":-34.679278,"lon":-58.458425,"color":"pink"},{"name":"Viviendas Sindicales - Sindicato Taxistas","lat":-34.679359,"lon":-58.452331,"color":"blue"},{"name":"Cinemark","lat":-34.676125,"lon":-58.458416,"color":"blue"},{"name":"Era Cret\u00e1cica 3","lat":-34.675643,"lon":-58.460899,"color":"pink"},{"name":"Lote 123D - Arq. GIOIA | AMERISE","lat":-34.674864,"lon":-58.454158,"color":"blue"},{"name":"Aut\u00f3dromo","lat":-34.691835,"lon":-58.457862,"color":"yellow"},{"name":"Calle lindera a 123N","lat":-34.677686,"lon":-58.451424,"color":"yellow"},{"name":"Retome Av. Fern\u00e1ndez de la Cruz","lat":-34.667716,"lon":-58.45275,"color":"pink"},{"name":"Apertura Calle Corrales","lat":-34.648072,"lon":-58.422506,"color":"pink"},{"name":"Club Social y Deportivo Unidos de Pompeya","lat":-34.650488,"lon":-58.417061,"color":"pink"},{"name":"Plaza Nueva Pompeya","lat":-34.651987,"lon":-58.415935,"color":"pink"},{"name":"Corredor S\u00e1enz","lat":-34.653212,"lon":-58.4164,"color":"pink"},{"name":"Revitalizaci\u00f3n Calle Necochea","lat":-34.63522,"lon":-58.357283,"color":"yellow"},{"name":"Puerto Pampa","lat":-34.62779,"lon":-58.360109,"color":"pink"},{"name":"Viviendas Gianotti-Zanetti","lat":-34.63363,"lon":-58.360082,"color":"blue"},{"name":"Reordenamiento Urbano Dique 0","lat":-34.627302,"lon":-58.358381,"color":"yellow"},{"name":"Barrio Chino La Boca","lat":-34.645979,"lon":-58.365372,"color":"pink"},{"name":"Anfiteatros - Plaza Islas Malvinas","lat":-34.626606,"lon":-58.360419,"color":"pink"},{"name":"Servicios P\u00fabicos en Plazas - Parque Patricios","lat":-34.638683,"lon":-58.407079,"color":"pink"},{"name":"Servicios P\u00fablicos en Plazas - Parque Espa\u00f1a","lat":-34.633809,"lon":-58.38559,"color":"pink"},{"name":"Cochabamba - Viviendas Polic\u00eda","lat":-34.623951,"lon":-58.382321,"color":"blue"},{"name":"Avenidas Porte\u00f1as 2 - Av. Mart\u00edn Garc\u00eda","lat":-34.630738,"lon":-58.371742,"color":"yellow"},{"name":"Estacionamientos Subterr\u00e1neos - Predio Lavard\u00e9n","lat":-34.640777,"lon":-58.400475,"color":"blue"},{"name":"Flotantes en Vuelta de Rocha","lat":-34.640403,"lon":-58.359434,"color":"pink"},{"name":"Col\u00f3n F\u00e1brica - Dulce de Leche","lat":-34.641334,"lon":-58.360906,"color":"blue"},{"name":"Puente Transbordador","lat":-34.638643,"lon":-58.356285,"color":"pink"},{"name":"Remo en Barracas","lat":-34.657579,"lon":-58.383794,"color":"pink"},{"name":"Estacionamientos Subterr\u00e1neos - Parque Espa\u00f1a","lat":-34.633617,"lon":-58.38504,"color":"blue"},{"name":"Hermetia - Planta de Reciclaje","lat":-34.653599,"lon":-58.381364,"color":"pink"},{"name":"Polo de Reciclaje","lat":-34.650958,"lon":-58.372957,"color":"pink"},{"name":"Anfiteatros - Parque Lezama","lat":-34.625503,"lon":-58.369361,"color":"pink"},{"name":"Viviendas Clase Media - Av. La Plata 2241","lat":-34.640668,"lon":-58.423791,"color":"yellow"},{"name":"Viviendas Clase Media - Av. Varela 2951","lat":-34.657282,"lon":-58.437077,"color":"yellow"},{"name":"Rueda de la Ciudad","lat":-34.62253,"lon":-58.364197,"color":"pink"},{"name":"Carrusel flotante","lat":-34.622038,"lon":-58.364267,"color":"pink"},{"name":"Parque Jos\u00e9 Evaristo Uriburu","lat":-34.642209,"lon":-58.41113,"color":"yellow"},{"name":"Trambus Av. Roca","lat":-34.660874,"lon":-58.431061,"color":"pink"},{"name":"Obra Premetro","lat":-34.685815,"lon":-58.462812,"color":"yellow"},{"name":"Carrefour","lat":-34.678881,"lon":-58.450709,"color":"blue"},{"name":"Au. Dellepiane","lat":-34.669785,"lon":-58.475363,"color":"yellow"},{"name":"CTC - Monta\u00f1a","lat":-34.670409,"lon":-58.435546,"color":"pink"},{"name":"Parque de la Ciudad","lat":-34.67317,"lon":-58.452434,"color":"yellow"},{"name":"Avenidas Porte\u00f1as 2 - Av. P\u00e9rez Galdos","lat":-34.630056,"lon":-58.359156,"color":"yellow"}];
+var COL={"En ejecucion":"#00c896","En licitacion":"#FFCB00","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En tramitacion de permisos":"#e07830"};
+var BDG={"En ejecucion":["bej","En ejecucion"],"En licitacion":["blic","En licitacion"],"En stand-by":["bsb","En stand-by"],"Finalizado":["bfin","Finalizado"],"En armado de proyecto":["barm","En armado de proyecto"],"En ajustes del proyecto":["baj","En ajustes del proyecto"],"En tramitacion de permisos":["btra","En tramitacion de permisos"]};
+var DATA=[],FILTRO="Todos",BUSQ="",CIDX=0,CTIMER=null,HITOS=[],MAPOK=false;
+
+function parseCSV(t){
+  var R=[],row=[],f="",q=false,i,c;
+  for(i=0;i<t.length;i++){
+    c=t.charCodeAt(i);
+    if(q){
+      if(c===34&&t.charCodeAt(i+1)===34){f+='"';i++;}
+      else if(c===34){q=false;}
+      else{f+=t[i];}
     }else{
-      if(c===34){inQ=true;}
+      if(c===34){q=true;}
       else if(c===44){row.push(f);f="";}
-      else if(c===13&&txt.charCodeAt(i+1)===10){row.push(f);rows.push(row);f="";row=[];i++;}
-      else if(c===10||c===13){row.push(f);rows.push(row);f="";row=[];}
-      else{f+=txt[i];}
+      else if(c===13&&t.charCodeAt(i+1)===10){row.push(f);R.push(row);f="";row=[];i++;}
+      else if(c===10||c===13){row.push(f);R.push(row);f="";row=[];}
+      else{f+=t[i];}
     }
   }
-  if(f!=""||row.length>0){row.push(f);rows.push(row);}
-  return rows;
+  if(f!==""||row.length>0){row.push(f);R.push(row);}
+  return R;
 }
 
-function detectEstado(s){
+function nl(s){return (s||"").replace(/\x0a/g," ").replace(/\x0d/g," ");}
+
+function estado(s){
   var t=(s||"").toLowerCase();
   if(t.indexOf("stand by")>=0||t.indexOf("stand-by")>=0)return "En stand-by";
   if(t.indexOf("obra finalizada")>=0)return "Finalizado";
   if(t.indexOf("en obra")>=0||t.indexOf("en ejecucion")>=0||t.indexOf("en ejecuci\u00f3n")>=0)return "En ejecucion";
-  if(t.indexOf("adjudic")>=0&&t.indexOf("espera")<0||t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0)return "En licitacion";
+  if((t.indexOf("adjudic")>=0&&t.indexOf("espera")<0)||t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0)return "En licitacion";
   if(t.indexOf("tramit")>=0||t.indexOf("permiso en curso")>=0)return "En tramitacion de permisos";
-  if(t.indexOf("armado de documentacion")>=0||t.indexOf("armado de proyecto")>=0||t.indexOf("armado de documentaci\u00f3n")>=0)return "En armado de proyecto";
+  if(t.indexOf("armado de documentaci")>=0||t.indexOf("armado de proyecto")>=0)return "En armado de proyecto";
   return "En ajustes del proyecto";
 }
 
-function cnt(e){return e==="Todos"?DATA.length:DATA.filter(function(p){return p.estado===e;}).length;}
+function cnt(e){return e==="Todos"?DATA.length:DATA.filter(function(p){return p.e===e;}).length;}
+
+function eid(x){return document.getElementById(x);}
 
 function cargar(){
-  document.getElementById("ldg").style.display="block";
-  document.getElementById("ind-content").style.display="none";
-  document.getElementById("err-box").style.display="none";
-  fetch(CSV_URL+"&t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("Error "+r.status);return r.text();})
-    .then(function(txt){
-      var rows=parseCSV(txt);
-      DATA=rows.slice(1).filter(function(f){return f[0]&&f[0].trim()&&f[0].trim()!=="Proyecto";}).map(function(f){return{
-        nombre:(f[0]||"").trim(),estado:detectEstado((f[2]||"").trim()),status:(f[2]||"").trim(),
-        accionable:(f[4]||"").trim(),hito:(f[6]||"").trim(),actores:(f[7]||"").trim(),
-        monto:(f[8]||"").trim(),tematica:(f[9]||"").trim(),inversion:(f[10]||"").trim(),
-        comuna:(f[11]||"").trim(),barrio:(f[12]||"").trim()
-      };});
-      document.getElementById("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-      document.getElementById("ldg").style.display="none";
-      document.getElementById("ind-content").style.display="block";
-      renderIndicadores();
-      renderPills();
-      renderCards();
+  eid("ldg").style.display="block";
+  eid("ind-c").style.display="none";
+  eid("eb").style.display="none";
+  fetch(CSV+"&t="+Date.now())
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
+    .then(function(t){
+      var rows=parseCSV(t);
+      DATA=rows.slice(1).filter(function(r){return r[0]&&r[0].trim()&&r[0].trim()!=="Proyecto";}).map(function(r){
+        return{n:r[0].trim(),e:estado(r[2]),s:r[2]||"",a:r[4]||"",h:r[6]||"",ac:r[7]||"",mo:r[8]||"",te:r[9]||"",inv:r[10]||"",co:r[11]||"",ba:r[12]||""};
+      });
+      eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+      eid("ldg").style.display="none";
+      eid("ind-c").style.display="block";
+      renderInd();renderPills();renderCards();
     })
-    .catch(function(e){
-      document.getElementById("ldg").style.display="none";
-      var el=document.getElementById("err-box");
-      el.style.display="block";
-      el.textContent="No se pudo cargar el Google Sheet. Detalle: "+e.message;
+    .catch(function(err){
+      eid("ldg").style.display="none";
+      eid("eb").style.display="block";
+      eid("eb").textContent="No se pudo cargar el Google Sheet. "+err.message;
     });
 }
 
-function renderIndicadores(){
-  document.getElementById("k0").textContent=DATA.length;
-  document.getElementById("k1").textContent=DATA.filter(function(p){return p.estado==="En ejecucion";}).length;
-  document.getElementById("k2").textContent=DATA.filter(function(p){return p.estado==="En stand-by";}).length;
-  document.getElementById("k3").textContent=DATA.filter(function(p){return p.estado==="Finalizado";}).length;
-  var ests=[];
-  DATA.forEach(function(p){if(p.estado&&ests.indexOf(p.estado)<0)ests.push(p.estado);});
+function renderInd(){
+  eid("k0").textContent=DATA.length;
+  eid("k1").textContent=DATA.filter(function(p){return p.e==="En ejecucion";}).length;
+  eid("k2").textContent=DATA.filter(function(p){return p.e==="En stand-by";}).length;
+  eid("k3").textContent=DATA.filter(function(p){return p.e==="Finalizado";}).length;
+  var ests=[];DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
   ests.sort(function(a,b){return cnt(b)-cnt(a);});
-  var max=Math.max.apply(null,ests.map(function(e){return cnt(e);}));max=max||1;
-  document.getElementById("bars").innerHTML=ests.map(function(e){
-    var c=cnt(e),w=Math.round(c/max*100),col=COLORES[e]||"#153244",lbl=BDGMAP[e]?BDGMAP[e].l:e;
+  var max=0;ests.forEach(function(e){if(cnt(e)>max)max=cnt(e);});if(!max)max=1;
+  eid("bars").innerHTML=ests.map(function(e){
+    var c=cnt(e),w=Math.round(c/max*100),col=COL[e]||"#153244",lbl=BDG[e]?BDG[e][1]:e;
     return '<div class="bar-item"><span class="bar-l">'+lbl+'</span><div class="bar-trk"><div class="bar-f" style="width:'+w+'%;background:'+col+'"></div></div><span class="bar-n">'+c+'</span></div>';
   }).join("");
-  var sel=document.getElementById("flt-etapa");
-  sel.innerHTML='<option value="">Etapa del proyecto</option>'+ests.map(function(e){return '<option value="'+e+'">'+(BDGMAP[e]?BDGMAP[e].l:e)+'</option>';}).join("");
-  HITOS=DATA.filter(function(p){return p.hito&&p.hito.trim()&&p.hito.toLowerCase().indexOf("a/")<0;}).slice(0,10);
-  var dotsEl=document.getElementById("car-dots");
-  dotsEl.innerHTML="";
-  HITOS.forEach(function(_,i){var d=document.createElement("div");d.className="car-dot"+(i===0?" on":"");d.onclick=function(){renderCarousel(i,true);};dotsEl.appendChild(d);});
-  renderCarousel(0,false);
-  var alertas=DATA.filter(function(p){return p.accionable&&p.accionable.trim()&&p.accionable!=="N/A"&&p.accionable!=="--";});
-  document.getElementById("alerts-cnt").textContent=alertas.length;
-  document.getElementById("alerts-list").innerHTML=alertas.map(function(p){
-    return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(/\x0a/g," ").substring(0,100)+'</div></div></div>';
+  var sel=eid("fe");
+  sel.innerHTML='<option value="">Etapa del proyecto</option>'+ests.map(function(e){return '<option value="'+e+'">'+(BDG[e]?BDG[e][1]:e)+'</option>';}).join("");
+  HITOS=DATA.filter(function(p){return p.h&&p.h.trim()&&p.h.toLowerCase().indexOf("a/")<0;}).slice(0,10);
+  var de=eid("cdots");de.innerHTML="";
+  HITOS.forEach(function(_,i){var d=document.createElement("div");d.className="cdot"+(i===0?" on":"");d.onclick=function(){renderCar(i,true);};de.appendChild(d);});
+  renderCar(0,false);
+  var alts=DATA.filter(function(p){return p.a&&p.a.trim()&&p.a!=="N/A"&&p.a!=="--";});
+  eid("acnt").textContent=alts.length;
+  eid("alist").innerHTML=alts.map(function(p){
+    var txt=nl(p.a).substring(0,100);
+    return '<div class="ar"><div class="ai"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="ap">'+p.n+'</div><div class="at">'+txt+'</div></div></div>';
   }).join("");
 }
 
-function renderCarousel(idx,animate){
+function renderCar(idx,anim){
   if(!HITOS.length)return;
-  var h=HITOS[idx],hitoText=h.hito.replace(/\x0a/g," "),dia="--",mes="",urgencia="hc-normal";
-  var m=hitoText.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
-  if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");var d=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));var diff=(d-new Date())/86400000;urgencia=diff<30?"hc-urgente":diff<90?"hc-pronto":"hc-normal";}
-  var card=document.getElementById("hito-card");
-  function update(){card.className="hito-card "+urgencia;document.getElementById("hc-proy").textContent=h.nombre;document.getElementById("hc-dia").textContent=dia;document.getElementById("hc-mes").textContent=mes;document.getElementById("hc-desc").textContent=hitoText.replace(/.*(\d{1,2}[\/\-]\d{1,2})/,"").trim()||hitoText.substring(0,60);document.getElementById("car-cnt").textContent=(idx+1)+"/"+HITOS.length;document.querySelectorAll(".car-dot").forEach(function(d,i){d.className="car-dot"+(i===idx?" on":"");});resetCarTimer();}
-  if(animate){card.style.opacity="0";card.style.transform="translateY(6px)";setTimeout(function(){card.style.transition="opacity .25s,transform .25s";card.style.opacity="1";card.style.transform="translateY(0)";update();},180);}else{update();}
-  CAR_IDX=idx;
+  var h=HITOS[idx],ht=nl(h.h),dia="--",mes="",urg="hc-n";
+  var re=/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/;
+  var m=ht.match(re);
+  if(m){
+    dia=m[1];
+    var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");
+    var dd=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));
+    var diff=(dd-new Date())/86400000;
+    urg=diff<30?"hc-u":diff<90?"hc-p":"hc-n";
+  }
+  var card=eid("hcard");
+  function upd(){
+    card.className="hc "+urg;
+    eid("hp").textContent=h.n;
+    eid("hd").textContent=dia;
+    eid("hm").textContent=mes;
+    eid("hx").textContent=ht.replace(re,"").trim()||ht.substring(0,60);
+    eid("ccnt").textContent=(idx+1)+"/"+HITOS.length;
+    document.querySelectorAll(".cdot").forEach(function(d,i){d.className="cdot"+(i===idx?" on":"");});
+    resetCT();
+  }
+  if(anim){card.style.opacity="0";setTimeout(function(){card.style.transition="opacity .25s";card.style.opacity="1";upd();},180);}
+  else{upd();}
+  CIDX=idx;
 }
 
-function carNav(dir){var n=(CAR_IDX+dir+HITOS.length)%HITOS.length;renderCarousel(n,true);}
+function carNav(d){var n=(CIDX+d+HITOS.length)%HITOS.length;renderCar(n,true);}
 
-function resetCarTimer(){
-  clearInterval(CAR_TIMER);
-  var prog=document.getElementById("car-prog");
-  prog.style.transition="none";prog.style.width="0%";
-  setTimeout(function(){prog.style.transition="width 25s linear";prog.style.width="100%";},50);
-  CAR_TIMER=setInterval(function(){carNav(1);},25000);
+function resetCT(){
+  clearInterval(CTIMER);
+  var p=eid("cpf");p.style.transition="none";p.style.width="0%";
+  setTimeout(function(){p.style.transition="width 25s linear";p.style.width="100%";},50);
+  CTIMER=setInterval(function(){carNav(1);},25000);
 }
 
 function renderPills(){
-  var ests=["Todos"];
-  DATA.forEach(function(p){if(p.estado&&ests.indexOf(p.estado)<0)ests.push(p.estado);});
-  document.getElementById("pills").innerHTML=ests.map(function(e){
-    return '<span class="pill'+(FILTRO===e?" on":"")+'" onclick="setFiltro(''+e.replace(/'/g,"\'")+'')">'+(BDGMAP[e]?BDGMAP[e].l:e)+(e!=="Todos"?" ("+cnt(e)+")":"")+'</span>';
+  var ests=["Todos"];DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
+  eid("pills").innerHTML=ests.map(function(e){
+    return '<span class="pl'+(FILTRO===e?" on":"")+'" onclick="setF(\''+e+'\')">'+(BDG[e]?BDG[e][1]:e)+(e!=="Todos"?" ("+cnt(e)+")":"")+'</span>';
   }).join("");
 }
 
-function setFiltro(e){FILTRO=e;renderPills();renderCards();}
+function setF(e){FILTRO=e;renderPills();renderCards();}
 function buscar(v){BUSQ=v.toLowerCase();renderCards();}
 
 function renderCards(){
-  var etapa=document.getElementById("flt-etapa").value;
-  var tematica=document.getElementById("flt-tematica").value;
-  var inversion=document.getElementById("flt-inversion").value;
-  var comuna=document.getElementById("flt-comuna").value;
-  var barrio=document.getElementById("flt-barrio").value;
+  var fe=eid("fe").value,ft=eid("ft").value,fi=eid("fi").value,fc=eid("fc").value,fb=eid("fb").value;
   var f=DATA.filter(function(p){
-    if(FILTRO!=="Todos"&&p.estado!==FILTRO)return false;
-    if(etapa&&p.estado!==etapa)return false;
-    if(tematica&&p.tematica!==tematica)return false;
-    if(inversion&&p.inversion!==inversion)return false;
-    if(comuna&&p.comuna!==comuna)return false;
-    if(barrio&&p.barrio!==barrio)return false;
-    if(BUSQ&&p.nombre.toLowerCase().indexOf(BUSQ)<0&&p.accionable.toLowerCase().indexOf(BUSQ)<0&&p.actores.toLowerCase().indexOf(BUSQ)<0)return false;
+    if(FILTRO!=="Todos"&&p.e!==FILTRO)return false;
+    if(fe&&p.e!==fe)return false;
+    if(ft&&p.te!==ft)return false;
+    if(fi&&p.inv!==fi)return false;
+    if(fc&&p.co!==fc)return false;
+    if(fb&&p.ba!==fb)return false;
+    if(BUSQ&&p.n.toLowerCase().indexOf(BUSQ)<0&&p.a.toLowerCase().indexOf(BUSQ)<0&&p.ac.toLowerCase().indexOf(BUSQ)<0)return false;
     return true;
   });
-  document.getElementById("cnt-lbl").textContent="Mostrando "+f.length+" de "+DATA.length+" proyectos";
-  if(!f.length){document.getElementById("cards").innerHTML='<div class="empty">No se encontraron proyectos</div>';return;}
-  document.getElementById("cards").innerHTML=f.map(function(p){
-    var b=BDGMAP[p.estado]||{c:"b-aj",l:p.estado};
-    var accent=COLORES[p.estado]||"#153244";
-    var st=p.status.replace(/\x0a/g," ").substring(0,85);
-    var ht=p.hito.replace(/\x0a/g," ").substring(0,50);
-    return '<div class="card" onclick="openModal(''+p.nombre.replace(/\/g,"\\").replace(/'/g,"\'")+'')">'+'<div class="card-top" style="background:'+accent+'"></div>'+'<div class="card-body">'+'<div class="card-nm">'+p.nombre+'</div>'+'<span class="bdg '+b.c+'">'+b.l+'</span>'+(st?'<div class="card-st">'+st+(p.status.length>85?"...":"")+'</div>':"")+(ht?'<div class="card-ht">'+ht+'</div>':"")+'</div></div>';
+  eid("clbl").textContent="Mostrando "+f.length+" de "+DATA.length+" proyectos";
+  if(!f.length){eid("cards").innerHTML='<div class="empty">No se encontraron proyectos</div>';return;}
+  eid("cards").innerHTML=f.map(function(p){
+    var b=BDG[p.e]||["baj",p.e];
+    var ac=COL[p.e]||"#153244";
+    var st=nl(p.s).substring(0,85);
+    var ht=nl(p.h).substring(0,50);
+    var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    var did=p.n.replace(/'/g,"_").replace(/"/g,"_").replace(/\\/g,"_");
+    return '<div class="card" onclick="openM(\''+did+'\')"><div class="ct" style="background:'+ac+'"></div><div class="cb2"><div class="cn">'+nm+'</div><span class="bdg '+b[0]+'">'+b[1]+'</span>'+(st?'<div class="cst">'+st+(p.s.length>85?"...":"")+'</div>':"")+(ht?'<div class="cht">'+ht+'</div>':"")+'</div></div>';
   }).join("");
 }
 
-function openModal(nm){
-  var p=DATA.find(function(x){return x.nombre===nm;});if(!p)return;
-  var b=BDGMAP[p.estado]||{c:"b-aj",l:p.estado};
-  document.getElementById("m-tit").textContent=p.nombre;
-  var mb=document.getElementById("m-bdg");mb.className="bdg "+b.c;mb.textContent=b.l;
-  document.getElementById("m-status").textContent=p.status.replace(/\x0a/g," ")||"--";
-  document.getElementById("m-hito").textContent=p.hito.replace(/\x0a/g," ")||"--";
-  document.getElementById("m-monto").textContent=p.monto||"--";
-  document.getElementById("m-acc").textContent=p.accionable.replace(/\x0a/g," ")||"--";
-  document.getElementById("m-actores").textContent=p.actores.replace(/\x0a/g," ")||"--";
-  document.getElementById("modal-ov").classList.add("open");
+var MDATA={};
+function openM(did){
+  var p=null;
+  DATA.forEach(function(x){if(x.n.replace(/'/g,"_").replace(/"/g,"_").replace(/\\/g,"_")===did)p=x;});
+  if(!p)return;
+  var b=BDG[p.e]||["baj",p.e];
+  eid("mtit").textContent=p.n;
+  var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
+  eid("mst").textContent=nl(p.s)||"--";
+  eid("mhi").textContent=nl(p.h)||"--";
+  eid("mmo").textContent=p.mo||"--";
+  eid("mac").textContent=nl(p.a)||"--";
+  eid("mact").textContent=nl(p.ac)||"--";
+  eid("mov").classList.add("open");
 }
-function closeModal(e){if(e.target===document.getElementById("modal-ov"))closeModalBtn();}
-function closeModalBtn(){document.getElementById("modal-ov").classList.remove("open");}
+function closeM(ev){if(!ev||ev.target===eid("mov"))eid("mov").classList.remove("open");}
 
 function nav(sec,el){
-  ["ind","proy","mapa"].forEach(function(s){document.getElementById("sec-"+s).style.display=s===sec?"block":"none";});
+  ["ind","proy","mapa"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
   document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
   el.classList.add("active");
-  if(sec==="mapa"&&!MAP_INIT){initMap();MAP_INIT=true;}
+  if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
 }
 
 function initMap(){
-  var CM={yellow:{f:"#FFCB00",s:"#b8920a",label:"Inversion publica",bs:"background:#fff8e0;color:#8a6a00"},blue:{f:"#4A90D9",s:"#1a5fa8",label:"Inversion privada",bs:"background:#e6f1fb;color:#0c447c"},pink:{f:"#E91E8C",s:"#a0135e",label:"No valorizada",bs:"background:#fbeaf0;color:#72243e"}};
+  var CM={yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversion publica",bs:"background:#fff8e0;color:#8a6a00"},blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversion privada",bs:"background:#e6f1fb;color:#0c447c"},pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada",bs:"background:#fbeaf0;color:#72243e"}};
   var m=L.map("map").setView([-34.655,-58.43],13);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
-  PINES_DATA.forEach(function(p){
+  PINES.forEach(function(p){
     var c=CM[p.color]||CM.yellow;
-    var popup='<div style="font-size:13px;font-weight:600;color:#153244;margin-bottom:4px">'+p.name+'</div><span style="'+c.bs+';font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600">'+c.label+'</span>';
+    var popup='<div style="font-size:13px;font-weight:600;color:#153244;margin-bottom:4px">'+p.name+'</div><span style="'+c.bs+';font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600">'+c.l+'</span>';
     var icon=L.divIcon({html:'<div style="width:12px;height:12px;border-radius:50%;background:'+c.f+';border:2px solid '+c.s+';box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>',className:"",iconSize:[12,12],iconAnchor:[6,6]});
     L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup).addTo(m);
   });
@@ -468,6 +450,7 @@ function initMap(){
 }
 
 cargar();
+
 </script>
 </body>
 </html>
