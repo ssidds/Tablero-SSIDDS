@@ -285,16 +285,22 @@ var BDGMAP={"En ejecucion":{c:"b-ej",l:"En ejecucion"},"En licitacion":{c:"b-lic
 var DATA=[],FILTRO="Todos",BUSQ="",CAR_IDX=0,CAR_TIMER=null,HITOS=[],MAP_INIT=false;
 
 function parseCSV(txt){
-  var rows=[],i=0,f="",row=[],inQ=false;
-  while(i<txt.length){
-    var c=txt[i];
-    if(inQ){if(c==='"'&&txt[i+1]==='"'){f+='"';i+=2;}else if(c==='"'){inQ=false;i++;}else{f+=c;i++;}}
-    else{if(c==='"'){inQ=true;i++;}else if(c===','){row.push(f);f='';i++;}else if(c==='
-'&&txt[i+1]==='
-'){row.push(f);rows.push(row);f='';row=[];i+=2;}else if(c==='
-'){row.push(f);rows.push(row);f='';row=[];i++;}else{f+=c;i++;}}
+  var rows=[],row=[],f="",inQ=false,c,i;
+  for(i=0;i<txt.length;i++){
+    c=txt.charCodeAt(i);
+    if(inQ){
+      if(c===34&&txt.charCodeAt(i+1)===34){f+='"';i++;}
+      else if(c===34){inQ=false;}
+      else{f+=txt[i];}
+    }else{
+      if(c===34){inQ=true;}
+      else if(c===44){row.push(f);f="";}
+      else if(c===13&&txt.charCodeAt(i+1)===10){row.push(f);rows.push(row);f="";row=[];i++;}
+      else if(c===10||c===13){row.push(f);rows.push(row);f="";row=[];}
+      else{f+=txt[i];}
+    }
   }
-  if(f||row.length){row.push(f);rows.push(row);}
+  if(f!=""||row.length>0){row.push(f);rows.push(row);}
   return rows;
 }
 
@@ -302,10 +308,10 @@ function detectEstado(s){
   var t=(s||"").toLowerCase();
   if(t.indexOf("stand by")>=0||t.indexOf("stand-by")>=0)return "En stand-by";
   if(t.indexOf("obra finalizada")>=0)return "Finalizado";
-  if(t.indexOf("en obra")>=0||t.indexOf("en ejecucion")>=0||t.indexOf("en ejecución")>=0)return "En ejecucion";
+  if(t.indexOf("en obra")>=0||t.indexOf("en ejecucion")>=0||t.indexOf("en ejecuci\u00f3n")>=0)return "En ejecucion";
   if(t.indexOf("adjudic")>=0&&t.indexOf("espera")<0||t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0)return "En licitacion";
   if(t.indexOf("tramit")>=0||t.indexOf("permiso en curso")>=0)return "En tramitacion de permisos";
-  if(t.indexOf("armado de documentacion")>=0||t.indexOf("armado de proyecto")>=0||t.indexOf("armado de documentación")>=0)return "En armado de proyecto";
+  if(t.indexOf("armado de documentacion")>=0||t.indexOf("armado de proyecto")>=0||t.indexOf("armado de documentaci\u00f3n")>=0)return "En armado de proyecto";
   return "En ajustes del proyecto";
 }
 
