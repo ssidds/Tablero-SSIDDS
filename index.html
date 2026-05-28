@@ -369,14 +369,13 @@ function renderIndicadores(){
   var alertas=DATA.filter(function(p){return p.accionable&&p.accionable.trim()&&p.accionable!=="N/A"&&p.accionable!=="--";});
   document.getElementById("alerts-cnt").textContent=alertas.length;
   document.getElementById("alerts-list").innerHTML=alertas.map(function(p){
-    return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(//g," ").substring(0,100)+'</div></div></div>';
+    return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(/\x0a/g," ").substring(0,100)+'</div></div></div>';
   }).join("");
 }
 
 function renderCarousel(idx,animate){
   if(!HITOS.length)return;
-  var h=HITOS[idx],hitoText=h.hito.replace(/
-/g," "),dia="--",mes="",urgencia="hc-normal";
+  var h=HITOS[idx],hitoText=h.hito.replace(/\x0a/g," "),dia="--",mes="",urgencia="hc-normal";
   var m=hitoText.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
   if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");var d=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));var diff=(d-new Date())/86400000;urgencia=diff<30?"hc-urgente":diff<90?"hc-pronto":"hc-normal";}
   var card=document.getElementById("hito-card");
@@ -427,10 +426,8 @@ function renderCards(){
   document.getElementById("cards").innerHTML=f.map(function(p){
     var b=BDGMAP[p.estado]||{c:"b-aj",l:p.estado};
     var accent=COLORES[p.estado]||"#153244";
-    var st=p.status.replace(/
-/g," ").substring(0,85);
-    var ht=p.hito.replace(/
-/g," ").substring(0,50);
+    var st=p.status.replace(/\x0a/g," ").substring(0,85);
+    var ht=p.hito.replace(/\x0a/g," ").substring(0,50);
     return '<div class="card" onclick="openModal(''+p.nombre.replace(/\/g,"\\").replace(/'/g,"\'")+'')">'+'<div class="card-top" style="background:'+accent+'"></div>'+'<div class="card-body">'+'<div class="card-nm">'+p.nombre+'</div>'+'<span class="bdg '+b.c+'">'+b.l+'</span>'+(st?'<div class="card-st">'+st+(p.status.length>85?"...":"")+'</div>':"")+(ht?'<div class="card-ht">'+ht+'</div>':"")+'</div></div>';
   }).join("");
 }
@@ -440,15 +437,11 @@ function openModal(nm){
   var b=BDGMAP[p.estado]||{c:"b-aj",l:p.estado};
   document.getElementById("m-tit").textContent=p.nombre;
   var mb=document.getElementById("m-bdg");mb.className="bdg "+b.c;mb.textContent=b.l;
-  document.getElementById("m-status").textContent=p.status.replace(/
-/g," ")||"--";
-  document.getElementById("m-hito").textContent=p.hito.replace(/
-/g," ")||"--";
+  document.getElementById("m-status").textContent=p.status.replace(/\x0a/g," ")||"--";
+  document.getElementById("m-hito").textContent=p.hito.replace(/\x0a/g," ")||"--";
   document.getElementById("m-monto").textContent=p.monto||"--";
-  document.getElementById("m-acc").textContent=p.accionable.replace(/
-/g," ")||"--";
-  document.getElementById("m-actores").textContent=p.actores.replace(/
-/g," ")||"--";
+  document.getElementById("m-acc").textContent=p.accionable.replace(/\x0a/g," ")||"--";
+  document.getElementById("m-actores").textContent=p.actores.replace(/\x0a/g," ")||"--";
   document.getElementById("modal-ov").classList.add("open");
 }
 function closeModal(e){if(e.target===document.getElementById("modal-ov"))closeModalBtn();}
