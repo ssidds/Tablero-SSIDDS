@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tablero de Proyectos — SSIDDS</title>
+<title>Tablero de Proyectos -- SSIDDS</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -360,7 +360,7 @@ function renderIndicadores(){
   dotsEl.innerHTML="";
   HITOS.forEach(function(_,i){var d=document.createElement("div");d.className="car-dot"+(i===0?" on":"");d.onclick=function(){renderCarousel(i,true);};dotsEl.appendChild(d);});
   renderCarousel(0,false);
-  var alertas=DATA.filter(function(p){return p.accionable&&p.accionable.trim()&&p.accionable!=="N/A"&&p.accionable!=="—";});
+  var alertas=DATA.filter(function(p){return p.accionable&&p.accionable.trim()&&p.accionable!=="N/A"&&p.accionable!=="--";});
   document.getElementById("alerts-cnt").textContent=alertas.length;
   document.getElementById("alerts-list").innerHTML=alertas.map(function(p){
     return '<div class="alert-row"><div class="alert-ic"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div><div><div class="alert-proy">'+p.nombre+'</div><div class="alert-txt">'+p.accionable.replace(/
@@ -371,7 +371,7 @@ function renderIndicadores(){
 function renderCarousel(idx,animate){
   if(!HITOS.length)return;
   var h=HITOS[idx],hitoText=h.hito.replace(/
-/g," "),dia="—",mes="",urgencia="hc-normal";
+/g," "),dia="--",mes="",urgencia="hc-normal";
   var m=hitoText.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
   if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");var d=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));var diff=(d-new Date())/86400000;urgencia=diff<30?"hc-urgente":diff<90?"hc-pronto":"hc-normal";}
   var card=document.getElementById("hito-card");
@@ -436,14 +436,14 @@ function openModal(nm){
   document.getElementById("m-tit").textContent=p.nombre;
   var mb=document.getElementById("m-bdg");mb.className="bdg "+b.c;mb.textContent=b.l;
   document.getElementById("m-status").textContent=p.status.replace(/
-/g," ")||"—";
+/g," ")||"--";
   document.getElementById("m-hito").textContent=p.hito.replace(/
-/g," ")||"—";
-  document.getElementById("m-monto").textContent=p.monto||"—";
+/g," ")||"--";
+  document.getElementById("m-monto").textContent=p.monto||"--";
   document.getElementById("m-acc").textContent=p.accionable.replace(/
-/g," ")||"—";
+/g," ")||"--";
   document.getElementById("m-actores").textContent=p.actores.replace(/
-/g," ")||"—";
+/g," ")||"--";
   document.getElementById("modal-ov").classList.add("open");
 }
 function closeModal(e){if(e.target===document.getElementById("modal-ov"))closeModalBtn();}
