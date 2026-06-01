@@ -53,6 +53,7 @@ jobs:
                   "co":  v(10),
                   "ba":  v(11),
                   "etapa": v(9),
+                  "imp": v(14),
               })
 
           with open('datos.json', 'w', encoding='utf-8') as f:
