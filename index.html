@@ -278,8 +278,8 @@ function estado(s){
   var t=(s||"").toLowerCase();
   if(t.indexOf("stand by")>=0||t.indexOf("stand-by")>=0)return "En stand-by";
   if(t.indexOf("obra finalizada")>=0)return "Finalizado";
-  if(t.indexOf("en obra")>=0||t.indexOf("en ejecucion")>=0||t.indexOf("en ejecuci\u00f3n")>=0)return "En ejecucion";
-  if((t.indexOf("adjudic")>=0&&t.indexOf("espera")<0)||t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0)return "En licitacion";
+  if(t.indexOf("en obra")>=0||t.indexOf("en ejecuci")>=0)return "En ejecucion";
+  if(t.indexOf("adjudic")>=0&&t.indexOf("espera")<0||t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0)return "En licitacion";
   if(t.indexOf("tramit")>=0||t.indexOf("permiso en curso")>=0)return "En tramitacion de permisos";
   if(t.indexOf("armado de documentaci")>=0||t.indexOf("armado de proyecto")>=0)return "En armado de proyecto";
   return "En ajustes del proyecto";
@@ -296,7 +296,7 @@ function cargar(){
   fetch("datos.json?t="+Date.now())
     .then(function(r){if(!r.ok)throw new Error("No se encontro datos.json (HTTP "+r.status+")");return r.json();})
     .then(function(d){
-      DATA=d.map(function(p){return{n:p.n||"",e:estado(p.s||""),s:p.s||"",a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||""};});
+      DATA=d.map(function(p){return{n:p.n||"",e:p.etapa||estado(p.s||""),s:p.s||"",a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||""};});
       var f=(window.FECHA_DATOS||"");
       eid("upd").textContent=f?("Datos al: "+f):("Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}));
       eid("ldg").style.display="none";
