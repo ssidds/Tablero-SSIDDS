@@ -9,7 +9,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "VIVIENDAS BARRIO OLÍMPICO",
@@ -21,7 +22,8 @@
 "te": "Vivienda",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En tramitación de permisos"
 },
 {
 "n": "REORDENAMIENTO URB. DIQUE CERO",
@@ -33,7 +35,8 @@
 "te": "Infraestructura y movilidad, Comercial y gastronómico, Desarrollo urbano",
 "inv": "Pública",
 "co": "Comuna 4",
-"ba": "La Boca"
+"ba": "La Boca",
+"etapa": "En ejecución"
 },
 {
 "n": "REVITALIZACIÓN CALLE NECOCHEA",
@@ -45,7 +48,8 @@
 "te": "Desarrollo urbano, Comercial y gastronómico",
 "inv": "Pública",
 "co": "Comuna 4",
-"ba": "La Boca"
+"ba": "La Boca",
+"etapa": "En ejecución"
 },
 {
 "n": "CENTRO METROPOLITANO DE EVENTOS",
@@ -57,7 +61,8 @@
 "te": "Desarrollo urbano",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "POLO FARMACÉUTICO",
@@ -69,7 +74,8 @@
 "te": "Desarrollo urbano",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "ADP - POMPEYA",
@@ -81,7 +87,8 @@
 "te": "Desarrollo urbano",
 "inv": "No valorizada",
 "co": "Comuna 4",
-"ba": "Nueva Pompeya"
+"ba": "Nueva Pompeya",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "APERTURA CALLE CORRALES",
@@ -93,7 +100,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Pública",
 "co": "Comuna 4",
-"ba": "Nueva Pompeya"
+"ba": "Nueva Pompeya",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "CORREDOR SÁENZ",
@@ -105,7 +113,8 @@
 "te": "Comercial y gastronómico",
 "inv": "No valorizada",
 "co": "Comuna 4",
-"ba": "Nueva Pompeya"
+"ba": "Nueva Pompeya",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "PLAZA NUEVA POMPEYA",
@@ -117,7 +126,8 @@
 "te": "Ambiental",
 "inv": "No valorizada",
 "co": "Comuna 4",
-"ba": "Nueva Pompeya"
+"ba": "Nueva Pompeya",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "ADP - CONSTITUCIÓN",
@@ -129,7 +139,8 @@
 "te": "Infraestructura y movilidad, Desarrollo urbano",
 "inv": "No valorizada",
 "co": "Comuna 1",
-"ba": "Constitución"
+"ba": "Constitución",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "COCHABAMBA",
@@ -141,7 +152,8 @@
 "te": "Vivienda",
 "inv": "Privada",
 "co": "Comuna 1",
-"ba": "Constitución"
+"ba": "Constitución",
+"etapa": "En ejecución"
 },
 {
 "n": "ÁREA RIACHUELO",
@@ -153,7 +165,8 @@
 "te": "Comercial y gastronómico, Ambiental, Desarrollo urbano, Infraestructura y movilidad",
 "inv": "No valorizada",
 "co": "Comuna 4",
-"ba": "La Boca, Barracas"
+"ba": "La Boca, Barracas",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "FLOTANTE EN VUELTA DE ROCHA",
@@ -165,7 +178,8 @@
 "te": "Comercial y gastronómico",
 "inv": "Privada",
 "co": "Comuna 4",
-"ba": "La Boca"
+"ba": "La Boca",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "AIREADORES RIACHUELO",
@@ -177,7 +191,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "No valorizada",
 "co": "Comuna 4",
-"ba": "La Boca"
+"ba": "La Boca",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "REMO EN BARRACAS",
@@ -189,7 +204,8 @@
 "te": "Deportes",
 "inv": "Privada",
 "co": "Comuna 4",
-"ba": "Barracas"
+"ba": "Barracas",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "ESTACIONAMIENTO BARRIO OLÍMPICO",
@@ -201,7 +217,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En proceso licitatorio"
 },
 {
 "n": "MUDANZA UGIS",
@@ -213,7 +230,8 @@
 "te": "Desarrollo urbano",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "REORGANIZACIÓN UGIS",
@@ -225,7 +243,8 @@
 "te": "Desarrollo urbano",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Lugano, Villa Riachuelo, Villa Soldati"
+"ba": "Villa Lugano, Villa Riachuelo, Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "SERVICIOS COMUNA 8",
@@ -237,7 +256,8 @@
 "te": "Desarrollo urbano, Infraestructura y movilidad",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Soldati, Villa Lugano, Villa Riachuelo"
+"ba": "Villa Soldati, Villa Lugano, Villa Riachuelo",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "CINEMARK",
@@ -249,7 +269,8 @@
 "te": "Comercial y gastronómico, Desarrollo urbano",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En ejecución"
 },
 {
 "n": "MOVILIDAD SUR",
@@ -261,7 +282,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "La Boca, Nueva Pompeya, Villa Lugano, Villa Soldati, Villa Riachuelo"
+"ba": "La Boca, Nueva Pompeya, Villa Lugano, Villa Soldati, Villa Riachuelo",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "CTC MONTAÑA",
@@ -273,7 +295,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "AUTÓDROMO",
@@ -285,7 +308,8 @@
 "te": "Deportes",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Riachuelo"
+"ba": "Villa Riachuelo",
+"etapa": "En ejecución"
 },
 {
 "n": "POLO EDUCATIVO",
@@ -297,7 +321,8 @@
 "te": "Educación y empleo",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En proceso licitatorio"
 },
 {
 "n": "HOTEL",
@@ -309,7 +334,8 @@
 "te": "Comercial y gastronómico, Deportes",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "CENTRO DE REHABILITACIÓN",
@@ -321,7 +347,8 @@
 "te": "Deportes",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "ESTACIONAMIENTOS SUBTERRÁNEOS",
@@ -333,7 +360,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Privada",
 "co": "Comuna 4, Comuna 8",
-"ba": "Barracas, Parque Patricios"
+"ba": "Barracas, Parque Patricios",
+"etapa": "En proceso licitatorio"
 },
 {
 "n": "VIVIENDAS SINDICALES",
@@ -345,7 +373,8 @@
 "te": "Vivienda",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "AULAS MODULARES",
@@ -357,7 +386,8 @@
 "te": "Educación y empleo",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ejecución"
 },
 {
 "n": "SERVICIOS PÚBLICOS EN PLAZAS",
@@ -369,7 +399,8 @@
 "te": "Desarrollo urbano, Ambiental",
 "inv": "Privada",
 "co": "Comuna 4, Comuna 8",
-"ba": "Villa Soldati, Parque Patricios"
+"ba": "Villa Soldati, Parque Patricios",
+"etapa": "En stand-by"
 },
 {
 "n": "PARQUE DE LA RIBERA",
@@ -381,7 +412,8 @@
 "te": "Deportes",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Riachuelo"
+"ba": "Villa Riachuelo",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "PQUE. INDOAMERICANO - PROYECTOS",
@@ -393,7 +425,8 @@
 "te": "Ambiental, Desarrollo urbano",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "CLUB ASOCIACIÓN DEL SUR",
@@ -405,7 +438,8 @@
 "te": "Deportes",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "DULCE DE LECHE + COLÓN FÁBRICA",
@@ -417,7 +451,8 @@
 "te": "Comercial y gastronómico",
 "inv": "Privada",
 "co": "Comuna 4",
-"ba": "La Boca"
+"ba": "La Boca",
+"etapa": "En ejecución"
 },
 {
 "n": "ESTADIO MARY TERÁN",
@@ -429,7 +464,8 @@
 "te": "Infraestructura y movilidad, Comercial y gastronómico",
 "inv": "Privada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "BAJADA AUTOPISTA CÁMPORA",
@@ -441,7 +477,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "PREDIO FERRÉ",
@@ -453,7 +490,8 @@
 "te": "",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "En ajustes del proyecto"
 },
 {
 "n": "AU. DELLEPIANE",
@@ -465,7 +503,8 @@
 "te": "Infraestructura y movilidad",
 "inv": "Pública",
 "co": "Comuna 9",
-"ba": "Parque Avellaneda, Villa Lugano"
+"ba": "Parque Avellaneda, Villa Lugano",
+"etapa": "En ejecución"
 },
 {
 "n": "GOLF JOSÉ JURADO",
@@ -477,7 +516,8 @@
 "te": "Ambiental",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En armado de proyecto"
 },
 {
 "n": "EMPLEABILIDAD",
@@ -489,7 +529,8 @@
 "te": "Educación y empleo",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En ejecución"
 },
 {
 "n": "PROFESIÓN SUR",
@@ -501,7 +542,8 @@
 "te": "Educación y empleo",
 "inv": "No valorizada",
 "co": "Comuna 8",
-"ba": "Villa Lugano"
+"ba": "Villa Lugano",
+"etapa": "En ejecución"
 },
 {
 "n": "CALLE LINDERA A 123 N",
@@ -513,7 +555,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": "En ejecución"
 },
 {
 "n": "PATIO GASTRO. LAGO LUGANO",
@@ -525,7 +568,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "POLO DE RECICLAJE C4",
@@ -537,7 +581,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "HIPERMERCADO",
@@ -549,7 +594,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "APER. CALLE P. DE LAS VICTORIAS",
@@ -561,7 +607,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "CENTRO INTEGRAL DE DISCAPACIDAD",
@@ -573,7 +620,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "ASCENSORES TORRE ESPACIAL",
@@ -585,7 +633,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "BPOD EN BARRIO OLÍMPICO",
@@ -597,7 +646,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "PLANTA DE RECICLAJE - HERMETIA",
@@ -609,7 +659,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "VIVIENDAS CLASE MEDIA",
@@ -621,7 +672,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "MARCOS PAZ",
@@ -633,7 +685,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "ERA CRETÁCICA 2",
@@ -645,7 +698,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "CARRUSEL",
@@ -657,7 +711,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "RUEDA DE LA CIUDAD",
@@ -669,7 +724,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "CIRCUITO CALLEJERO",
@@ -681,7 +737,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "VIVIENDAS GIANOTTI ZANETTI",
@@ -693,7 +750,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "CIFHA- BARRIO CHINO LA BOCA",
@@ -705,7 +763,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "MERCADO DE HACIENDA",
@@ -717,7 +776,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "ESP. GASTRO. PARQ. DE LA CIUDAD",
@@ -729,7 +789,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "NUEVO ACCESO PARQUE OLÍMPICO",
@@ -741,7 +802,8 @@
 "te": "Deportes, Infraestructura y movilidad",
 "inv": "Pública",
 "co": "Comuna 8",
-"ba": "Villa Soldati"
+"ba": "Villa Soldati",
+"etapa": "Finalizado"
 },
 {
 "n": "MINI PLAZA NECOCHEA",
@@ -753,7 +815,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "ANFITEATROS",
@@ -765,7 +828,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "PUENTE ALSINA",
@@ -777,7 +841,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "SMART FIT",
@@ -789,7 +854,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "VIÑEDOS SUR",
@@ -801,7 +867,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "PUERTO PAMPA",
@@ -813,7 +880,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "CLUB UNIDOS DE POMPEYA",
@@ -825,7 +893,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "PLAN AMBIENTAL BARRIO OLÍMPICO",
@@ -837,7 +906,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "LATER CER",
@@ -849,7 +919,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "SPARKLING",
@@ -861,7 +932,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "SUBMARINO EN LA BOCA",
@@ -873,7 +945,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "UE - LOTE 123L",
@@ -885,7 +958,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "EX CÁRCEL DE CASEROS",
@@ -897,7 +971,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "BOMBEROS SOLDATI",
@@ -909,7 +984,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "EX IUNA",
@@ -921,7 +997,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "EX AU3",
@@ -933,7 +1010,8 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 },
 {
 "n": "ANTENA STARLINK",
@@ -945,6 +1023,7 @@
 "te": "",
 "inv": "",
 "co": "",
-"ba": ""
+"ba": "",
+"etapa": ""
 }
 ]
