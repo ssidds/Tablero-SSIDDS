@@ -1,13 +1,12 @@
 name: Actualizar datos del tablero
 
-# Cuando se ejecuta:
 on:
   schedule:
-    - cron: '0 * * * *'      # automatico: cada hora en punto
-  workflow_dispatch:          # manual: boton "Run workflow" en la pestana Actions
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: write             # permiso para guardar datos.json en el repo
+  contents: write
 
 jobs:
   actualizar:
@@ -21,7 +20,6 @@ jobs:
           python3 - <<'PYEOF'
           import urllib.request, csv, io, json
 
-          # URL del CSV publicado de tu Google Sheet
           URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=0&single=true&output=csv"
 
           req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0'})
@@ -31,44 +29,30 @@ jobs:
           if not rows:
               raise SystemExit("El Sheet no devolvio datos")
 
-          # --- Mapeo por NOMBRE de columna (robusto: no importa el orden) ---
-          header = [h.strip().lower() for h in rows[0]]
-          def buscar(*opciones):
-              for i, h in enumerate(header):
-                  for op in opciones:
-                      if op in h:
-                          return i
-              return -1
-
-          iN   = buscar('proyecto')
-          iS   = buscar('status', 'estado')
-          iA   = buscar('accionable')
-          iH   = buscar('proximo hito', 'próximo hito', 'hito y fecha')
-          iAC  = buscar('actores')
-          iMO  = buscar('monto')
-          iTE  = buscar('temat', 'temát')
-          iINV = buscar('tipo invers', 'tipo de invers')
-          iCO  = buscar('comuna')
-          iBA  = buscar('barrio')
-
-          def val(r, i):
-              return r[i].strip() if (i >= 0 and i < len(r)) else ""
+          # Encabezados exactos del Sheet:
+          # 0=Proyecto, 1=Fecha de carga, 2=Status, 3=Pasos/Hitos Cumplidos
+          # 4=Accionable Marce, 5=Prox paso, 6=Proximo hito y fecha
+          # 7=Actores involucrados, 8=Monto de inversion
+          # 9=Etapa, 10=Comuna, 11=Barrio, 12=Tematica, 13=Tipo de inversion
 
           out = []
           for r in rows[1:]:
-              if not r or val(r, iN) == "" or val(r, iN).lower() == "proyecto":
+              if not r or not r[0].strip() or r[0].strip().lower() == "proyecto":
                   continue
+              def v(i):
+                  return r[i].strip() if i < len(r) else ""
               out.append({
-                  "n":  val(r, iN),
-                  "s":  val(r, iS),
-                  "a":  val(r, iA),
-                  "h":  val(r, iH),
-                  "ac": val(r, iAC),
-                  "mo": val(r, iMO),
-                  "te": val(r, iTE),
-                  "inv":val(r, iINV),
-                  "co": val(r, iCO),
-                  "ba": val(r, iBA),
+                  "n":   v(0),
+                  "s":   v(2),
+                  "a":   v(4),
+                  "h":   v(6),
+                  "ac":  v(7),
+                  "mo":  v(8),
+                  "te":  v(12),
+                  "inv": v(13),
+                  "co":  v(10),
+                  "ba":  v(11),
+                  "etapa": v(9),
               })
 
           with open('datos.json', 'w', encoding='utf-8') as f:
@@ -77,7 +61,7 @@ jobs:
           print(f"OK: {len(out)} proyectos guardados en datos.json")
           PYEOF
 
-      - name: Guardar cambios si hay datos nuevos
+      - name: Guardar cambios
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
