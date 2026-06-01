@@ -594,10 +594,10 @@
 "h": "Fin de obra 31/05",
 "ac": "Actores involucrados: Infraestructura.\n Actores secundarios por interferencias: Corporación Sur, Eventos Masivos, MEPHU",
 "mo": "USD 540K",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
+"te": "Infraestructura y movilidad",
+"inv": "Pública",
+"co": "Comuna 8",
+"ba": "Villa Soldati",
 "etapa": "En ejecución",
 "imp": ""
 },
@@ -608,11 +608,11 @@
 "h": "Fin de obra \n 01/07",
 "ac": "SS Ambiente y CBAS.",
 "mo": "USD 575K",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Comercial y gastronómico",
+"inv": "Pública",
+"co": "Comuna 8",
+"ba": "Villa Soldati",
+"etapa": "En ejecución",
 "imp": ""
 },
 {
@@ -622,11 +622,11 @@
 "h": "Inicio de obra \n 14/06/26 \n \n Fin de obra \n 14/06/2027",
 "ac": "SS eHigiene, Infraestructura, Tránsito y Seguridad.",
 "mo": "Galo lo pasa",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Ambiental",
+"inv": "Pública",
+"co": "Comuna 4",
+"ba": "Barracas",
+"etapa": "En proceso licitatorio",
 "imp": ""
 },
 {
@@ -636,11 +636,11 @@
 "h": "",
 "ac": "",
 "mo": "",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Comercial y gastronómico",
+"inv": "Privada",
+"co": "Comuna 8",
+"ba": "Villa Soldati",
+"etapa": "En tramitación de permisos",
 "imp": ""
 },
 {
@@ -650,11 +650,11 @@
 "h": "Inicio de obra: A/D",
 "ac": "CBAS, SDU, Min. Infraestructura, SECGVC",
 "mo": "USD 445 K",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Infraestructura y movilidad",
+"inv": "Pública",
+"co": "Comuna 8",
+"ba": "Villa Lugano",
+"etapa": "En proceso licitatorio",
 "imp": ""
 },
 {
@@ -664,11 +664,11 @@
 "h": "Inicio de Obra mediados de junio aprox\n Fin de Obra A/D",
 "ac": "Vicejefatura del GCABA, Jefatura de Gabinete (Educación, seguridad y deportes)",
 "mo": "USD 5.5 M",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Salud",
+"inv": "Pública",
+"co": "Comuna 8",
+"ba": "Villa Lugano",
+"etapa": "En proceso licitatorio",
 "imp": ""
 },
 {
@@ -678,11 +678,11 @@
 "h": "Inicio de obra\n A/D",
 "ac": "Falta sumar actores involucrados",
 "mo": "USD 2.4 M",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Infraestructura y movilidad",
+"inv": "Pública",
+"co": "Comuna 8",
+"ba": "Villa Soldati",
+"etapa": "En proceso licitatorio",
 "imp": ""
 },
 {
@@ -692,11 +692,11 @@
 "h": "",
 "ac": "Min. Seguridad, Brinks, Banco Ciudad, SECGVC",
 "mo": "A/D",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Comercial y gastronómico, Desarrollo urbano",
+"inv": "Privada",
+"co": "Comuna 8",
+"ba": "Villa Lugano",
+"etapa": "En ajustes del proyecto",
 "imp": ""
 },
 {
@@ -706,11 +706,11 @@
 "h": "Que tomen los residuos orgánicos de hoteles y escuelas del Sur\n Instalación y Comunicación ECOPARQUE \n A/D",
 "ac": "",
 "mo": "A/D",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Ambiental",
+"inv": "Privada",
+"co": "Comuna 4",
+"ba": "Barracas",
+"etapa": "En ejecución",
 "imp": ""
 },
 {
@@ -720,11 +720,11 @@
 "h": "",
 "ac": "",
 "mo": "USD 25.7 M (Av. Varela: USD 14M / Av. La Plata: USD 2.2M / Cochabamba: USD 9.5M)",
-"te": "",
-"inv": "",
-"co": "",
-"ba": "",
-"etapa": "",
+"te": "Vivienda",
+"inv": "Pública",
+"co": "Comuna 4, Comuna 8",
+"ba": "Villa Lugano, Nueva Pompeya",
+"etapa": "En armado de proyecto",
 "imp": ""
 },
 {
@@ -738,7 +738,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En ejecución",
 "imp": ""
 },
 {
@@ -878,7 +878,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -892,7 +892,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -906,7 +906,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -920,7 +920,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -934,7 +934,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -948,7 +948,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -962,7 +962,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -976,7 +976,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -990,7 +990,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1004,7 +1004,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1018,7 +1018,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1032,7 +1032,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1046,7 +1046,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1060,7 +1060,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1074,7 +1074,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1088,7 +1088,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 },
 {
@@ -1102,7 +1102,7 @@
 "inv": "",
 "co": "",
 "ba": "",
-"etapa": "",
+"etapa": "En stand-by",
 "imp": ""
 }
 ]
