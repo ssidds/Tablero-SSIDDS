@@ -219,7 +219,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <div class="row2" style="margin-bottom:14px">
             <div class="box">
               <div class="box-t">Monto total por tipo</div>
-              <div style="display:flex;align-items:center;gap:16px">
+              <div style="display:flex;align-items:center;gap:20px">
                 <div style="position:relative;width:150px;height:150px;flex-shrink:0">
                   <canvas id="donut-inv"></canvas>
                 </div>
@@ -249,14 +249,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             </div>
             <div class="box">
               <div class="box-t">Desglose por proyecto</div>
-              <div style="overflow-x:auto;padding-bottom:4px">
-                <div style="display:flex;align-items:flex-end;gap:4px;height:160px;min-width:max-content" id="inv-bars"></div>
-              </div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
-                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</span>
-                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</span>
-                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta</span>
-              </div>
+              <div style="max-height:240px;overflow-y:auto;padding-right:4px" id="inv-ranking"></div>
             </div>
           </div>
 
@@ -501,22 +494,28 @@ function renderInversion(){
   var total=montos["P\u00fablica"]+montos["Privada"]+montos["Mixta"];
   function animN(id,v){var el=eid(id);if(!el)return;if(v<=0){el.textContent="--";return;}var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
   animN("inv-pub",Math.round(montos["P\u00fablica"]));animN("inv-priv",Math.round(montos["Privada"]));animN("inv-mix",Math.round(montos["Mixta"]));animN("inv-total",Math.round(total));
-  var barsEl=eid("inv-bars");
-  if(barsEl){
-    barsEl.innerHTML="";
+  // Lista ranking
+  var rankEl=eid("inv-ranking");
+  if(rankEl){
     var sorted=proyConMonto.slice().sort(function(a,b){return b.m-a.m;});
     var maxM=sorted.length?sorted[0].m:1;
-    sorted.forEach(function(d){
-      var h=Math.max(Math.round(d.m/maxM*140),4);
+    var out="";
+    sorted.forEach(function(d,i){
       var col=IC[d.t]||"#888";
-      var val=d.m>=1?Math.round(d.m)+"M":(d.m*1000).toFixed(0)+"K";
-      var ce=document.createElement("div");ce.style.cssText="display:flex;flex-direction:column;align-items:center;gap:2px;width:34px;flex-shrink:0";
-      var ve=document.createElement("div");ve.style.cssText="font-size:8px;font-weight:600;color:var(--text);text-align:center";ve.textContent=val;
-      var re=document.createElement("div");re.style.cssText="width:26px;border-radius:3px 3px 0 0;background:"+col+";height:0;transition:height .7s cubic-bezier(.4,0,.2,1)";re.title=d.n+": USD "+val+" ("+d.t+")";
-      var le=document.createElement("div");le.style.cssText="font-size:7px;color:var(--muted);text-align:center;width:34px;line-height:1.2;word-break:break-word";le.textContent=d.n;
-      ce.appendChild(ve);ce.appendChild(re);ce.appendChild(le);barsEl.appendChild(ce);
-      setTimeout(function(){re.style.height=h+"px";},150);
+      var val=d.m>=1?"USD "+Math.round(d.m)+"M":"USD "+(d.m*1000).toFixed(0)+"K";
+      var pct=Math.round(d.m/maxM*100);
+      out+="<div style='display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border)'>";
+      out+="<span style='font-size:10px;color:var(--muted);width:16px;text-align:right;flex-shrink:0'>"+(i+1)+"</span>";
+      out+="<div style='flex:1;min-width:0'>";
+      out+="<div style='font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"+d.n+"</div>";
+      out+="<div style='margin-top:3px;height:4px;background:var(--bg);border-radius:2px;overflow:hidden'>";
+      out+="<div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:2px;transition:width .6s'></div></div></div>";
+      out+="<div style='display:flex;align-items:center;gap:5px;flex-shrink:0'>";
+      out+="<span style='font-size:11px;font-weight:600;color:var(--text);font-family:DM Mono,monospace'>"+val+"</span>";
+      out+="<span style='width:7px;height:7px;border-radius:50%;background:"+col+";display:inline-block'></span></div>";
+      out+="</div>";
     });
+    rankEl.innerHTML=out;
   }
 }
 
@@ -524,7 +523,7 @@ function openInvModal(tipo){
   var proyectos=DATA.filter(function(p){return p.inv===tipo;});
   eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
   var out="";
-  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  for(var i=0;i<proyectos.length;i++){out+='<div style="padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px">'+proyectos[i].n+"</div>";}
   eid("inv-lista").innerHTML=out;
   eid("inv-ov").classList.add("open");
 }
@@ -533,9 +532,9 @@ function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").class
 
 function openCom(com){
   var proyectos=(window._comData||{})[com]||[];
-  eid("com-tit").textContent=com+" — "+proyectos.length+" proyectos";
+  eid("com-tit").textContent=com+" \u2014 "+proyectos.length+" proyectos";
   var out="";
-  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  for(var i=0;i<proyectos.length;i++){out+='<div style="padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px">'+proyectos[i].n+"</div>";}
   eid("com-lista").innerHTML=out;
   eid("com-ov").classList.add("open");
 }
@@ -545,7 +544,7 @@ function openKpiModal(cat){
   var proyectos=DATA.filter(function(p){return p.imp===cat;});
   eid("kpi-tit").textContent=cat+" ("+proyectos.length+" proyectos)";
   var out="";
-  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  for(var i=0;i<proyectos.length;i++){out+='<div style="padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px">'+proyectos[i].n+"</div>";}
   eid("kpi-lista").innerHTML=out;
   eid("kpi-ov").classList.add("open");
 }
@@ -616,6 +615,19 @@ function initMap(){
   });
   setTimeout(function(){m.invalidateSize();},200);
 }
+
+function renderComunas(){
+  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
+  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
+  DATA.forEach(function(p){if(p.co&&grupos[p.co])grupos[p.co].push(p);});
+  var max=Math.max.apply(null,Object.values(grupos).map(function(v){return v.length;}))||1;
+  eid("com-bars").innerHTML=Object.keys(grupos).map(function(com){
+    var n=grupos[com].length,pct=Math.round(n/max*100),col=COLS[com]||"#153244";
+    return "<div class='com-row' onclick='openCom(""+com+"")'><span style='font-size:11px;color:var(--muted);width:72px;flex-shrink:0'>"+com+"</span><div style='flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden'><div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s'></div></div><span style='font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right'>"+n+"</span></div>";
+  }).join("")+"<div style='font-size:10px;color:var(--muted);margin-top:6px;text-align:right'>Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
+  window._comData=grupos;
+}
+
 
 cargar();
 
