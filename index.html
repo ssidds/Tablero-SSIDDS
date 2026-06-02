@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -552,8 +551,16 @@ function openKpiModal(cat){
 function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
 
 function renderPills(){
-  var ests=["Todos"];DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
-  eid("pills").innerHTML=ests.map(function(e){return "<span class=\"pl"+(FILTRO===e?" on":"")+"\" onclick=\"setF('"+e.replace(/'/g,"\\'")+"')\">"+(BDG[e]?BDG[e][1]:e)+(e!=="Todos"?" ("+cnt(e)+")":"")+"</span>";}).join("");
+  var ests=["Todos"];
+  DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
+  var out="";
+  ests.forEach(function(e){
+    var lbl=BDG[e]?BDG[e][1]:e;
+    var n=e!=="Todos"?" ("+cnt(e)+")":"";
+    var cls="pl"+(FILTRO===e?" on":"");
+    out+="<span class=\""+cls+"\" onclick=\"setF(this.dataset.e)\" data-e=\""+e+"\">"+lbl+n+"</span>";
+  });
+  eid("pills").innerHTML=out;
 }
 function setF(e){FILTRO=e;renderPills();renderCards();}
 function buscar(v){BUSQ=v.toLowerCase();renderCards();}
@@ -622,16 +629,18 @@ function renderComunas(){
   var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
   DATA.forEach(function(p){if(p.co&&grupos[p.co])grupos[p.co].push(p);});
   var max=Math.max.apply(null,Object.values(grupos).map(function(v){return v.length;}))||1;
-  eid("com-bars").innerHTML=Object.keys(grupos).map(function(com){
+  var out="";
+  Object.keys(grupos).forEach(function(com){
     var n=grupos[com].length,pct=Math.round(n/max*100),col=COLS[com]||"#153244";
-    return "<div class='com-row' onclick='openCom(""+com+"")'><span style='font-size:11px;color:var(--muted);width:72px;flex-shrink:0'>"+com+"</span><div style='flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden'><div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s'></div></div><span style='font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right'>"+n+"</span></div>";
-  }).join("")+"<div style='font-size:10px;color:var(--muted);margin-top:6px;text-align:right'>Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
+    out+="<div class=\"com-row\" onclick=\"openCom('"+com+"')\"><span style=\"font-size:11px;color:var(--muted);width:72px;flex-shrink:0\">"+com+"</span>";
+    out+="<div style=\"flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden\">";
+    out+="<div style=\"height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s\"></div></div>";
+    out+="<span style=\"font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right\">"+n+"</span></div>";
+  });
+  out+="<div style=\"font-size:10px;color:var(--muted);margin-top:6px;text-align:right\">Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
+  eid("com-bars").innerHTML=out;
   window._comData=grupos;
 }
-
-
-cargar();
-
 </script>
 </body>
 </html>
