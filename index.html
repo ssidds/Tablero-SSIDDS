@@ -523,7 +523,11 @@ function renderInversion(){
 function openInvModal(tipo){
   var proyectos=DATA.filter(function(p){return p.inv===tipo;});
   eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
-  eid("inv-lista").innerHTML=proyectos.map(function(p){return "<div style=\\"padding:8px 10px;background:var(--bg);border-radius:var(--r2);font-size:12px;color:var(--text)\\">"+p.n+"</div>";}).join("");
+  var html="";
+  for(var i=0;i<proyectos.length;i++){
+    html+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";
+  }
+  eid("inv-lista").innerHTML=html;
   eid("inv-ov").classList.add("open");
 }
 function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
