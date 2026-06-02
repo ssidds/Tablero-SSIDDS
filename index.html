@@ -523,11 +523,9 @@ function renderInversion(){
 function openInvModal(tipo){
   var proyectos=DATA.filter(function(p){return p.inv===tipo;});
   eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
-  var html="";
-  for(var i=0;i<proyectos.length;i++){
-    html+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";
-  }
-  eid("inv-lista").innerHTML=html;
+  var out="";
+  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  eid("inv-lista").innerHTML=out;
   eid("inv-ov").classList.add("open");
 }
 function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
@@ -535,8 +533,10 @@ function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").class
 
 function openCom(com){
   var proyectos=(window._comData||{})[com]||[];
-  eid("com-tit").textContent=com+" \u2014 "+proyectos.length+" proyectos";
-  eid("com-lista").innerHTML=proyectos.map(function(p){return "<div style=\"padding:8px 10px;background:var(--bg);border-radius:var(--r2);font-size:12px;color:var(--text)\">"+p.n+"</div>";}).join("");
+  eid("com-tit").textContent=com+" — "+proyectos.length+" proyectos";
+  var out="";
+  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  eid("com-lista").innerHTML=out;
   eid("com-ov").classList.add("open");
 }
 function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.remove("open");}
@@ -544,7 +544,9 @@ function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.
 function openKpiModal(cat){
   var proyectos=DATA.filter(function(p){return p.imp===cat;});
   eid("kpi-tit").textContent=cat+" ("+proyectos.length+" proyectos)";
-  eid("kpi-lista").innerHTML=proyectos.map(function(p){return "<div style=\"padding:8px 10px;background:var(--bg);border-radius:var(--r2);font-size:12px;color:var(--text)\">"+p.n+"</div>";}).join("");
+  var out="";
+  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  eid("kpi-lista").innerHTML=out;
   eid("kpi-ov").classList.add("open");
 }
 function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
