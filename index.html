@@ -191,35 +191,72 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           </div>
 
           <!-- INVERSION -->
+          <!-- BADGES TIPO DE INVERSION -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
+            <div onclick="openInvModal('Pública')" style="background:#fffbec;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #FFCB00;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+              <div style="font-size:10px;font-weight:500;color:#8a6a00;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública ↗</div>
+              <div style="font-size:26px;font-weight:600;color:#8a6a00;line-height:1" id="bdg-pub">0</div>
+              <div style="font-size:9px;color:var(--muted)">proyectos</div>
+            </div>
+            <div onclick="openInvModal('Privada')" style="background:#eef5fd;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #4A90D9;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+              <div style="font-size:10px;font-weight:500;color:#0c447c;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada ↗</div>
+              <div style="font-size:26px;font-weight:600;color:#0c447c;line-height:1" id="bdg-priv">0</div>
+              <div style="font-size:9px;color:var(--muted)">proyectos</div>
+            </div>
+            <div onclick="openInvModal('Mixta')" style="background:#edfaf8;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #8DE2D6;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+              <div style="font-size:10px;font-weight:500;color:#2a7a6a;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta ↗</div>
+              <div style="font-size:26px;font-weight:600;color:#2a7a6a;line-height:1" id="bdg-mix">0</div>
+              <div style="font-size:9px;color:var(--muted)">proyectos</div>
+            </div>
+            <div onclick="openInvModal('No valorizada')" style="background:#fdeef6;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #E91E8C;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+              <div style="font-size:10px;font-weight:500;color:#8a1050;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#E91E8C;display:inline-block"></span>No valorizada ↗</div>
+              <div style="font-size:26px;font-weight:600;color:#8a1050;line-height:1" id="bdg-noval">0</div>
+              <div style="font-size:9px;color:var(--muted)">proyectos</div>
+            </div>
+          </div>
+
+          <!-- TORTA + BARRAS -->
           <div class="row2" style="margin-bottom:14px">
-            <div class="box" style="display:flex;flex-direction:column;align-items:center">
-              <div class="box-t" style="align-self:flex-start">Monto por tipo de inversión</div>
-              <div style="position:relative;width:200px;height:200px">
-                <canvas id="donut-inv"></canvas>
-              </div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center">
-                <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</span>
-                <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</span>
-                <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta</span>
-                <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#E91E8C;display:inline-block"></span>No valorizada</span>
+            <div class="box">
+              <div class="box-t">Monto total por tipo</div>
+              <div style="display:flex;align-items:center;gap:16px">
+                <div style="position:relative;width:150px;height:150px;flex-shrink:0">
+                  <canvas id="donut-inv"></canvas>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</div>
+                    <div style="font-size:16px;font-weight:600;color:var(--text)" id="inv-pub">--</div>
+                    <div style="font-size:9px;color:var(--muted)">USD millones</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</div>
+                    <div style="font-size:16px;font-weight:600;color:var(--text)" id="inv-priv">--</div>
+                    <div style="font-size:9px;color:var(--muted)">USD millones</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta</div>
+                    <div style="font-size:16px;font-weight:600;color:var(--text)" id="inv-mix">--</div>
+                    <div style="font-size:9px;color:var(--muted)">USD millones</div>
+                  </div>
+                  <div style="border-top:0.5px solid var(--border);padding-top:6px;display:flex;flex-direction:column;gap:1px">
+                    <div style="font-size:10px;color:var(--muted);font-weight:600">Total</div>
+                    <div style="font-size:20px;font-weight:600;color:var(--text)" id="inv-total">--</div>
+                    <div style="font-size:9px;color:var(--muted)">USD millones</div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="box">
-              <div class="box-t">Montos estimados</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-                <div style="background:var(--bg);border-radius:var(--r2);padding:10px 12px">
-                  <div style="font-size:10px;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</div>
-                  <div style="font-size:20px;font-weight:600;color:var(--text)" id="inv-pub">--</div>
-                  <div style="font-size:9px;color:var(--muted)">USD millones</div>
-                </div>
-                <div style="background:var(--bg);border-radius:var(--r2);padding:10px 12px">
-                  <div style="font-size:10px;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</div>
-                  <div style="font-size:20px;font-weight:600;color:var(--text)" id="inv-priv">--</div>
-                  <div style="font-size:9px;color:var(--muted)">USD millones</div>
-                </div>
+              <div class="box-t">Desglose por proyecto</div>
+              <div style="overflow-x:auto;padding-bottom:4px">
+                <div style="display:flex;align-items:flex-end;gap:4px;height:160px;min-width:max-content" id="inv-bars"></div>
               </div>
-              <div class="box-t" style="margin-bottom:8px">Distribución por tipo</div>
-              <div id="inv-dist"></div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</span>
+                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</span>
+                <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><span style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta</span>
+              </div>
             </div>
           </div>
 
@@ -276,6 +313,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       </div>
     </div>
 
+    <!-- MODAL INVERSION POR TIPO -->
+    <div class="ov" id="inv-ov" onclick="closeInvModal(event)">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:460px">
+        <div class="mh">
+          <button class="mc" onclick="closeInvModal()">x</button>
+          <div class="mt2" id="inv-tit"></div>
+        </div>
+        <div class="mb">
+          <div id="inv-lista" style="display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto"></div>
+          <div style="margin-top:16px;text-align:center"><button class="bv" onclick="closeInvModal()">Cerrar</button></div>
+        </div>
+      </div>
+    </div>
     <!-- MODAL COMUNAS -->
     <div class="ov" id="com-ov" onclick="closeCom(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width:460px">
@@ -419,37 +469,65 @@ function renderCar(idx,anim){
 function carNav(d){var n=(CIDX+d+HITOS.length)%HITOS.length;renderCar(n,true);}
 function resetCT(){clearInterval(CTIMER);var p=eid("cpf");p.style.transition="none";p.style.width="0%";setTimeout(function(){p.style.transition="width 25s linear";p.style.width="100%";},50);CTIMER=setInterval(function(){carNav(1);},25000);}
 
+function parseMonto(s){
+  if(!s)return 0;
+  var t=s.toUpperCase();
+  var m=t.match(/([\d]+(?:[,.][\d]+)?)\s*(M|K)?/);
+  if(!m)return 0;
+  var n=parseFloat(m[1].replace(",","."));
+  if(m[2]==="K")n=n/1000;
+  return n;
+}
+
 function renderInversion(){
   var IC={"P\u00fablica":"#FFCB00","Privada":"#4A90D9","Mixta":"#8DE2D6","No valorizada":"#E91E8C"};
   var counts={"P\u00fablica":0,"Privada":0,"Mixta":0,"No valorizada":0};
-  DATA.forEach(function(p){if(p.inv&&counts[p.inv]!==undefined)counts[p.inv]++;});
+  var montos={"P\u00fablica":0,"Privada":0,"Mixta":0};
+  var proyConMonto=[];
+  DATA.forEach(function(p){
+    if(p.inv&&counts[p.inv]!==undefined)counts[p.inv]++;
+    var m=parseMonto(p.mo);
+    if(m>0&&p.inv&&montos[p.inv]!==undefined){montos[p.inv]+=m;proyConMonto.push({n:p.n,m:m,t:p.inv});}
+  });
+  function anim(id,v){var el=eid(id);if(!el)return;var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
+  anim("bdg-pub",counts["P\u00fablica"]);anim("bdg-priv",counts["Privada"]);anim("bdg-mix",counts["Mixta"]);anim("bdg-noval",counts["No valorizada"]);
   var canvas=eid("donut-inv");
   if(canvas){
     if(_donutChart)_donutChart.destroy();
     var labels=[],data=[],colors=[];
-    Object.keys(counts).forEach(function(k){if(counts[k]>0){labels.push(k);data.push(counts[k]);colors.push(IC[k]);}});
-    if(labels.length>0){_donutChart=new Chart(canvas,{type:"doughnut",data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"68%",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.label+": "+c.raw+" proyectos";}}}},animation:{animateRotate:true,duration:800}}});}
+    ["P\u00fablica","Privada","Mixta"].forEach(function(k){if(montos[k]>0){labels.push(k);data.push(Math.round(montos[k]));colors.push(IC[k]);}});
+    if(labels.length>0){_donutChart=new Chart(canvas,{type:"doughnut",data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"65%",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.label+": USD "+c.raw+"M";}}}},animation:{animateRotate:true,duration:900}}});}
   }
-  eid("inv-pub").textContent="--";
-  eid("inv-priv").textContent="--";
-  var maxC=Math.max.apply(null,Object.values(counts))||1;
-  eid("inv-dist").innerHTML=Object.keys(counts).map(function(k){
-    var pct=Math.round(counts[k]/maxC*100);
-    return "<div style=\"display:flex;align-items:center;gap:8px;margin-bottom:7px\"><span style=\"font-size:11px;color:var(--muted);width:110px;flex-shrink:0\">"+k+"</span><div style=\"flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden\"><div style=\"height:100%;width:"+pct+"%;background:"+IC[k]+";border-radius:4px;transition:width .6s\"></div></div><span style=\"font-size:11px;font-weight:500;color:var(--text);width:20px;text-align:right\">"+counts[k]+"</span></div>";
-  }).join("");
+  var total=montos["P\u00fablica"]+montos["Privada"]+montos["Mixta"];
+  function animN(id,v){var el=eid(id);if(!el)return;if(v<=0){el.textContent="--";return;}var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
+  animN("inv-pub",Math.round(montos["P\u00fablica"]));animN("inv-priv",Math.round(montos["Privada"]));animN("inv-mix",Math.round(montos["Mixta"]));animN("inv-total",Math.round(total));
+  var barsEl=eid("inv-bars");
+  if(barsEl){
+    barsEl.innerHTML="";
+    var sorted=proyConMonto.slice().sort(function(a,b){return b.m-a.m;});
+    var maxM=sorted.length?sorted[0].m:1;
+    sorted.forEach(function(d){
+      var h=Math.max(Math.round(d.m/maxM*140),4);
+      var col=IC[d.t]||"#888";
+      var val=d.m>=1?Math.round(d.m)+"M":(d.m*1000).toFixed(0)+"K";
+      var ce=document.createElement("div");ce.style.cssText="display:flex;flex-direction:column;align-items:center;gap:2px;width:34px;flex-shrink:0";
+      var ve=document.createElement("div");ve.style.cssText="font-size:8px;font-weight:600;color:var(--text);text-align:center";ve.textContent=val;
+      var re=document.createElement("div");re.style.cssText="width:26px;border-radius:3px 3px 0 0;background:"+col+";height:0;transition:height .7s cubic-bezier(.4,0,.2,1)";re.title=d.n+": USD "+val+" ("+d.t+")";
+      var le=document.createElement("div");le.style.cssText="font-size:7px;color:var(--muted);text-align:center;width:34px;line-height:1.2;word-break:break-word";le.textContent=d.n;
+      ce.appendChild(ve);ce.appendChild(re);ce.appendChild(le);barsEl.appendChild(ce);
+      setTimeout(function(){re.style.height=h+"px";},150);
+    });
+  }
 }
 
-function renderComunas(){
-  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
-  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
-  DATA.forEach(function(p){if(p.co&&grupos[p.co])grupos[p.co].push(p);});
-  var max=Math.max.apply(null,Object.values(grupos).map(function(v){return v.length;}))||1;
-  eid("com-bars").innerHTML=Object.keys(grupos).map(function(com){
-    var n=grupos[com].length,pct=Math.round(n/max*100),col=COLS[com]||"#153244";
-    return "<div class=\"com-row\" onclick=\"openCom('"+com+"')\"><span style=\"font-size:11px;color:var(--muted);width:72px;flex-shrink:0\">"+com+"</span><div style=\"flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden\"><div style=\"height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s\"></div></div><span style=\"font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right\">"+n+"</span></div>";
-  }).join("")+"<div style=\"font-size:10px;color:var(--muted);margin-top:6px;text-align:right\">Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
-  window._comData=grupos;
+function openInvModal(tipo){
+  var proyectos=DATA.filter(function(p){return p.inv===tipo;});
+  eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
+  eid("inv-lista").innerHTML=proyectos.map(function(p){return "<div style=\\"padding:8px 10px;background:var(--bg);border-radius:var(--r2);font-size:12px;color:var(--text)\\">"+p.n+"</div>";}).join("");
+  eid("inv-ov").classList.add("open");
 }
+function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
+
 
 function openCom(com){
   var proyectos=(window._comData||{})[com]||[];
