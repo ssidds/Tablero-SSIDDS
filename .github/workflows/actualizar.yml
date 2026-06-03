@@ -29,11 +29,12 @@ jobs:
           if not rows:
               raise SystemExit("El Sheet no devolvio datos")
 
-          # Encabezados exactos del Sheet:
-          # 0=Proyecto, 1=Fecha de carga, 2=Status, 3=Pasos/Hitos Cumplidos
-          # 4=Accionable Marce, 5=Prox paso, 6=Proximo hito y fecha
-          # 7=Actores involucrados, 8=Monto de inversion
-          # 9=Etapa, 10=Comuna, 11=Barrio, 12=Tematica, 13=Tipo de inversion
+          # Columnas:
+          # 0=Proyecto, 1=Fecha carga, 2=Status, 3=Pasos/Hitos,
+          # 4=Accionable Marce, 5=Prox paso, 6=Proximo hito y fecha,
+          # 7=Actores, 8=Monto, 9=Etapa, 10=Comuna, 11=Barrio,
+          # 12=Tematica, 13=Tipo inversion, 14=Importancia,
+          # 15=Descripcion, 16=Objetivo
 
           out = []
           for r in rows[1:]:
@@ -42,18 +43,20 @@ jobs:
               def v(i):
                   return r[i].strip() if i < len(r) else ""
               out.append({
-                  "n":   v(0),
-                  "s":   v(2),
-                  "a":   v(4),
-                  "h":   v(6),
-                  "ac":  v(7),
-                  "mo":  v(8),
-                  "te":  v(12),
-                  "inv": v(13),
-                  "co":  v(10),
-                  "ba":  v(11),
+                  "n":    v(0),
+                  "s":    v(2),
+                  "a":    v(4),
+                  "h":    v(6),
+                  "ac":   v(7),
+                  "mo":   v(8),
+                  "te":   v(12),
+                  "inv":  v(13),
+                  "co":   v(10),
+                  "ba":   v(11),
                   "etapa": v(9),
-                  "imp": v(14),
+                  "imp":  v(14),
+                  "desc": v(15),
+                  "obj":  v(16),
               })
 
           with open('datos.json', 'w', encoding='utf-8') as f:
