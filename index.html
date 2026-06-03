@@ -79,8 +79,8 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .pr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pl{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-weight:500;white-space:nowrap;transition:all .15s}
 .pl:hover{border-color:var(--azul);color:var(--azul)}.pl.on{background:var(--azul);color:#fff;border-color:var(--azul)}
-.cl{font-size:11px;color:var(--muted);margin-bottom:10px}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.cl{font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px;padding:8px 12px;background:var(--card);border-radius:var(--r2);border:1px solid var(--border);display:inline-block}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);cursor:pointer;overflow:hidden;transition:border-color .15s,box-shadow .15s,transform .15s}
 .card:hover{border-color:var(--azul);box-shadow:0 4px 16px rgba(21,50,68,.08);transform:translateY(-1px)}
 .ct{height:4px}
@@ -281,8 +281,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <select class="fl" id="fc" onchange="renderCards()"><option value="">Comuna</option><option>Comuna 1</option><option>Comuna 4</option><option>Comuna 8</option><option>Comuna 9</option></select>
           <select class="fl" id="fb" onchange="renderCards()"><option value="">Barrio</option><option>La Boca</option><option>Barracas</option><option>Nueva Pompeya</option><option>Parque Patricios</option><option>Constitución</option><option>Villa Soldati</option><option>Villa Riachuelo</option><option>Villa Lugano</option><option>Liniers</option><option>Mataderos</option><option>Parque Avellaneda</option></select>
         </div>
-        <div class="pr" id="pills"></div>
-        <div class="cl" id="clbl"></div>
+        <div class="cl" id="clbl" style="margin-bottom:10px"></div>
         <div class="cards" id="cards"></div>
       </div>
     </div>
@@ -338,23 +337,64 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 
     <!-- MODAL PROYECTOS -->
     <div class="ov" id="mov" onclick="closeM(event)">
-      <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
         <div class="mh">
           <button class="mc" onclick="closeModalBtn()">x</button>
           <div class="mt2" id="mtit"></div>
           <span class="bdg" id="mbdg"></span>
         </div>
-        <div class="mb">
-          <div class="mg3">
-            <div class="mcd"><div class="ml">Status</div><div class="mv" id="mst"></div></div>
-            <div class="mcd"><div class="ml">Próximo hito</div><div class="mv acc" id="mhi"></div></div>
-            <div class="mcd"><div class="ml">Monto de inversión</div><div class="mv acc" id="mmo"></div></div>
+        <div class="mb" style="padding:0">
+
+          <!-- SECCION 1: El proyecto -->
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">El proyecto</div>
+            <div style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:14px" id="m-desc"></div>
+            <div class="mcd" style="margin-bottom:14px">
+              <div class="ml">Objetivo</div>
+              <div class="mv" id="m-obj"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+              <div style="background:var(--azul);border-radius:var(--r2);padding:14px 16px">
+                <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Monto de inversión</div>
+                <div style="font-size:22px;font-weight:700;color:#FFCB00;line-height:1" id="m-mo"></div>
+              </div>
+              <div class="mcd">
+                <div class="ml">Temática</div>
+                <div class="mv" id="m-te"></div>
+              </div>
+              <div class="mcd">
+                <div class="ml">Tipo de inversión</div>
+                <div class="mv" id="m-inv"></div>
+              </div>
+            </div>
           </div>
-          <div class="mg2">
-            <div class="mcd"><div class="ml">Accionable Marce</div><div class="mv" id="mac"></div></div>
-            <div class="mcd"><div class="ml">Actores involucrados</div><div class="mv" id="mact"></div></div>
+
+          <!-- SECCION 2: Estado -->
+          <div style="padding:20px 24px">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Estado del proyecto</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+              <div class="mcd">
+                <div class="ml">Status actual</div>
+                <div class="mv" id="m-st"></div>
+              </div>
+              <div class="mcd">
+                <div class="ml">Próximo hito</div>
+                <div class="mv acc" id="m-hi"></div>
+              </div>
+            </div>
+            <div class="mcd" style="margin-bottom:14px;border:1px solid #fdd;background:#fff8f8">
+              <div class="ml" style="color:#a32d2d">Accionable Marce</div>
+              <div class="mv" style="color:#a32d2d;font-weight:500" id="m-ac"></div>
+            </div>
+            <div class="mcd">
+              <div class="ml" style="margin-bottom:8px">Actores involucrados</div>
+              <div id="m-act-wrap"></div>
+            </div>
           </div>
-          <button class="bv" onclick="closeModalBtn()">Volver a proyectos</button>
+
+          <div style="padding:0 24px 20px;text-align:center">
+            <button class="bv" onclick="closeModalBtn()">Cerrar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -395,12 +435,12 @@ function cargar(){
       DATA=d.map(function(p){return{
         n:p.n||"",e:p.etapa||estado(p.s||""),s:p.s||"",
         a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",
-        te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||"",imp:p.imp||""
+        te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||"",imp:p.imp||"",desc:p.desc||"",obj:p.obj||""
       };});
       eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
       eid("ldg").style.display="none";
       eid("ind-c").style.display="block";
-      renderInd();renderPills();renderCards();renderInversion();renderComunas();
+      renderInd();renderCards();renderInversion();renderComunas();
     })
     .catch(function(err){
       eid("ldg").style.display="none";
@@ -571,16 +611,15 @@ function buscar(v){BUSQ=v.toLowerCase();renderCards();}
 function renderCards(){
   var fe=eid("fe").value,ft=eid("ft").value,fi=eid("fi").value,fc=eid("fc").value,fb=eid("fb").value;
   var f=DATA.filter(function(p){
-    if(FILTRO!=="Todos"&&p.e!==FILTRO)return false;
     if(fe&&p.e!==fe)return false;
     if(ft&&p.te!==ft)return false;
     if(fi&&p.inv!==fi)return false;
-    if(fc&&p.co!==fc)return false;
-    if(fb&&p.ba!==fb)return false;
+    if(fc&&p.co.indexOf(fc)<0)return false;
+    if(fb&&p.ba.indexOf(fb)<0)return false;
     if(BUSQ&&p.n.toLowerCase().indexOf(BUSQ)<0&&p.a.toLowerCase().indexOf(BUSQ)<0&&p.ac.toLowerCase().indexOf(BUSQ)<0)return false;
     return true;
   });
-  eid("clbl").textContent="Mostrando "+f.length+" de "+DATA.length+" proyectos";
+  eid("clbl").textContent=f.length+" proyecto"+(f.length!==1?"s":"")+" encontrado"+(f.length!==1?"s":"");
   if(!f.length){eid("cards").innerHTML="<div class=\"empty\">No se encontraron proyectos</div>";return;}
   eid("cards").innerHTML=f.map(function(p){
     var b=BDG[p.e]||["baj",p.e],ac=COL[p.e]||"#153244";
@@ -591,17 +630,67 @@ function renderCards(){
   }).join("");
 }
 
+function parseActores(raw){
+  if(!raw||!raw.trim())return[];
+  var lines=raw.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+  var groups={},order=[],solos=[];
+  lines.forEach(function(line){
+    var parts=line.split(">").map(function(p){return p.trim();}).filter(Boolean);
+    if(parts.length>=2){
+      var min=parts[0];
+      var sub=parts.slice(1).join(" \u203a ");
+      if(!groups[min]){groups[min]=[];order.push(min);}
+      groups[min].push(sub);
+    }else{solos.push(parts[0]);}
+  });
+  return{groups:groups,order:order,solos:solos};
+}
+
+function renderActores(raw){
+  var parsed=parseActores(raw);
+  var out="";
+  if(parsed.solos.length>0){
+    parsed.solos.forEach(function(s){
+      out+="<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:5px\">";
+      out+="<span style=\"width:7px;height:7px;border-radius:50%;background:#8DE2D6;flex-shrink:0;display:inline-block\"></span>";
+      out+="<span style=\"font-size:12px;font-weight:600;color:var(--text)\">"+s+"</span></div>";
+    });
+    if(parsed.order.length>0)out+="<div style=\"height:0.5px;background:var(--border);margin:8px 0\"></div>";
+  }
+  parsed.order.forEach(function(min,i){
+    out+="<div style=\"margin-bottom:8px\">";
+    out+="<div style=\"font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:5px\">";
+    out+="<span style=\"width:8px;height:8px;border-radius:50%;background:#153244;flex-shrink:0;display:inline-block\"></span>"+min+"</div>";
+    out+="<div style=\"display:flex;flex-wrap:wrap;gap:5px;padding-left:14px\">";
+    parsed.groups[min].forEach(function(sub){
+      out+="<span style=\"font-size:10px;color:#153244;background:#e8f0f5;padding:3px 10px;border-radius:20px;font-weight:500\">"+sub+"</span>";
+    });
+    out+="</div></div>";
+    if(i<parsed.order.length-1)out+="<div style=\"height:0.5px;background:var(--border);margin:6px 0\"></div>";
+  });
+  return out||"--";
+}
+
 function openM(did){
   var p=DATA.find(function(x){return x.n.replace(/['"\\]/g,"_")===did;});
   if(!p)return;
   var b=BDG[p.e]||["baj",p.e];
   eid("mtit").textContent=p.n;
   var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
-  eid("mst").textContent=nl(p.s)||"--";
-  eid("mhi").textContent=nl(p.h)||"--";
-  eid("mmo").textContent=p.mo||"--";
-  eid("mac").textContent=nl(p.a)||"--";
-  eid("mact").textContent=nl(p.ac)||"--";
+
+  // Seccion 1 - El proyecto
+  eid("m-desc").textContent=p.desc||"Sin descripci\u00f3n disponible.";
+  eid("m-obj").textContent=p.obj||"--";
+  eid("m-mo").textContent=p.mo||"--";
+  eid("m-te").textContent=p.te||"--";
+  eid("m-inv").textContent=p.inv||"--";
+
+  // Seccion 2 - Estado
+  eid("m-st").textContent=nl(p.s)||"--";
+  eid("m-hi").textContent=nl(p.h)||"--";
+  eid("m-ac").textContent=nl(p.a)||"--";
+  eid("m-act-wrap").innerHTML=renderActores(p.ac);
+
   eid("mov").classList.add("open");
 }
 function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
