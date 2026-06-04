@@ -422,6 +422,125 @@ var COL={"En ejecuci\u00f3n":"#00c896","En licitaci\u00f3n":"#FFCB00","En stand-
 var BDG={"En ejecuci\u00f3n":["bej","En ejecuci\u00f3n"],"En licitaci\u00f3n":["blic","En licitaci\u00f3n"],"En stand-by":["bsb","En stand-by"],"Finalizado":["bfin","Finalizado"],"En armado de proyecto":["barm","En armado de proyecto"],"En ajustes del proyecto":["baj","En ajustes del proyecto"],"En tramitaci\u00f3n de permisos":["btra","En tramitaci\u00f3n de permisos"],"En proceso licitatorio":["blic","En proceso licitatorio"]};
 var DATA=[],FILTRO="Todos",BUSQ="",CIDX=0,CTIMER=null,HITOS=[],MAPOK=false,_donutChart=null;
 
+var _logrosFilter="todos";
+
+function loadLogros(){
+  fetch("logros.json?t="+Date.now())
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(function(data){
+      window._logrosData=data;
+      window._logrosLoaded=true;
+      renderLogros();
+    })
+    .catch(function(err){
+      eid("logros-timeline").innerHTML="<div style=\"color:var(--muted);font-size:12px;padding:20px\">No se pudieron cargar los logros: "+err.message+"</div>";
+    });
+}
+
+function renderLogros(){
+  var data=window._logrosData||[];
+  var byYear={},years=[];
+  data.forEach(function(l){
+    var parts=l.fecha.split("/");
+    var yr=parts.length>=3?parts[2].trim():"";
+    if(!yr)return;
+    if(!byYear[yr]){byYear[yr]=[];years.push(yr);}
+    byYear[yr].push(l);
+  });
+  years.sort();
+
+  var filtrosEl=eid("logros-filtros");
+  filtrosEl.innerHTML="";
+  var allBtn=document.createElement("span");
+  allBtn.className="pl"+(_logrosFilter==="todos"?" on":"");
+  allBtn.textContent="Todos ("+data.length+")";
+  allBtn.onclick=function(){_logrosFilter="todos";renderLogros();};
+  filtrosEl.appendChild(allBtn);
+  years.forEach(function(yr){
+    var btn=document.createElement("span");
+    btn.className="pl"+(_logrosFilter===yr?" on":"");
+    btn.textContent=yr;
+    btn.onclick=function(){_logrosFilter=yr;renderLogros();};
+    filtrosEl.appendChild(btn);
+  });
+
+  var tl=eid("logros-timeline");
+  tl.innerHTML="";
+  var filtered=_logrosFilter==="todos"?years:[_logrosFilter];
+  var MESES=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+  filtered.forEach(function(yr){
+    if(!byYear[yr])return;
+    var yrDiv=document.createElement("div");
+    yrDiv.style.cssText="display:flex;align-items:center;gap:10px;margin-bottom:14px;position:relative";
+    yrDiv.innerHTML="<div style=\"width:16px;height:16px;border-radius:50%;background:var(--azul);border:3px solid #fff;box-shadow:0 0 0 2px var(--azul);position:absolute;left:-26px;z-index:1\"></div>"
+      +"<span style=\"font-size:13px;font-weight:700;color:var(--azul);padding:4px 14px;background:var(--azul3);border-radius:20px\">"+yr+"</span>";
+    tl.appendChild(yrDiv);
+
+    var itemsDiv=document.createElement("div");
+    itemsDiv.style.cssText="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;margin-left:8px";
+    byYear[yr].forEach(function(l){
+      var parts=l.fecha.split("/");
+      var dd=parts[0]||"";
+      var mm=parseInt(parts[1]||"0");
+      var fechaFmt=dd+" "+(MESES[mm]||"");
+      var card=document.createElement("div");
+      card.style.cssText="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:all .15s";
+      card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.transform="translateX(3px)";};
+      card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.transform="translateX(0)";};
+      card.innerHTML="<div style=\"font-size:10px;font-weight:600;color:var(--muted);font-family:DM Mono,monospace;white-space:nowrap;padding-top:2px;min-width:44px\">"+fechaFmt+"</div>"
+        +"<div style=\"width:6px;height:6px;border-radius:50%;background:var(--verde);flex-shrink:0;margin-top:5px\"></div>"
+        +"<div style=\"flex:1\">"
+        +"<div style=\"font-size:12px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:2px\">"+l.logro+"</div>"
+        +(l.proyecto?"<div style=\"font-size:10px;color:var(--azul2);font-weight:500;margin-top:3px\">"+l.proyecto+"</div>":"")
+        +(l.tematica?"<span style=\"font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;background:#e8f0f5;color:var(--azul);display:inline-block;margin-top:4px\">"+l.tematica+"</span>":"")
+        +"</div>";
+      itemsDiv.appendChild(card);
+    });
+    tl.appendChild(itemsDiv);
+  });
+}
+
+
+function nav(sec,el){
+  ["ind","proy","mapa","logros"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
+  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
+  el.classList.add("active");
+  if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
+  if(sec==="logros"&&!window._logrosLoaded){loadLogros();}
+}
+
+function initMap(){
+  var CM={yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversi\u00f3n p\u00fablica",bs:"background:#fff8e0;color:#8a6a00"},blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversi\u00f3n privada",bs:"background:#e6f1fb;color:#0c447c"},pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada",bs:"background:#fbeaf0;color:#72243e"}};
+  var m=L.map("map").setView([-34.655,-58.43],13);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
+  PINES_DATA.forEach(function(p){
+    var c=CM[p.color]||CM.yellow;
+    var popup="<div style=\"font-size:13px;font-weight:600;color:#153244;margin-bottom:4px\">"+p.name+"</div><span style=\""+c.bs+";font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600\">"+c.l+"</span>";
+    var icon=L.divIcon({html:"<div style=\"width:12px;height:12px;border-radius:50%;background:"+c.f+";border:2px solid "+c.s+";box-shadow:0 1px 4px rgba(0,0,0,.3)\"></div>",className:"",iconSize:[12,12],iconAnchor:[6,6]});
+    L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup).addTo(m);
+  });
+  setTimeout(function(){m.invalidateSize();},200);
+}
+
+function renderComunas(){
+  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
+  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
+  DATA.forEach(function(p){if(p.co&&grupos[p.co])grupos[p.co].push(p);});
+  var max=Math.max.apply(null,Object.values(grupos).map(function(v){return v.length;}))||1;
+  var out="";
+  Object.keys(grupos).forEach(function(com){
+    var n=grupos[com].length,pct=Math.round(n/max*100),col=COLS[com]||"#153244";
+    out+="<div class=\"com-row\" onclick=\"openCom('"+com+"')\"><span style=\"font-size:11px;color:var(--muted);width:72px;flex-shrink:0\">"+com+"</span>";
+    out+="<div style=\"flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden\">";
+    out+="<div style=\"height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s\"></div></div>";
+    out+="<span style=\"font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right\">"+n+"</span></div>";
+  });
+  out+="<div style=\"font-size:10px;color:var(--muted);margin-top:6px;text-align:right\">Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
+  eid("com-bars").innerHTML=out;
+  window._comData=grupos;
+}
+
 function eid(x){return document.getElementById(x);}
 function nl(s){return (s||"").replace(/\x0a/g," ").replace(/\x0d/g," ");}
 
@@ -710,44 +829,6 @@ function openM(did){
 function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
 function closeModalBtn(){eid("mov").classList.remove("open");}
 
-function nav(sec,el){
-  ["ind","proy","mapa","logros"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
-  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
-  el.classList.add("active");
-  if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
-  if(sec==="logros"&&!window._logrosLoaded){loadLogros();}
-}
-
-function initMap(){
-  var CM={yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversi\u00f3n p\u00fablica",bs:"background:#fff8e0;color:#8a6a00"},blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversi\u00f3n privada",bs:"background:#e6f1fb;color:#0c447c"},pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada",bs:"background:#fbeaf0;color:#72243e"}};
-  var m=L.map("map").setView([-34.655,-58.43],13);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
-  PINES_DATA.forEach(function(p){
-    var c=CM[p.color]||CM.yellow;
-    var popup="<div style=\"font-size:13px;font-weight:600;color:#153244;margin-bottom:4px\">"+p.name+"</div><span style=\""+c.bs+";font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600\">"+c.l+"</span>";
-    var icon=L.divIcon({html:"<div style=\"width:12px;height:12px;border-radius:50%;background:"+c.f+";border:2px solid "+c.s+";box-shadow:0 1px 4px rgba(0,0,0,.3)\"></div>",className:"",iconSize:[12,12],iconAnchor:[6,6]});
-    L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup).addTo(m);
-  });
-  setTimeout(function(){m.invalidateSize();},200);
-}
-
-function renderComunas(){
-  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
-  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
-  DATA.forEach(function(p){if(p.co&&grupos[p.co])grupos[p.co].push(p);});
-  var max=Math.max.apply(null,Object.values(grupos).map(function(v){return v.length;}))||1;
-  var out="";
-  Object.keys(grupos).forEach(function(com){
-    var n=grupos[com].length,pct=Math.round(n/max*100),col=COLS[com]||"#153244";
-    out+="<div class=\"com-row\" onclick=\"openCom('"+com+"')\"><span style=\"font-size:11px;color:var(--muted);width:72px;flex-shrink:0\">"+com+"</span>";
-    out+="<div style=\"flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden\">";
-    out+="<div style=\"height:100%;width:"+pct+"%;background:"+col+";border-radius:4px;transition:width .6s\"></div></div>";
-    out+="<span style=\"font-size:11px;font-weight:500;color:var(--text);width:24px;text-align:right\">"+n+"</span></div>";
-  });
-  out+="<div style=\"font-size:10px;color:var(--muted);margin-top:6px;text-align:right\">Hac\u00e9 clic en una comuna para ver sus proyectos</div>";
-  eid("com-bars").innerHTML=out;
-  window._comData=grupos;
-}
 </script>
 </body>
 </html>
