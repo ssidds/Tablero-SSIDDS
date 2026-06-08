@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tablero de Seguimiento de Proyectos - SSIDDS</title>
+<title>Dashboard de Seguimiento de Proyectos - SSIDDS</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -418,268 +418,105 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                 <div class="ml">Tipo de inversi\u00f3n</div>
                 <div class="mv" id="m-inv"></div>
       
+
 <script>
-var PINES_DATA=[{"name":"Mercado de Hacienda","lat":-34.664361,"lon":-58.495351,"color":"pink"},{"name":"CTC","lat":-34.66942,"lon":-58.439809,"color":"pink"},{"name":"Patio Gastron\u00f3mico Lago Lugano","lat":-34.680001,"lon":-58.449173,"color":"yellow"},{"name":"Mudanza Pistas + Licencias - Parque Indoamericano","lat":-34.669192,"lon":-58.461103,"color":"pink"},{"name":"Polo log\u00edstico","lat":-34.668604,"lon":-58.44759,"color":"blue"},{"name":"Bajada Autopista C\u00e1mpora","lat":-34.66742,"lon":-58.447429,"color":"pink"},{"name":"Club Asociaci\u00f3n del Sur","lat":-34.667023,"lon":-58.463147,"color":"blue"},{"name":"Viviendas Barrio Ol\u00edmpico","lat":-34.675657,"lon":-58.453937,"color":"blue"},{"name":"Estacionamiento Barrio Ol\u00edmpico - Manzana O","lat":-34.677321,"lon":-58.45098,"color":"blue"},{"name":"Alcaid\u00eda 27 de Febrero","lat":-34.675537,"lon":-58.438339,"color":"yellow"},{"name":"IUSE - UE","lat":-34.674367,"lon":-58.443945,"color":"blue"},{"name":"Centro de Rehabilitaci\u00f3n","lat":-34.675258,"lon":-58.444256,"color":"blue"},{"name":"Hotel","lat":-34.674124,"lon":-58.444712,"color":"blue"},{"name":"Estadio Mary Ter\u00e1n","lat":-34.677133,"lon":-58.446189,"color":"blue"},{"name":"Aulas Modulares","lat":-34.671507,"lon":-58.443799,"color":"yellow"},{"name":"Polo Farmac\u00e9utico","lat":-34.670465,"lon":-58.457936,"color":"blue"},{"name":"Biotenk","lat":-34.671209,"lon":-58.460052,"color":"blue"},{"name":"Panalab","lat":-34.669935,"lon":-58.45649,"color":"blue"},{"name":"Nuevo predio Monroe Americana","lat":-34.655271,"lon":-58.452821,"color":"pink"},{"name":"Ascensores Torre Espacial","lat":-34.672836,"lon":-58.449822,"color":"yellow"},{"name":"Centro Metropolitano de Eventos","lat":-34.670668,"lon":-58.44723,"color":"blue"},{"name":"Predio Ferr\u00e9","lat":-34.667102,"lon":-58.432801,"color":"pink"},{"name":"Profesi\u00f3n Sur","lat":-34.675852,"lon":-58.486358,"color":"pink"},{"name":"Empleabilidad","lat":-34.67604,"lon":-58.466815,"color":"pink"},{"name":"Parque de la Ribera - OSPESE","lat":-34.699261,"lon":-58.459074,"color":"pink"},{"name":"Mudanza UGIS","lat":-34.673465,"lon":-58.457336,"color":"pink"},{"name":"Centro Integral de Discapacidad","lat":-34.678756,"lon":-58.464056,"color":"yellow"},{"name":"Polo Educativo","lat":-34.67901,"lon":-58.463824,"color":"yellow"},{"name":"Golf Club Jos\u00e9 Jurado","lat":-34.679278,"lon":-58.458425,"color":"pink"},{"name":"Viviendas Sindicales - Sindicato Taxistas","lat":-34.679359,"lon":-58.452331,"color":"blue"},{"name":"Cinemark","lat":-34.676125,"lon":-58.458416,"color":"blue"},{"name":"Era Cret\u00e1cica 3","lat":-34.675643,"lon":-58.460899,"color":"pink"},{"name":"Lote 123D - Arq. GIOIA | AMERISE","lat":-34.674864,"lon":-58.454158,"color":"blue"},{"name":"Aut\u00f3dromo","lat":-34.691835,"lon":-58.457862,"color":"yellow"},{"name":"Calle lindera a 123N","lat":-34.677686,"lon":-58.451424,"color":"yellow"},{"name":"Retome Av. Fern\u00e1ndez de la Cruz","lat":-34.667716,"lon":-58.45275,"color":"pink"},{"name":"Apertura Calle Corrales","lat":-34.648072,"lon":-58.422506,"color":"pink"},{"name":"Club Social y Deportivo Unidos de Pompeya","lat":-34.650488,"lon":-58.417061,"color":"pink"},{"name":"Plaza Nueva Pompeya","lat":-34.651987,"lon":-58.415935,"color":"pink"},{"name":"Corredor S\u00e1enz","lat":-34.653212,"lon":-58.4164,"color":"pink"},{"name":"Revitalizaci\u00f3n Calle Necochea","lat":-34.63522,"lon":-58.357283,"color":"yellow"},{"name":"Puerto Pampa","lat":-34.62779,"lon":-58.360109,"color":"pink"},{"name":"Viviendas Gianotti-Zanetti","lat":-34.63363,"lon":-58.360082,"color":"blue"},{"name":"Reordenamiento Urbano Dique 0","lat":-34.627302,"lon":-58.358381,"color":"yellow"},{"name":"Barrio Chino La Boca","lat":-34.645979,"lon":-58.365372,"color":"pink"},{"name":"Anfiteatros - Plaza Islas Malvinas","lat":-34.626606,"lon":-58.360419,"color":"pink"},{"name":"Servicios P\u00fabicos en Plazas - Parque Patricios","lat":-34.638683,"lon":-58.407079,"color":"pink"},{"name":"Servicios P\u00fablicos en Plazas - Parque Espa\u00f1a","lat":-34.633809,"lon":-58.38559,"color":"pink"},{"name":"Cochabamba - Viviendas Polic\u00eda","lat":-34.623951,"lon":-58.382321,"color":"blue"},{"name":"Avenidas Porte\u00f1as 2 - Av. Mart\u00edn Garc\u00eda","lat":-34.630738,"lon":-58.371742,"color":"yellow"},{"name":"Estacionamientos Subterr\u00e1neos - Predio Lavard\u00e9n","lat":-34.640777,"lon":-58.400475,"color":"blue"},{"name":"Flotantes en Vuelta de Rocha","lat":-34.640403,"lon":-58.359434,"color":"pink"},{"name":"Col\u00f3n F\u00e1brica - Dulce de Leche","lat":-34.641334,"lon":-58.360906,"color":"blue"},{"name":"Puente Transbordador","lat":-34.638643,"lon":-58.356285,"color":"pink"},{"name":"Remo en Barracas","lat":-34.657579,"lon":-58.383794,"color":"pink"},{"name":"Estacionamientos Subterr\u00e1neos - Parque Espa\u00f1a","lat":-34.633617,"lon":-58.38504,"color":"blue"},{"name":"Hermetia - Planta de Reciclaje","lat":-34.653599,"lon":-58.381364,"color":"pink"},{"name":"Polo de Reciclaje","lat":-34.650958,"lon":-58.372957,"color":"pink"},{"name":"Anfiteatros - Parque Lezama","lat":-34.625503,"lon":-58.369361,"color":"pink"},{"name":"Viviendas Clase Media - Av. La Plata 2241","lat":-34.640668,"lon":-58.423791,"color":"yellow"},{"name":"Viviendas Clase Media - Av. Varela 2951","lat":-34.657282,"lon":-58.437077,"color":"yellow"},{"name":"Rueda de la Ciudad","lat":-34.62253,"lon":-58.364197,"color":"pink"},{"name":"Carrusel flotante","lat":-34.622038,"lon":-58.364267,"color":"pink"},{"name":"Parque Jos\u00e9 Evaristo Uriburu","lat":-34.642209,"lon":-58.41113,"color":"yellow"},{"name":"Trambus Av. Roca","lat":-34.660874,"lon":-58.431061,"color":"pink"},{"name":"Obra Premetro","lat":-34.685815,"lon":-58.462812,"color":"yellow"},{"name":"Carrefour","lat":-34.678881,"lon":-58.450709,"color":"blue"},{"name":"Au. Dellepiane","lat":-34.669785,"lon":-58.475363,"color":"yellow"},{"name":"CTC - Monta\u00f1a","lat":-34.670409,"lon":-58.435546,"color":"pink"},{"name":"Parque de la Ciudad","lat":-34.67317,"lon":-58.452434,"color":"yellow"},{"name":"Avenidas Porte\u00f1as 2 - Av. P\u00e9rez Galdos","lat":-34.630056,"lon":-58.359156,"color":"yellow"}];
+var PINES=[{"name":"Mercado de Hacienda","lat":-34.664361,"lon":-58.495351,"color":"pink"},{"name":"CTC","lat":-34.66942,"lon":-58.439809,"color":"pink"},{"name":"Patio Gastron\u00f3mico Lago Lugano","lat":-34.680001,"lon":-58.449173,"color":"yellow"},{"name":"Mudanza Pistas + Licencias - Parque Indoamericano","lat":-34.669192,"lon":-58.461103,"color":"pink"},{"name":"Polo log\u00edstico","lat":-34.668604,"lon":-58.44759,"color":"blue"},{"name":"Bajada Autopista C\u00e1mpora","lat":-34.66742,"lon":-58.447429,"color":"pink"},{"name":"Club Asociaci\u00f3n del Sur","lat":-34.667023,"lon":-58.463147,"color":"blue"},{"name":"Viviendas Barrio Ol\u00edmpico","lat":-34.675657,"lon":-58.453937,"color":"blue"},{"name":"Estacionamiento Barrio Ol\u00edmpico - Manzana O","lat":-34.677321,"lon":-58.45098,"color":"blue"},{"name":"Alcaid\u00eda 27 de Febrero","lat":-34.675537,"lon":-58.438339,"color":"yellow"},{"name":"IUSE - UE","lat":-34.674367,"lon":-58.443945,"color":"blue"},{"name":"Centro de Rehabilitaci\u00f3n","lat":-34.675258,"lon":-58.444256,"color":"blue"},{"name":"Hotel","lat":-34.674124,"lon":-58.444712,"color":"blue"},{"name":"Estadio Mary Ter\u00e1n","lat":-34.677133,"lon":-58.446189,"color":"blue"},{"name":"Aulas Modulares","lat":-34.671507,"lon":-58.443799,"color":"yellow"},{"name":"Polo Farmac\u00e9utico","lat":-34.670465,"lon":-58.457936,"color":"blue"},{"name":"Biotenk","lat":-34.671209,"lon":-58.460052,"color":"blue"},{"name":"Panalab","lat":-34.669935,"lon":-58.45649,"color":"blue"},{"name":"Nuevo predio Monroe Americana","lat":-34.655271,"lon":-58.452821,"color":"pink"},{"name":"Ascensores Torre Espacial","lat":-34.672836,"lon":-58.449822,"color":"yellow"},{"name":"Centro Metropolitano de Eventos","lat":-34.670668,"lon":-58.44723,"color":"blue"},{"name":"Predio Ferr\u00e9","lat":-34.667102,"lon":-58.432801,"color":"pink"},{"name":"Profesi\u00f3n Sur","lat":-34.675852,"lon":-58.486358,"color":"pink"},{"name":"Empleabilidad","lat":-34.67604,"lon":-58.466815,"color":"pink"},{"name":"Parque de la Ribera - OSPESE","lat":-34.699261,"lon":-58.459074,"color":"pink"},{"name":"Mudanza UGIS","lat":-34.673465,"lon":-58.457336,"color":"pink"},{"name":"Centro Integral de Discapacidad","lat":-34.678756,"lon":-58.464056,"color":"yellow"},{"name":"Polo Educativo","lat":-34.67901,"lon":-58.463824,"color":"yellow"},{"name":"Golf Club Jos\u00e9 Jurado","lat":-34.679278,"lon":-58.458425,"color":"pink"},{"name":"Viviendas Sindicales - Sindicato Taxistas","lat":-34.679359,"lon":-58.452331,"color":"blue"},{"name":"Cinemark","lat":-34.676125,"lon":-58.458416,"color":"blue"},{"name":"Era Cret\u00e1cica 3","lat":-34.675643,"lon":-58.460899,"color":"pink"},{"name":"Lote 123D - Arq. GIOIA | AMERISE","lat":-34.674864,"lon":-58.454158,"color":"blue"},{"name":"Aut\u00f3dromo","lat":-34.691835,"lon":-58.457862,"color":"yellow"},{"name":"Calle lindera a 123N","lat":-34.677686,"lon":-58.451424,"color":"yellow"},{"name":"Retome Av. Fern\u00e1ndez de la Cruz","lat":-34.667716,"lon":-58.45275,"color":"pink"},{"name":"Apertura Calle Corrales","lat":-34.648072,"lon":-58.422506,"color":"pink"},{"name":"Club Social y Deportivo Unidos de Pompeya","lat":-34.650488,"lon":-58.417061,"color":"pink"},{"name":"Plaza Nueva Pompeya","lat":-34.651987,"lon":-58.415935,"color":"pink"},{"name":"Corredor S\u00e1enz","lat":-34.653212,"lon":-58.4164,"color":"pink"},{"name":"Revitalizaci\u00f3n Calle Necochea","lat":-34.63522,"lon":-58.357283,"color":"yellow"},{"name":"Puerto Pampa","lat":-34.62779,"lon":-58.360109,"color":"pink"},{"name":"Viviendas Gianotti-Zanetti","lat":-34.63363,"lon":-58.360082,"color":"blue"},{"name":"Reordenamiento Urbano Dique 0","lat":-34.627302,"lon":-58.358381,"color":"yellow"},{"name":"Barrio Chino La Boca","lat":-34.645979,"lon":-58.365372,"color":"pink"},{"name":"Anfiteatros - Plaza Islas Malvinas","lat":-34.626606,"lon":-58.360419,"color":"pink"},{"name":"Servicios P\u00fabicos en Plazas - Parque Patricios","lat":-34.638683,"lon":-58.407079,"color":"pink"},{"name":"Servicios P\u00fablicos en Plazas - Parque Espa\u00f1a","lat":-34.633809,"lon":-58.38559,"color":"pink"},{"name":"Cochabamba - Viviendas Polic\u00eda","lat":-34.623951,"lon":-58.382321,"color":"blue"},{"name":"Avenidas Porte\u00f1as 2 - Av. Mart\u00edn Garc\u00eda","lat":-34.630738,"lon":-58.371742,"color":"yellow"},{"name":"Estacionamientos Subterr\u00e1neos - Predio Lavard\u00e9n","lat":-34.640777,"lon":-58.400475,"color":"blue"},{"name":"Flotantes en Vuelta de Rocha","lat":-34.640403,"lon":-58.359434,"color":"pink"},{"name":"Col\u00f3n F\u00e1brica - Dulce de Leche","lat":-34.641334,"lon":-58.360906,"color":"blue"},{"name":"Puente Transbordador","lat":-34.638643,"lon":-58.356285,"color":"pink"},{"name":"Remo en Barracas","lat":-34.657579,"lon":-58.383794,"color":"pink"},{"name":"Estacionamientos Subterr\u00e1neos - Parque Espa\u00f1a","lat":-34.633617,"lon":-58.38504,"color":"blue"},{"name":"Hermetia - Planta de Reciclaje","lat":-34.653599,"lon":-58.381364,"color":"pink"},{"name":"Polo de Reciclaje","lat":-34.650958,"lon":-58.372957,"color":"pink"},{"name":"Anfiteatros - Parque Lezama","lat":-34.625503,"lon":-58.369361,"color":"pink"},{"name":"Viviendas Clase Media - Av. La Plata 2241","lat":-34.640668,"lon":-58.423791,"color":"yellow"},{"name":"Viviendas Clase Media - Av. Varela 2951","lat":-34.657282,"lon":-58.437077,"color":"yellow"},{"name":"Rueda de la Ciudad","lat":-34.62253,"lon":-58.364197,"color":"pink"},{"name":"Carrusel flotante","lat":-34.622038,"lon":-58.364267,"color":"pink"},{"name":"Parque Jos\u00e9 Evaristo Uriburu","lat":-34.642209,"lon":-58.41113,"color":"yellow"},{"name":"Trambus Av. Roca","lat":-34.660874,"lon":-58.431061,"color":"pink"},{"name":"Obra Premetro","lat":-34.685815,"lon":-58.462812,"color":"yellow"},{"name":"Carrefour","lat":-34.678881,"lon":-58.450709,"color":"blue"},{"name":"Au. Dellepiane","lat":-34.669785,"lon":-58.475363,"color":"yellow"},{"name":"CTC - Monta\u00f1a","lat":-34.670409,"lon":-58.435546,"color":"pink"},{"name":"Parque de la Ciudad","lat":-34.67317,"lon":-58.452434,"color":"yellow"},{"name":"Avenidas Porte\u00f1as 2 - Av. P\u00e9rez Galdos","lat":-34.630056,"lon":-58.359156,"color":"yellow"}];
 var COL={"En ejecuci\u00f3n":"#00c896","En licitaci\u00f3n":"#FFCB00","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En tramitaci\u00f3n de permisos":"#e07830","En proceso licitatorio":"#c07820"};
 var BDG={"En ejecuci\u00f3n":["bej","En ejecuci\u00f3n"],"En licitaci\u00f3n":["blic","En licitaci\u00f3n"],"En stand-by":["bsb","En stand-by"],"Finalizado":["bfin","Finalizado"],"En armado de proyecto":["barm","En armado de proyecto"],"En ajustes del proyecto":["baj","En ajustes del proyecto"],"En tramitaci\u00f3n de permisos":["btra","En tramitaci\u00f3n de permisos"],"En proceso licitatorio":["blic","En proceso licitatorio"]};
 var DATA=[],FILTRO="Todos",BUSQ="",CIDX=0,CTIMER=null,HITOS=[],MAPOK=false,_donutChart=null;
+var _logrosLoaded=false;
 
-var _logrosFilter="todos";
+function eid(x){return document.getElementById(x);}
+function nl(s){return (s||"").replace(/\x0a/g," ").replace(/\x0d/g," ");}
 
-function loadLogros(){
-  fetch("logros.json?t="+Date.now())
+function estado(s){
+  var t=(s||"").toLowerCase();
+  if(t.indexOf("stand by")>=0||t.indexOf("stand-by")>=0)return "En stand-by";
+  if(t.indexOf("obra finalizada")>=0)return "Finalizado";
+  if(t.indexOf("en obra")>=0||t.indexOf("en ejecuci")>=0)return "En ejecuci\u00f3n";
+  if(t.indexOf("licitaci")>=0||t.indexOf("apertura de oferta")>=0||t.indexOf("proceso licitatorio")>=0)return "En proceso licitatorio";
+  if(t.indexOf("adjudic")>=0&&t.indexOf("espera")<0)return "En licitaci\u00f3n";
+  if(t.indexOf("tramit")>=0||t.indexOf("permiso en curso")>=0)return "En tramitaci\u00f3n de permisos";
+  if(t.indexOf("armado de documentaci")>=0||t.indexOf("armado de proyecto")>=0)return "En armado de proyecto";
+  return "En ajustes del proyecto";
+}
+function cnt(e){return e==="Todos"?DATA.length:DATA.filter(function(p){return p.e===e;}).length;}
+
+function cargar(){
+  eid("ldg").style.display="block";
+  eid("ind-c").style.display="none";
+  eid("eb").style.display="none";
+  fetch("datos.json?t="+Date.now())
     .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
-    .then(function(data){
-      window._logrosData=data;
-      window._logrosLoaded=true;
-      renderLogros();
+    .then(function(d){
+      DATA=d.map(function(p){return{
+        n:p.n||"",e:p.etapa||estado(p.s||""),s:p.s||"",
+        a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",
+        te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||"",
+        imp:p.imp||"",desc:p.desc||"",obj:p.obj||""
+      };});
+      eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+      eid("ldg").style.display="none";
+      eid("ind-c").style.display="block";
+      renderInd();renderCards();renderInversion();renderComunas();
     })
     .catch(function(err){
-      eid("logros-timeline").innerHTML="<div style=\"color:var(--muted);font-size:12px;padding:20px\">No se pudieron cargar los logros: "+err.message+"</div>";
+      eid("ldg").style.display="none";
+      eid("eb").style.display="block";
+      eid("eb").textContent="No se pudieron cargar los datos: "+err.message;
     });
 }
 
-function renderLogros(){
-  var data=window._logrosData||[];
-  var selYr=eid("logros-yr"),selMes=eid("logros-mes");
-  var filtYr=selYr?selYr.value:"";
-  var filtMes=selMes?selMes.value:"";
-  var filtered=data.filter(function(l){
-    var parts=l.fecha.split("/");
-    if(filtYr&&parts.length>=3&&parts[2].trim()!==filtYr)return false;
-    if(filtMes&&parts.length>=2&&parts[1].trim()!==filtMes)return false;
-    return true;
-  });
-  var byYear={},years=[];
-  filtered.forEach(function(l){
-    var parts=l.fecha.split("/");
-    var yr=parts.length>=3?parts[2].trim():"";
-    if(!byYear[yr]){byYear[yr]=[];years.push(yr);}
-    byYear[yr].push(l);
-  });
-  years.sort();
-  var tl=eid("logros-timeline");
-  tl.innerHTML="";
-  if(!filtered.length){
-    tl.innerHTML="<div style='font-size:12px;color:var(--muted);padding:20px'>No hay logros para el per\u00edodo seleccionado.</div>";
-    return;
-  }
-  var MESES_N=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-  years.forEach(function(yr){
-    if(!byYear[yr])return;
-    var yrDiv=document.createElement("div");
-    yrDiv.style.cssText="display:flex;align-items:center;gap:10px;margin-bottom:14px;position:relative";
-    yrDiv.innerHTML="<div style='width:16px;height:16px;border-radius:50%;background:var(--azul);border:3px solid #fff;box-shadow:0 0 0 2px var(--azul);position:absolute;left:-26px;z-index:1'></div>"
-      +"<span style='font-size:13px;font-weight:700;color:var(--azul);padding:4px 14px;background:var(--azul3);border-radius:20px'>"+yr+"</span>";
-    tl.appendChild(yrDiv);
-    var itemsDiv=document.createElement("div");
-    itemsDiv.style.cssText="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;margin-left:8px";
-    byYear[yr].forEach(function(l){
-      var card=document.createElement("div");
-      card.style.cssText="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:all .15s";
-      card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.transform="translateX(3px)";};
-      card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.transform="";};
-      var parts=l.fecha.split("/");
-      var dd=parts[0]||"";
-      var mm=parseInt(parts[1]||"0");
-      var fechaFmt=dd+" "+(MESES_N[mm]||"");
-      card.innerHTML="<div style='font-size:10px;font-weight:600;color:var(--muted);font-family:DM Mono,monospace;white-space:nowrap;padding-top:2px;min-width:44px'>"+fechaFmt+"</div>"
-        +"<div style='width:6px;height:6px;border-radius:50%;background:var(--verde);flex-shrink:0;margin-top:5px'></div>"
-        +"<div style='flex:1'>"
-        +"<div style='font-size:12px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:2px'>"+l.logro+"</div>"
-        +(l.proyecto?"<div style='font-size:10px;color:var(--azul2);font-weight:500;margin-top:3px'>"+l.proyecto+"</div>":"")
-        +(l.tematica?"<span style='font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;background:#e8f0f5;color:var(--azul);display:inline-block;margin-top:4px'>"+l.tematica+"</span>":"")
-        +"</div>";
-      itemsDiv.appendChild(card);
-    });
-    tl.appendChild(itemsDiv);
-  });
-}
-function nav(sec,el){
-  ["ind","proy","mapa","logros"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
-  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
-  el.classList.add("active");
-  if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
-  if(sec==="logros"&&!window._logrosLoaded){loadLogros();}
-}
-
-function initMap(){
-  var CM={yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversi\u00f3n p\u00fablica",bs:"background:#fff8e0;color:#8a6a00"},blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversi\u00f3n privada",bs:"background:#e6f1fb;color:#0c447c"},pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada",bs:"background:#fbeaf0;color:#72243e"}};
-  var m=L.map("map").setView([-34.655,-58.43],13);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
-  PINES_DATA.forEach(function(p){
-    var c=CM[p.color]||CM.yellow;
-    var popup="<div style=\"font-size:13px;font-weight:600;color:#153244;margin-bottom:4px\">"+p.name+"</div><span style=\""+c.bs+";font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600\">"+c.l+"</span>";
-    var icon=L.divIcon({html:"<div style=\"width:12px;height:12px;border-radius:50%;background:"+c.f+";border:2px solid "+c.s+";box-shadow:0 1px 4px rgba(0,0,0,.3)\"></div>",className:"",iconSize:[12,12],iconAnchor:[6,6]});
-    L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup).addTo(m);
-  });
-  setTimeout(function(){m.invalidateSize();},200);
-}
-
-function renderComunas(){
-  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
-  var BARRIOS={"Comuna 1":"Const. \u00b7 S.Telmo \u00b7 Monserrat \u00b7 Pto.Madero","Comuna 4":"La Boca \u00b7 Barracas \u00b7 N.Pompeya \u00b7 P.Patricios","Comuna 8":"V.Soldati \u00b7 V.Lugano \u00b7 V.Riachuelo","Comuna 9":"Liniers \u00b7 Mataderos \u00b7 P.Avellaneda"};
-  var ECOLS={"En ejecuci\u00f3n":"#00c896","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En tramitaci\u00f3n de permisos":"#e07830","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En proceso licitatorio":"#FFCB00"};
-  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
-  DATA.forEach(function(p){
-    Object.keys(grupos).forEach(function(com){if(p.co&&p.co.indexOf(com)>=0)grupos[com].push(p);});
-  });
-  var container=eid("com-cards");
-  if(!container)return;
-  container.innerHTML="";
-  Object.keys(grupos).forEach(function(com){
-    var proyectos=grupos[com];
-    var n=proyectos.length;
-    var col=COLS[com]||"#153244";
-    var estados={};
-    proyectos.forEach(function(p){estados[p.e]=(estados[p.e]||0)+1;});
-    var card=document.createElement("div");
-    card.style.cssText="background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;border-top:4px solid "+col;
-    card.onmouseover=function(){this.style.transform="translateY(-2px)";this.style.boxShadow="0 4px 16px rgba(21,50,68,.1)";};
-    card.onmouseout=function(){this.style.transform="";this.style.boxShadow="";};
-    card.onclick=function(){openCom(com);};
-    var segsHTML="<div style=\"display:flex;gap:3px;margin:8px 0\">";
-    Object.keys(estados).forEach(function(e){
-      var pct=Math.round(estados[e]/Math.max(n,1)*100);
-      segsHTML+="<div title=\""+e+": "+estados[e]+"\" style=\"height:5px;border-radius:3px;background:"+(ECOLS[e]||"#888")+";width:"+pct+"%\"></div>";
-    });
-    segsHTML+="</div>";
-    card.innerHTML="<div style=\"font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em\">"+com+"</div>"
-      +"<div style=\"font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.4\">"+BARRIOS[com]+"</div>"
-      +"<div style=\"font-size:34px;font-weight:700;color:"+col+";line-height:1\">"+n+"</div>"
-      +"<div style=\"font-size:10px;color:var(--muted)\">proyectos</div>"
-      +segsHTML
-      +"<div style=\"font-size:9px;color:var(--muted);text-align:right\">Ver proyectos \u2192</div>";
-    container.appendChild(card);
-  });
-  window._comData=grupos;
-}
-function openCom(com){
-  var proyectos=(window._comData||{})[com]||[];
-  eid("com-tit").textContent=com+" \u2014 "+proyectos.length+" proyectos";
-  var out="";
-  for(var i=0;i<proyectos.length;i++){out+='<div style="padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px">'+proyectos[i].n+"</div>";}
-  eid("com-lista").innerHTML=out;
-  eid("com-ov").classList.add("open");
-}
-function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.remove("open");}
-
-function openKpiModal(cat){
-  var proyectos=DATA.filter(function(p){return p.imp===cat;});
-  eid("kpi-tit").textContent=cat+" ("+proyectos.length+" proyectos)";
-  var out="";
-  for(var i=0;i<proyectos.length;i++){out+='<div style="padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px">'+proyectos[i].n+"</div>";}
-  eid("kpi-lista").innerHTML=out;
-  eid("kpi-ov").classList.add("open");
-}
-function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
-
-function renderPills(){
-  var ests=["Todos"];
-  DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
-  var out="";
-  ests.forEach(function(e){
-    var lbl=BDG[e]?BDG[e][1]:e;
-    var n=e!=="Todos"?" ("+cnt(e)+")":"";
-    var cls="pl"+(FILTRO===e?" on":"");
-    out+="<span class=\""+cls+"\" onclick=\"setF(this.dataset.e)\" data-e=\""+e+"\">"+lbl+n+"</span>";
-  });
-  eid("pills").innerHTML=out;
-}
-function setF(e){FILTRO=e;renderPills();renderCards();}
-function buscar(v){BUSQ=v.toLowerCase();renderCards();}
-
-function renderCards(){
-  var fe=eid("fe").value,ft=eid("ft").value,fi=eid("fi").value,fc=eid("fc").value,fb=eid("fb").value;
-  var f=DATA.filter(function(p){
-    if(fe&&p.e!==fe)return false;
-    if(ft&&p.te!==ft)return false;
-    if(fi&&p.inv!==fi)return false;
-    if(fc&&p.co.indexOf(fc)<0)return false;
-    if(fb&&p.ba.indexOf(fb)<0)return false;
-    if(BUSQ&&p.n.toLowerCase().indexOf(BUSQ)<0&&p.a.toLowerCase().indexOf(BUSQ)<0&&p.ac.toLowerCase().indexOf(BUSQ)<0)return false;
-    return true;
-  });
-  eid("clbl").textContent=f.length+" proyecto"+(f.length!==1?"s":"")+" encontrado"+(f.length!==1?"s":"");
-  if(!f.length){eid("cards").innerHTML="<div class=\"empty\">No se encontraron proyectos</div>";return;}
-  eid("cards").innerHTML=f.map(function(p){
-    var b=BDG[p.e]||["baj",p.e],ac=COL[p.e]||"#153244";
-    var st=nl(p.s).substring(0,85),ht=nl(p.h).substring(0,50);
-    var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class=\"card\" onclick=\"openM('"+did+"')\"><div class=\"ct\" style=\"background:"+ac+"\"></div><div class=\"cb2\"><div class=\"cn\">"+nm+"</div><span class=\"bdg "+b[0]+"\">"+b[1]+"</span>"+(st?"<div class=\"cst\">"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class=\"cht\">"+ht+"</div>":"")+"</div></div>";
+function renderInd(){
+  eid("k0").textContent=DATA.length;
+  eid("k1").textContent=DATA.filter(function(p){return p.imp==="Estrat\u00e9gicos";}).length;
+  eid("k2").textContent=DATA.filter(function(p){return p.imp==="Complementarios";}).length;
+  eid("k3").textContent=DATA.filter(function(p){return p.imp==="Emergentes";}).length;
+  var ests=[];DATA.forEach(function(p){if(p.e&&ests.indexOf(p.e)<0)ests.push(p.e);});
+  ests.sort(function(a,b){return cnt(b)-cnt(a);});
+  var max=0;ests.forEach(function(e){if(cnt(e)>max)max=cnt(e);});if(!max)max=1;
+  eid("bars").innerHTML=ests.map(function(e){
+    var c=cnt(e),w=Math.round(c/max*100),col=COL[e]||"#153244",lbl=BDG[e]?BDG[e][1]:e;
+    return "<div class='bar-item'><span class='bar-l'>"+lbl+"</span><div class='bar-trk'><div class='bar-f' style='width:"+w+"%;background:"+col+"'></div></div><span class='bar-n'>"+c+"</span></div>";
   }).join("");
-}
-
-function parseActores(raw){
-  if(!raw||!raw.trim())return[];
-  var lines=raw.split("\n").map(function(l){return l.trim();}).filter(Boolean);
-  var groups={},order=[],solos=[];
-  lines.forEach(function(line){
-    var parts=line.split(">").map(function(p){return p.trim();}).filter(Boolean);
-    if(parts.length>=2){
-      var min=parts[0];
-      var sub=parts.slice(1).join(" \u203a ");
-      if(!groups[min]){groups[min]=[];order.push(min);}
-      groups[min].push(sub);
-    }else{solos.push(parts[0]);}
-  });
-  return{groups:groups,order:order,solos:solos};
-}
-
-function renderActores(raw){
-  var parsed=parseActores(raw);
-  var out="";
-  if(parsed.solos.length>0){
-    parsed.solos.forEach(function(s){
-      out+="<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:5px\">";
-      out+="<span style=\"width:7px;height:7px;border-radius:50%;background:#8DE2D6;flex-shrink:0;display:inline-block\"></span>";
-      out+="<span style=\"font-size:12px;font-weight:600;color:var(--text)\">"+s+"</span></div>";
-    });
-    if(parsed.order.length>0)out+="<div style=\"height:0.5px;background:var(--border);margin:8px 0\"></div>";
+  var sel=eid("fe");
+  if(sel)sel.innerHTML="<option value=''>Etapa del proyecto</option>"+ests.map(function(e){return "<option value='"+e+"'>"+(BDG[e]?BDG[e][1]:e)+"</option>";}).join("");
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  var MESES={"ene":0,"feb":1,"mar":2,"abr":3,"may":4,"jun":5,"jul":6,"ago":7,"sep":8,"oct":9,"nov":10,"dic":11};
+  function parseFecha(h){
+    var t=h.toLowerCase();
+    var m1=t.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/);
+    if(m1){var y=m1[3]?parseInt(m1[3])+(parseInt(m1[3])<100?2000:0):new Date().getFullYear();return new Date(y,parseInt(m1[2])-1,parseInt(m1[1]));}
+    var m3=t.match(/([a-z]{3})[\s\/\-](\d{2,4})/);
+    if(m3&&MESES[m3[1]]!==undefined){var y3=parseInt(m3[2])+(parseInt(m3[2])<100?2000:0);return new Date(y3,MESES[m3[1]],1);}
+    return null;
   }
-  parsed.order.forEach(function(min,i){
-    out+="<div style=\"margin-bottom:8px\">";
-    out+="<div style=\"font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:5px\">";
-    out+="<span style=\"width:8px;height:8px;border-radius:50%;background:#153244;flex-shrink:0;display:inline-block\"></span>"+min+"</div>";
-    out+="<div style=\"display:flex;flex-wrap:wrap;gap:5px;padding-left:14px\">";
-    parsed.groups[min].forEach(function(sub){
-      out+="<span style=\"font-size:10px;color:#153244;background:#e8f0f5;padding:3px 10px;border-radius:20px;font-weight:500\">"+sub+"</span>";
-    });
-    out+="</div></div>";
-    if(i<parsed.order.length-1)out+="<div style=\"height:0.5px;background:var(--border);margin:6px 0\"></div>";
+  var hitosConFecha=[];
+  DATA.forEach(function(p){
+    if(!p.h||!p.h.trim())return;
+    var f=parseFecha(p.h);
+    if(f&&f>=hoy)hitosConFecha.push({p:p,fecha:f});
   });
-  return out||"--";
+  hitosConFecha.sort(function(a,b){return a.fecha-b.fecha;});
+  HITOS=hitosConFecha.slice(0,10).map(function(x){return x.p;});
+  var de=eid("cdots");de.innerHTML="";
+  HITOS.forEach(function(_,i){var d=document.createElement("div");d.className="cdot"+(i===0?" on":"");d.onclick=function(){renderCar(i,true);};de.appendChild(d);});
+  if(HITOS.length)renderCar(0,false);
 }
 
-function openM(did){
-  var p=DATA.find(function(x){return x.n.replace(/['"\\]/g,"_")===did;});
-  if(!p)return;
-  var b=BDG[p.e]||["baj",p.e];
-  eid("mtit").textContent=p.n;
-  var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
-
-  // Seccion 1 - El proyecto
-  eid("m-desc").textContent=p.desc||"Sin descripci\u00f3n disponible.";
-  eid("m-obj").textContent=p.obj||"--";
-  eid("m-mo").textContent=p.mo||"--";
-  eid("m-te").textContent=p.te||"--";
-  eid("m-inv").textContent=p.inv||"--";
-
-  // Seccion 2 - Estado
-  eid("m-st").textContent=nl(p.s)||"--";
-  eid("m-hi").textContent=nl(p.h)||"--";
-  eid("m-ac").textContent=nl(p.a)||"--";
-  eid("m-act-wrap").innerHTML=renderActores(p.ac);
-
-  eid("mov").classList.add("open");
+function renderCar(idx,anim){
+  if(!HITOS.length)return;
+  var h=HITOS[idx],ht=nl(h.h),dia="--",mes="",urg="hc-n";
+  var re=/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/;
+  var m=ht.match(re);
+  if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");var dd=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));var diff=(dd-new Date())/86400000;urg=diff<30?"hc-u":diff<90?"hc-p":"hc-n";}
+  var card=eid("hcard");
+  function upd(){card.className="hc "+urg;eid("hp").textContent=h.n;eid("hd").textContent=dia;eid("hm").textContent=mes;eid("hx").textContent=ht.replace(re,"").trim()||ht.substring(0,80);eid("ccnt").textContent=(idx+1)+"/"+HITOS.length;document.querySelectorAll(".cdot").forEach(function(d,i){d.className="cdot"+(i===idx?" on":"");});resetCT();}
+  if(anim){card.style.opacity="0";setTimeout(function(){card.style.transition="opacity .25s";card.style.opacity="1";upd();},180);}else{upd();}
+  CIDX=idx;
 }
-function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
-function closeModalBtn(){eid("mov").classList.remove("open");}
-
-
-// Iniciar carga automatica
-cargar();
+function carNav(d){var n=(CIDX+d+HITOS.length)%HITOS.length;renderCar(n,true);}
+function resetCT(){clearInterval(CTIMER);var p=eid("cpf");p.style.transition="none";p.style.width="0%";setTimeout(function(){p.style.transition="width 25s linear";p.style.width="100%";},50);CTIMER=setInterval(function(){carNav(1);},25000);}
 
 function parseMonto(s){
   if(!s)return 0;
@@ -702,11 +539,13 @@ function renderInversion(){
     if(m>0&&p.inv&&montos[p.inv]!==undefined){montos[p.inv]+=m;proyConMonto.push({n:p.n,m:m,t:p.inv});}
   });
   function anim(id,v){var el=eid(id);if(!el)return;if(v<=0){el.textContent="--";return;}var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
-  function animBdg(id,v){var el=eid(id);if(!el)return;var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
-  animBdg("bdg-pub",counts["P\u00fablica"]);
-  animBdg("bdg-priv",counts["Privada"]);
-  animBdg("bdg-mix",counts["Mixta"]);
-  animBdg("bdg-noval",counts["No valorizada"]);
+  anim("bdg-pub",counts["P\u00fablica"]);anim("bdg-priv",counts["Privada"]);anim("bdg-mix",counts["Mixta"]);anim("bdg-noval",counts["No valorizada"]);
+  var total=montos["P\u00fablica"]+montos["Privada"]+montos["Mixta"];
+  var tot=Math.round(total)||1;
+  anim("inv-pub",Math.round(montos["P\u00fablica"]));anim("inv-priv",Math.round(montos["Privada"]));anim("inv-mix",Math.round(montos["Mixta"]));anim("inv-total",Math.round(total));
+  var elPubPct=eid("inv-pub-pct");if(elPubPct)elPubPct.textContent=montos["P\u00fablica"]>0?Math.round(montos["P\u00fablica"]/tot*100)+"%":"";
+  var elPrivPct=eid("inv-priv-pct");if(elPrivPct)elPrivPct.textContent=montos["Privada"]>0?Math.round(montos["Privada"]/tot*100)+"%":"";
+  var elMixPct=eid("inv-mix-pct");if(elMixPct)elMixPct.textContent=montos["Mixta"]>0?Math.round(montos["Mixta"]/tot*100)+"%":"";
   var canvas=eid("donut-inv");
   if(canvas){
     if(_donutChart)_donutChart.destroy();
@@ -714,25 +553,9 @@ function renderInversion(){
     ["P\u00fablica","Privada","Mixta"].forEach(function(k){if(montos[k]>0){labels.push(k);data.push(Math.round(montos[k]));colors.push(IC[k]);}});
     if(labels.length>0){
       var totChart=data.reduce(function(a,b){return a+b;},0)||1;
-      _donutChart=new Chart(canvas,{type:"doughnut",data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},
-        options:{responsive:true,maintainAspectRatio:false,cutout:"65%",
-          plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.label+": USD "+c.raw+"M ("+Math.round(c.raw/totChart*100)+"%)";}}},
-          datalabels:{display:false}},
-          animation:{animateRotate:true,duration:900}
-        }
-      });
+      _donutChart=new Chart(canvas,{type:"doughnut",data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"65%",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.label+": USD "+c.raw+"M ("+Math.round(c.raw/totChart*100)+"%)";}}},animation:{animateRotate:true,duration:900}}}});
     }
   }
-  var total=montos["P\u00fablica"]+montos["Privada"]+montos["Mixta"];
-  var tot=Math.round(total)||1;
-  anim("inv-pub",Math.round(montos["P\u00fablica"]));
-  anim("inv-priv",Math.round(montos["Privada"]));
-  anim("inv-mix",Math.round(montos["Mixta"]));
-  anim("inv-total",Math.round(total));
-  var elPubPct=eid("inv-pub-pct");if(elPubPct)elPubPct.textContent=montos["P\u00fablica"]>0?Math.round(montos["P\u00fablica"]/tot*100)+"%":"";
-  var elPrivPct=eid("inv-priv-pct");if(elPrivPct)elPrivPct.textContent=montos["Privada"]>0?Math.round(montos["Privada"]/tot*100)+"%":"";
-  var elMixPct=eid("inv-mix-pct");if(elMixPct)elMixPct.textContent=montos["Mixta"]>0?Math.round(montos["Mixta"]/tot*100)+"%":"";
-  // Lista ranking sin barras
   var rankEl=eid("inv-ranking");
   if(rankEl){
     var sorted=proyConMonto.slice().sort(function(a,b){return b.m-a.m;});
@@ -740,11 +563,11 @@ function renderInversion(){
     sorted.forEach(function(d,i){
       var col=IC[d.t]||"#888";
       var val=d.m>=1?"USD "+Math.round(d.m)+"M":"USD "+(d.m*1000).toFixed(0)+"K";
-      out+="<div style=\"display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border)\">";
-      out+="<span style=\"font-size:10px;color:var(--muted);width:16px;text-align:right;flex-shrink:0\">"+(i+1)+"</span>";
-      out+="<span style=\"width:7px;height:7px;border-radius:50%;background:"+col+";display:inline-block;flex-shrink:0\"></span>";
-      out+="<span style=\"font-size:11px;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\">"+d.n+"</span>";
-      out+="<span style=\"font-size:11px;font-weight:700;color:var(--text);font-family:DM Mono,monospace;flex-shrink:0\">"+val+"</span>";
+      out+="<div style='display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border)'>";
+      out+="<span style='font-size:10px;color:var(--muted);width:16px;text-align:right;flex-shrink:0'>"+(i+1)+"</span>";
+      out+="<span style='width:7px;height:7px;border-radius:50%;background:"+col+";display:inline-block;flex-shrink:0'></span>";
+      out+="<span style='font-size:11px;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+d.n+"</span>";
+      out+="<span style='font-size:11px;font-weight:700;color:var(--text);font-family:DM Mono,monospace;flex-shrink:0'>"+val+"</span>";
       out+="</div>";
     });
     rankEl.innerHTML=out;
@@ -755,34 +578,218 @@ function openInvModal(tipo){
   var proyectos=DATA.filter(function(p){return p.inv===tipo;});
   eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
   var out="";
-  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  for(var i=0;i<proyectos.length;i++){
+    out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";
+  }
   eid("inv-lista").innerHTML=out;
   eid("inv-ov").classList.add("open");
 }
 function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
-ch(function(d,i){
-      var col=IC[d.t]||"#888";
-      var val=d.m>=1?"USD "+Math.round(d.m)+"M":"USD "+(d.m*1000).toFixed(0)+"K";
-      out+="<div style=\"display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border)\">";
-      out+="<span style=\"font-size:10px;color:var(--muted);width:16px;text-align:right;flex-shrink:0\">"+(i+1)+"</span>";
-      out+="<span style=\"width:7px;height:7px;border-radius:50%;background:"+col+";display:inline-block;flex-shrink:0\"></span>";
-      out+="<span style=\"font-size:11px;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\">"+d.n+"</span>";
-      out+="<span style=\"font-size:11px;font-weight:700;color:var(--text);font-family:DM Mono,monospace;flex-shrink:0\">"+val+"</span>";
-      out+="</div>";
+
+function renderComunas(){
+  var COLS={"Comuna 1":"#153244","Comuna 4":"#1e7a9e","Comuna 8":"#FFCB00","Comuna 9":"#8DE2D6"};
+  var BARRIOS={"Comuna 1":"Const. \u00b7 S.Telmo \u00b7 Monserrat \u00b7 Pto.Madero","Comuna 4":"La Boca \u00b7 Barracas \u00b7 N.Pompeya \u00b7 P.Patricios","Comuna 8":"V.Soldati \u00b7 V.Lugano \u00b7 V.Riachuelo","Comuna 9":"Liniers \u00b7 Mataderos \u00b7 P.Avellaneda"};
+  var ECOLS={"En ejecuci\u00f3n":"#00c896","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En tramitaci\u00f3n de permisos":"#e07830","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En proceso licitatorio":"#FFCB00"};
+  var grupos={"Comuna 1":[],"Comuna 4":[],"Comuna 8":[],"Comuna 9":[]};
+  DATA.forEach(function(p){Object.keys(grupos).forEach(function(com){if(p.co&&p.co.indexOf(com)>=0)grupos[com].push(p);});});
+  var container=eid("com-cards");if(!container)return;container.innerHTML="";
+  Object.keys(grupos).forEach(function(com){
+    var proyectos=grupos[com],n=proyectos.length,col=COLS[com]||"#153244";
+    var estados={};proyectos.forEach(function(p){estados[p.e]=(estados[p.e]||0)+1;});
+    var card=document.createElement("div");
+    card.style.cssText="background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .15s;overflow:hidden;border-top:4px solid "+col;
+    card.onmouseover=function(){this.style.transform="translateY(-2px)";this.style.boxShadow="0 4px 16px rgba(21,50,68,.1)";};
+    card.onmouseout=function(){this.style.transform="";this.style.boxShadow="";};
+    card.onclick=function(){openCom(com);};
+    var segsHTML="<div style='display:flex;gap:3px;margin:8px 0'>";
+    Object.keys(estados).forEach(function(e){
+      var pct=Math.round(estados[e]/Math.max(n,1)*100);
+      segsHTML+="<div title='"+e+": "+estados[e]+"' style='height:5px;border-radius:3px;background:"+(ECOLS[e]||"#888")+";width:"+pct+"%'></div>";
     });
-    rankEl.innerHTML=out;
-  }
+    segsHTML+="</div>";
+    card.innerHTML="<div style='font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em'>"+com+"</div>"
+      +"<div style='font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.4'>"+BARRIOS[com]+"</div>"
+      +"<div style='font-size:34px;font-weight:700;color:"+col+";line-height:1'>"+n+"</div>"
+      +"<div style='font-size:10px;color:var(--muted)'>proyectos</div>"
+      +segsHTML
+      +"<div style='font-size:9px;color:var(--muted);text-align:right'>Ver proyectos \u2192</div>";
+    container.appendChild(card);
+  });
+  window._comData=grupos;
 }
 
-function openInvModal(tipo){
-  var proyectos=DATA.filter(function(p){return p.inv===tipo;});
-  eid("inv-tit").textContent=tipo+" ("+proyectos.length+" proyectos)";
-  var out="";
-  for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
-  eid("inv-lista").innerHTML=out;
-  eid("inv-ov").classList.add("open");
+function openCom(com){
+  var proyectos=(window._comData||{})[com]||[];
+  eid("com-tit").textContent=com+" \u2014 "+proyectos.length+" proyectos";
+  var out="";for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  eid("com-lista").innerHTML=out;eid("com-ov").classList.add("open");
 }
-function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
+function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.remove("open");}
+
+function openKpiModal(cat){
+  var proyectos=DATA.filter(function(p){return p.imp===cat;});
+  eid("kpi-tit").textContent=cat+" ("+proyectos.length+" proyectos)";
+  var out="";for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  eid("kpi-lista").innerHTML=out;eid("kpi-ov").classList.add("open");
+}
+function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
+
+function renderCards(){
+  var fe=eid("fe"),ft=eid("ft"),fi=eid("fi"),fc=eid("fc"),fb=eid("fb");
+  var fev=fe?fe.value:"",ftv=ft?ft.value:"",fiv=fi?fi.value:"",fcv=fc?fc.value:"",fbv=fb?fb.value:"";
+  var f=DATA.filter(function(p){
+    if(fev&&p.e!==fev)return false;
+    if(ftv&&p.te!==ftv)return false;
+    if(fiv&&p.inv!==fiv)return false;
+    if(fcv&&p.co.indexOf(fcv)<0)return false;
+    if(fbv&&p.ba.indexOf(fbv)<0)return false;
+    if(BUSQ&&p.n.toLowerCase().indexOf(BUSQ)<0&&p.a.toLowerCase().indexOf(BUSQ)<0&&p.ac.toLowerCase().indexOf(BUSQ)<0)return false;
+    return true;
+  });
+  var clbl=eid("clbl");if(clbl)clbl.textContent=f.length+" proyecto"+(f.length!==1?"s":"")+" encontrado"+(f.length!==1?"s":"");
+  if(!f.length){eid("cards").innerHTML="<div class='empty'>No se encontraron proyectos</div>";return;}
+  eid("cards").innerHTML=f.map(function(p){
+    var b=BDG[p.e]||["baj",p.e],ac=COL[p.e]||"#153244";
+    var st=nl(p.s).substring(0,85),ht=nl(p.h).substring(0,50);
+    var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    var did=p.n.replace(/['"\\]/g,"_");
+    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div><span class='bdg "+b[0]+"'>"+b[1]+"</span>"+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
+  }).join("");
+}
+function setF(e){FILTRO=e;renderCards();}
+function buscar(v){BUSQ=v.toLowerCase();renderCards();}
+
+function parseActores(raw){
+  if(!raw||!raw.trim())return{groups:{},order:[],solos:[]};
+  var lines=raw.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+  var groups={},order=[],solos=[];
+  lines.forEach(function(line){
+    var parts=line.split(">").map(function(p){return p.trim();}).filter(Boolean);
+    if(parts.length>=2){
+      var min=parts[0],sub=parts.slice(1).join(" \u203a ");
+      if(!groups[min]){groups[min]=[];order.push(min);}
+      groups[min].push(sub);
+    }else{solos.push(parts[0]);}
+  });
+  return{groups:groups,order:order,solos:solos};
+}
+function renderActores(raw){
+  var parsed=parseActores(raw);var out="";
+  if(parsed.solos.length>0){
+    parsed.solos.forEach(function(s){out+="<div style='display:flex;align-items:center;gap:6px;margin-bottom:5px'><span style='width:7px;height:7px;border-radius:50%;background:#8DE2D6;flex-shrink:0;display:inline-block'></span><span style='font-size:12px;font-weight:600;color:var(--text)'>"+s+"</span></div>";});
+    if(parsed.order.length>0)out+="<div style='height:0.5px;background:var(--border);margin:8px 0'></div>";
+  }
+  parsed.order.forEach(function(min,i){
+    out+="<div style='margin-bottom:8px'><div style='font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:5px'><span style='width:8px;height:8px;border-radius:50%;background:#153244;flex-shrink:0;display:inline-block'></span>"+min+"</div>";
+    out+="<div style='display:flex;flex-wrap:wrap;gap:5px;padding-left:14px'>";
+    parsed.groups[min].forEach(function(sub){out+="<span style='font-size:10px;color:#153244;background:#e8f0f5;padding:3px 10px;border-radius:20px;font-weight:500'>"+sub+"</span>";});
+    out+="</div></div>";
+    if(i<parsed.order.length-1)out+="<div style='height:0.5px;background:var(--border);margin:6px 0'></div>";
+  });
+  return out||"--";
+}
+
+function openM(did){
+  var p=DATA.find(function(x){return x.n.replace(/['"\\]/g,"_")===did;});
+  if(!p)return;
+  var b=BDG[p.e]||["baj",p.e];
+  eid("mtit").textContent=p.n;
+  var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
+  eid("m-desc").textContent=p.desc||"Sin descripci\u00f3n disponible.";
+  eid("m-obj").textContent=p.obj||"--";
+  eid("m-mo").textContent=p.mo||"--";
+  eid("m-te").textContent=p.te||"--";
+  eid("m-inv").textContent=p.inv||"--";
+  eid("m-st").textContent=nl(p.s)||"--";
+  eid("m-hi").textContent=nl(p.h)||"--";
+  eid("m-ac").textContent=nl(p.a)||"--";
+  eid("m-act-wrap").innerHTML=renderActores(p.ac);
+  eid("mov").classList.add("open");
+}
+function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
+function closeModalBtn(){eid("mov").classList.remove("open");}
+
+function nav(sec,el){
+  ["ind","proy","mapa","logros"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
+  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
+  el.classList.add("active");
+  if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
+  if(sec==="logros"&&!_logrosLoaded){loadLogros();}
+}
+
+function initMap(){
+  var CM={yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversi\u00f3n p\u00fablica"},blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversi\u00f3n privada"},pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada"}};
+  var m=L.map("map").setView([-34.655,-58.43],13);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
+  PINES.forEach(function(p){
+    var c=CM[p.color]||CM.yellow;
+    var popup="<div style='font-size:13px;font-weight:600;color:#153244;margin-bottom:4px'>"+p.name+"</div><span style='font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600'>"+c.l+"</span>";
+    var icon=L.divIcon({html:"<div style='width:12px;height:12px;border-radius:50%;background:"+c.f+";border:2px solid "+c.s+";box-shadow:0 1px 4px rgba(0,0,0,.3)'></div>",className:"",iconSize:[12,12],iconAnchor:[6,6]});
+    L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup).addTo(m);
+  });
+  setTimeout(function(){m.invalidateSize();},200);
+}
+
+function loadLogros(){
+  fetch("logros.json?t="+Date.now())
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(function(data){
+      window._logrosData=data;_logrosLoaded=true;renderLogros();
+    })
+    .catch(function(err){
+      var tl=eid("logros-timeline");
+      if(tl)tl.innerHTML="<div style='color:var(--muted);font-size:12px;padding:20px'>No se pudieron cargar los logros: "+err.message+"</div>";
+    });
+}
+
+function renderLogros(){
+  var data=window._logrosData||[];
+  var selYr=eid("logros-yr"),selMes=eid("logros-mes");
+  var filtYr=selYr?selYr.value:"",filtMes=selMes?selMes.value:"";
+  var filtered=data.filter(function(l){
+    var parts=l.fecha.split("/");
+    if(filtYr&&parts[2]&&parts[2].trim()!==filtYr)return false;
+    if(filtMes&&parts[1]&&parts[1].trim()!==filtMes)return false;
+    return true;
+  });
+  var byYear={},years=[];
+  filtered.forEach(function(l){
+    var parts=l.fecha.split("/");var yr=parts.length>=3?parts[2].trim():"";
+    if(!yr)return;
+    if(!byYear[yr]){byYear[yr]=[];years.push(yr);}
+    byYear[yr].push(l);
+  });
+  years.sort();
+  var tl=eid("logros-timeline");tl.innerHTML="";
+  if(!filtered.length){tl.innerHTML="<div style='font-size:12px;color:var(--muted);padding:20px'>No hay logros para el per\u00edodo seleccionado.</div>";return;}
+  var MESES_N=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  years.forEach(function(yr){
+    if(!byYear[yr])return;
+    var yrDiv=document.createElement("div");
+    yrDiv.style.cssText="display:flex;align-items:center;gap:10px;margin-bottom:14px;position:relative";
+    yrDiv.innerHTML="<div style='width:16px;height:16px;border-radius:50%;background:var(--azul);border:3px solid #fff;box-shadow:0 0 0 2px var(--azul);position:absolute;left:-26px;z-index:1'></div><span style='font-size:13px;font-weight:700;color:var(--azul);padding:4px 14px;background:var(--azul3);border-radius:20px'>"+yr+"</span>";
+    tl.appendChild(yrDiv);
+    var itemsDiv=document.createElement("div");itemsDiv.style.cssText="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;margin-left:8px";
+    byYear[yr].forEach(function(l){
+      var card=document.createElement("div");
+      card.style.cssText="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:all .15s";
+      card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.transform="translateX(3px)";};
+      card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.transform="";};
+      var parts=l.fecha.split("/");var dd=parts[0]||"";var mm=parseInt(parts[1]||"0");var fechaFmt=dd+" "+(MESES_N[mm]||"");
+      card.innerHTML="<div style='font-size:10px;font-weight:600;color:var(--muted);font-family:DM Mono,monospace;white-space:nowrap;padding-top:2px;min-width:44px'>"+fechaFmt+"</div>"
+        +"<div style='width:6px;height:6px;border-radius:50%;background:var(--verde);flex-shrink:0;margin-top:5px'></div>"
+        +"<div style='flex:1'><div style='font-size:12px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:2px'>"+l.logro+"</div>"
+        +(l.proyecto?"<div style='font-size:10px;color:var(--azul2);font-weight:500;margin-top:3px'>"+l.proyecto+"</div>":"")
+        +(l.tematica?"<span style='font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;background:#e8f0f5;color:var(--azul);display:inline-block;margin-top:4px'>"+l.tematica+"</span>":"")
+        +"</div>";
+      itemsDiv.appendChild(card);
+    });
+    tl.appendChild(itemsDiv);
+  });
+}
+
+cargar();
+
 </script>
 </body>
 </html>
