@@ -11,7 +11,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Impulsa el desarrollo de un centro logístico en el sur de la Ciudad, incorporando naves industriales, áreas administrativas y nuevas calles públicas. La iniciativa amplía la infraestructura para empresas y fortalece la actividad productiva, promoviendo una mayor eficiencia en el uso del suelo. Además, incorpora criterios de sustentabilidad y nuevas tecnologías aplicadas a la logística.",
 "obj": "Potenciar el desarrollo productivo, generar más de 2.000 puestos de trabajo y consolidar al Sur como un nodo estratégico para la inversión y la actividad logística."
 },
@@ -27,7 +27,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En tramitación de permisos",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Incorpora nuevas viviendas y espacios de uso común en el Barrio Olímpico, ampliando la oferta residencial y acompañando el crecimiento del área. La iniciativa promueve una mayor densidad y diversidad de usos, integrando espacios que favorecen la vida cotidiana y el uso del entorno. A partir de un diseño urbano que prioriza la accesibilidad y la cercanía, se busca consolidar un entorno dinámico y en desarrollo.",
 "obj": "Consolidar el desarrollo del barrio, fortalecer su tejido urbano y promover un entorno más accesible, activo y con mejor calidad de vida."
 },
@@ -43,7 +43,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Propone transformar el espacio bajo la autopista en un nuevo corredor urbano con usos culturales, comerciales y comunitarios. La iniciativa incorpora un paseo peatonal y mejora la conectividad del barrio, fortaleciendo la integración con el entorno y el espacio público.",
 "obj": "Recuperar y activar el bajo autopista mediante un desarrollo urbano que impulse la inversión, promueva el uso del espacio público y consolide un nuevo polo de actividad en La Boca."
 },
@@ -59,7 +59,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Propone la revitalización de la calle Necochea, un corredor histórico de La Boca, mediante una primera etapa de intervención urbana que mejora la caminabilidad y el espacio público, recuperando su valor cultural, turístico y barrial.",
 "obj": "Mejorar la seguridad, atraer inversión privada y reactivar el entorno."
 },
@@ -75,7 +75,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Proyecto de infraestructura cultural y de espectáculos que incorpora un nuevo espacio para shows y festivales masivos en la Ciudad de Buenos Aires, con estándares internacionales de seguridad, confort y sustentabilidad. El predio admite distintas configuraciones de escenario y tribunas, con una capacidad máxima de hasta 60.000 personas.",
 "obj": "Formalizar y potenciar la realización de eventos culturales, impulsar la generación de empleo, promover la actividad económica y fortalecer el desarrollo cultural del área."
 },
@@ -91,7 +91,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "",
 "obj": ""
 },
@@ -107,7 +107,7 @@
 "co": "Comuna 4",
 "ba": "Nueva Pompeya",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -123,7 +123,7 @@
 "co": "Comuna 4",
 "ba": "Nueva Pompeya",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -139,7 +139,7 @@
 "co": "Comuna 4",
 "ba": "Nueva Pompeya",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -155,7 +155,7 @@
 "co": "Comuna 4",
 "ba": "Nueva Pompeya",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -171,7 +171,7 @@
 "co": "Comuna 1",
 "ba": "Constitución",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -187,7 +187,7 @@
 "co": "Comuna 1",
 "ba": "Constitución",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -203,7 +203,7 @@
 "co": "Comuna 4",
 "ba": "La Boca, Barracas",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "",
 "obj": ""
 },
@@ -219,7 +219,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "",
 "obj": ""
 },
@@ -235,7 +235,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "",
 "obj": ""
 },
@@ -251,7 +251,7 @@
 "co": "Comuna 4",
 "ba": "Barracas",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "El proyecto prevé la construcción de una rampa pública de remo en Barracas, sobre el Riachuelo a la altura de la calle Santa Elena, destinada a recuperar la práctica del remo en el área. La iniciativa se complementa con un servicio de limpieza y mantenimiento del espejo de agua entre los puentes Bosch y Vélez Sarsfield.",
 "obj": "Promover la actividad deportiva, mejorar las condiciones ambientales del Riachuelo y revalorizar el borde ribereño como espacio de uso recreativo."
 },
@@ -267,7 +267,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "Busca consolidar el desarrollo urbano del barrio mediante la incorporación de nuevas viviendas y espacios de uso común, promoviendo un entorno activo y accesible. Para su implementación, se impulsó un esquema de venta de lotes al sector privado acompañado por incentivos, que fue reformulado tras una primera subasta con baja participación. La segunda instancia resultó exitosa, con la venta de 18 de los 20 lotes y 19 proyectos actualmente en desarrollo.",
 "obj": "Revalorizar el barrio y fortalecer el tejido urbano, incorporando espacios recreativos, culturales, deportivos y de innovación que acompañen el crecimiento del área."
 },
@@ -283,7 +283,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -299,7 +299,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano, Villa Riachuelo, Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -315,7 +315,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati, Villa Lugano, Villa Riachuelo",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "El proyecto implica un diagnóstico del estado de conexión de los servicios de agua, luz y gas de toda la Comuna 8, para poder realizar las obras correspondientes que garanticen la conectividad todos los vecinos.",
 "obj": "Garantizar servicios para los proyectos del polígono de las av. F. de La Cruz, Escalada, Roca y Au. Cámpora."
 },
@@ -331,7 +331,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "El proyecto contempla la instalación de cinco salas de cine en el predio de Parque Brown, ampliando la infraestructura cultural y de entretenimiento del Sur de la Ciudad. La iniciativa se desarrolla sobre una superficie total de 57.556,60 m² y se integra al entorno urbano como un nuevo espacio de encuentro para vecinos.",
 "obj": "Ampliar la oferta cultural y recreativa, promover la actividad económica local y consolidar a Parque Brown como un polo de atracción y uso social."
 },
@@ -347,7 +347,7 @@
 "co": "Comuna 8",
 "ba": "La Boca, Nueva Pompeya, Villa Lugano, Villa Soldati, Villa Riachuelo",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -363,7 +363,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la construcción y posterior administración de un centro de transferencia de cargas ubicado en Villa Soldati, delimitado por las avenidas Coronel Roca y 27 de Febrero, la calle Pergamino y la Autopista Presidente Héctor J. Cámpora (AU-7). La iniciativa prevé el desarrollo de 185.481 m² edificados destinados a actividades logísticas y de transferencia de cargas.",
 "obj": "Sanear un área previamente degradada y transformarla en un centro logístico planificado, que optimice el transporte de cargas, mejore la organización del sistema logístico urbano y contribuya al desarrollo productivo del área."
 },
@@ -379,7 +379,7 @@
 "co": "Comuna 8",
 "ba": "Villa Riachuelo",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "",
 "obj": ""
 },
@@ -395,7 +395,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -411,7 +411,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "Contempla la concesión para reconvertir el predio en un hotel con 102 habitaciones destinadas a deportistas. La iniciativa se desarrolla sobre 205 lotes aptos para su desarrollo y propone infraestructura funcional, accesible y adaptada a las necesidades de jóvenes deportistas.",
 "obj": "Brindar alojamiento adecuado para deportistas, promoviendo el bienestar, la convivencia y la integración, y fortaleciendo la infraestructura vinculada a la actividad deportiva."
 },
@@ -427,7 +427,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "Destinado a la medicina deportiva y la rehabilitación física, orientado a atletas profesionales y amateurs, así como a personas que requieren rehabilitación motriz. Contempla la construcción de un edificio moderno y accesible, de una sola planta y 2.054 m², con áreas especializadas en fisiología, cardiología, kinesiología, diagnóstico por imagen, hidroterapia y programas de prevención y readaptación.",
 "obj": "Ofrecer atención integral en salud y rehabilitación física, fortaleciendo la infraestructura deportiva y ampliando el acceso a servicios especializados."
 },
@@ -443,7 +443,7 @@
 "co": "Comuna 4, Comuna 8",
 "ba": "Barracas, Parque Patricios",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la construcción de estacionamientos subterráneos disuasorios, desarrollados por privados bajo espacios públicos como plazas y parques en distintas comunas de la Ciudad. La iniciativa incluye intervenciones en Plaza Lavardén, Parque España, Plaza Armenia y la Plazoleta Carlos Pellegrini, preservando el paisaje urbano y el patrimonio existente.",
 "obj": "Liberar superficie en calzadas, mejorar la circulación y optimizar el uso del espacio público mediante obras subterráneas que no alteran el entorno ni los valores históricos de los espacios intervenidos."
 },
@@ -459,7 +459,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -475,7 +475,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -491,7 +491,7 @@
 "co": "Comuna 4, Comuna 8",
 "ba": "Villa Soldati, Parque Patricios",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -507,7 +507,7 @@
 "co": "Comuna 8",
 "ba": "Villa Riachuelo",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto propone el desarrollo del Parque de la Ribera Sur como un nuevo espacio de esparcimiento y recreación, a partir de la incorporación de canchas deportivas impulsadas por AAAJ y la instalación de una planta embotelladora de agua operada por Sparkling. La iniciativa combina infraestructura deportiva con servicios vinculados a la hidratación, integrando usos recreativos y productivos dentro del parque.",
 "obj": "Promover la actividad física y el uso recreativo del espacio público, garantizar el acceso a puntos de hidratación, impulsar prácticas sustentables vinculadas al consumo de agua y generar actividad económica y empleo en el entorno."
 },
@@ -523,7 +523,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -539,7 +539,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la firma de un convenio entre la Secretaría de Deportes, la Subsecretaría de Gestión Comunal, y la Asociación Del Sur Rugby & Hockey Club, para que el Club pueda mudar su sede deportiva al Parque Indoamericano, desarrollando el Complejo Deportivo “Del Sur Rugby y Hockey”. Este contará con: 1 cancha de hockey de césped sintético, 2 canchas de rugby reglamentarias, 4 canchas de tenis, 7 vestuarios y espacio de estacionamiento. El convenio establece la obligatoriedad de que el Club construya las instalaciones y las deje a disposición para que el GCBA pueda utilizarlas en horarios a coordinar con el Club.",
 "obj": "Promover la práctica deportiva y el acceso a actividades recreativas para la comunidad del Sur de la ciudad."
 },
@@ -555,7 +555,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -571,7 +571,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto propone reconvertir el estadio en un espacio multipropósito para eventos culturales, musicales y deportivos, mediante el desarrollo de una nueva marca y una estrategia de posicionamiento impulsada por el sector privado. El predio cuenta con capacidad para 15.500 espectadores, áreas aptas para eventos al aire libre y una infraestructura de estacionamiento acorde a eventos de gran convocatoria.",
 "obj": "Consolidar al estadio como un espacio de referencia para eventos, atraer inversión privada y ampliar la oferta cultural y de entretenimiento en el Sur de la Ciudad."
 },
@@ -587,7 +587,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto prevé la construcción de una nueva bajada vial en el entorno del futuro centro logístico, con el fin de adecuar la infraestructura a las nuevas dinámicas de circulación asociadas al desarrollo del Polo Logístico.",
 "obj": "Reformular la movilidad del área para anticipar el incremento del flujo vehicular, especialmente de transporte pesado, ordenar el tránsito y mejorar la seguridad y la fluidez en los accesos."
 },
@@ -603,7 +603,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la construcción de una nave logística de 3.270 m² ubicada en Villa Soldati, diseñada para operaciones de almacenamiento y logística. La propuesta incluye una estructura moderna, con altura operativa adecuada, piso industrial y equipamiento básico para un funcionamiento eficiente y seguro.",
 "obj": "Impulsar el desarrollo de infraestructura logística que acompañe la actividad productiva, fomente la inversión y fortalezca el perfil económico del área."
 },
@@ -619,7 +619,7 @@
 "co": "Comuna 9",
 "ba": "Parque Avellaneda, Villa Lugano",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la refuncionalización integral del corredor de la Autopista Dellepiane mediante un rediseño vial que incorpora carriles exclusivos para colectivos, mejoras en la conectividad del entorno y la creación de un parque lineal a ambos lados de la traza, a lo largo de 4,6 km.",
 "obj": "Generar más de 150.000 m² de nuevas áreas verdes en una zona de alto tránsito, mejorar la seguridad vial, elevar la calidad ambiental y fortalecer la integración urbana, con impacto positivo en quienes circulan y viven en el área."
 },
@@ -635,7 +635,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "Diseñar una estrategia urbanística y comercial para continuar potenciando el desarrollo de la zona del Barrio Olímpico y periferias con una mirada de inversión mayoritariamente privada.",
 "obj": ""
 },
@@ -651,7 +651,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -667,7 +667,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -683,7 +683,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -699,7 +699,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -715,12 +715,12 @@
 "co": "Comuna 4",
 "ba": "Barracas",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
 {
-"n": "HIPERMERCADO",
+"n": "CARREFOUR",
 "s": "Firma usufructo CBAS - San Lorenzo 26/05",
 "a": "",
 "h": "",
@@ -731,7 +731,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En tramitación de permisos",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la instalación de un hipermercado en la intersección de Escalada y avenida Roca, junto con la construcción de una nueva calle a cargo del desarrollador privado, destinada a mejorar la conectividad y la circulación en el área.",
 "obj": "Impulsar el desarrollo comercial, aumentar el flujo peatonal y facilitar el acceso a bienes y servicios, promoviendo la actividad económica del entorno."
 },
@@ -747,7 +747,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -763,7 +763,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -779,7 +779,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En proceso licitatorio",
-"imp": "",
+"imp": "Estratégicos",
 "desc": "El proyecto Torre Espacial se enmarca en el proceso de puesta en valor del Parque de la Ciudad y contempla la renovación integral de sus ascensores, mediante la adquisición, instalación y mantenimiento de dos nuevos equipos que reemplazarán a los existentes. Esta intervención permitirá recuperar el mirador superior y habilitarlo como una atracción pública segura.",
 "obj": "Reactivar un hito emblemático del parque, fortalecer su atractivo turístico y acompañar el desarrollo del entorno, generando condiciones para atraer inversión privada y potenciar el proyecto a largo plazo."
 },
@@ -795,7 +795,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -811,7 +811,7 @@
 "co": "Comuna 4",
 "ba": "Barracas",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -827,7 +827,7 @@
 "co": "Comuna 4, Comuna 8",
 "ba": "Villa Lugano, Nueva Pompeya",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -843,7 +843,7 @@
 "co": "",
 "ba": "",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto consiste en realizar el seguimiento",
 "obj": ""
 },
@@ -859,7 +859,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -875,7 +875,7 @@
 "co": "",
 "ba": "",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -891,7 +891,7 @@
 "co": "Comuna 1",
 "ba": "Puerto Madero",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto consiste en la construcción de una nueva Vuelta al Mundo en el Dique 1 de Puerto Madero, incorporando un nuevo hito urbano que se integra al entorno costero y al paisaje de la Ciudad. La iniciativa busca crear un pasaje cultural y atractivo que refuerce la conexión entre Puerto Madero y La Boca, sumando un nuevo espacio de permanencia y disfrute.",
 "obj": "Revalorizar el espacio público, fortalecer el atractivo turístico y generar un nuevo punto de interés cultural que potencie la integración urbana entre ambos barrios."
 },
@@ -907,7 +907,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati, Villa Lugano",
 "etapa": "Finalizado",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -923,7 +923,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En ajustes del proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la modificación y ampliación del inmueble ubicado en Pinzón 401, incluyendo una demolición parcial con criterios de preservación patrimonial, para construir un edificio de viviendas con un museo en la planta baja como parte del Museo MARCO.",
 "obj": "Poner en valor el inmueble mediante un desarrollo que combine usos residenciales y culturales, fortaleciendo la oferta habitacional de la zona y expandiendo el alcance del Museo MARCO como espacio de referencia artística y patrimonial."
 },
@@ -939,7 +939,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -955,7 +955,7 @@
 "co": "Comuna 9",
 "ba": "Mataderos",
 "etapa": "En armado de proyecto",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -971,7 +971,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "",
+"imp": "Complementarios",
 "desc": "Contempla la instalación de puntos gastronómicos dentro del Parque de la Ciudad, a partir de una iniciativa de desarrollo privado que busca ampliar y diversificar la oferta de servicios del predio. La propuesta se integra al entorno del parque, acompañando las actividades recreativas, culturales y deportivas, y generando nuevos espacios de permanencia y disfrute para quienes lo visitan.",
 "obj": "Potenciar la experiencia en el Parque de la Ciudad mediante una oferta gastronómica de calidad, fomentar la actividad económica vinculada al ocio y fortalecer el atractivo del parque como espacio activo durante todo el año."
 },
@@ -987,7 +987,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "Finalizado",
-"imp": "",
+"imp": "Finalizado",
 "desc": "El proyecto contempla la construcción de un cerco perimetral que delimite los tres edificios ubicados en el Parque Olímpico —IUSE, Centro de Rehabilitación y Hotel—, con el fin de ordenar los accesos y jerarquizar el entorno inmediato. La intervención se integra al conjunto edilicio, aportando una solución clara y funcional para la circulación y el uso del predio.",
 "obj": "Mejorar la organización y la seguridad del Parque Olímpico, optimizando el control de accesos y fortaleciendo el funcionamiento integral de los edificios que lo componen."
 },
@@ -1003,7 +1003,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -1019,7 +1019,7 @@
 "co": "Comuna 4, Comuna 9",
 "ba": "La Boca, Mataderos",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -1035,23 +1035,7 @@
 "co": "Comuna 4",
 "ba": "Nueva Pompeya",
 "etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "SMART FIT",
-"s": "En stand-by",
-"a": "",
-"h": "",
-"ac": "Vicejefatura de Gobierno > SS Ambiente\n Min. Espacio Público e Higiene Urbana\n Min. Seguridad > Sec. Seguridad > SS Seguridad en Eventos Masivos y Deportivos\n Min. Movilidad e Infraestructura > Sec. Tránsito",
-"mo": "USD 1 M",
-"te": "Comercial y gastronómico",
-"inv": "Privada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
+"imp": "Emergentes",
 "desc": "",
 "obj": ""
 },
@@ -1067,7 +1051,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -1083,23 +1067,7 @@
 "co": "Comuna 4",
 "ba": "La Boca",
 "etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "CLUB UNIDOS DE POMPEYA",
-"s": "En stand-by",
-"a": "",
-"h": "",
-"ac": "",
-"mo": "",
-"te": "Deportes",
-"inv": "No valorizada",
-"co": "Comuna 4",
-"ba": "Nueva Pompeya",
-"etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -1115,57 +1083,9 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto de Corredor Verde Climático y mejoramiento de la conectividad de la Reserva Ecológica Lago Lugano contempla la plantación de 49 nuevos ejemplares de arbolado sobre la calle 23 de Junio, fortaleciendo la continuidad ambiental y la integración del entorno natural con el espacio urbano.",
 "obj": "Mejorar la conectividad ecológica de la Reserva Lago Lugano, contribuir a la mitigación del cambio climático y promover un entorno urbano más saludable mediante la incorporación de arbolado en el espacio público."
-},
-{
-"n": "LATER CER",
-"s": "En stand-by",
-"a": "",
-"h": "Inicio de obra 1° etapa\n A/D",
-"ac": "",
-"mo": "",
-"te": "",
-"inv": "No valorizada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "SPARKLING",
-"s": "En stand-by",
-"a": "",
-"h": "",
-"ac": "",
-"mo": "",
-"te": "",
-"inv": "No valorizada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "SUBMARINO EN LA BOCA",
-"s": "En stand-by",
-"a": "",
-"h": "",
-"ac": "",
-"mo": "",
-"te": "",
-"inv": "No valorizada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
 },
 {
 "n": "UE - LOTE 123L",
@@ -1179,7 +1099,7 @@
 "co": "",
 "ba": "",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "",
 "obj": ""
 },
@@ -1195,72 +1115,40 @@
 "co": "",
 "ba": "",
 "etapa": "En stand-by",
-"imp": "",
+"imp": "Complementarios",
 "desc": "El proyecto contempla la refuncionalización del edificio de la ex Cárcel de Caseros, actualmente en desuso, para el desarrollo de una nueva propuesta urbana en proceso de elaboración. La iniciativa apunta a recuperar un edificio emblemático e integrarlo nuevamente a la dinámica de la zona.",
 "obj": "Reactivar el entorno mediante la incorporación de aproximadamente 40.000 m² de nuevas construcciones, promoviendo la circulación de personas y el desarrollo de actividades comerciales."
 },
 {
-"n": "BOMBEROS SOLDATI",
-"s": "En stand-by",
-"a": "",
-"h": "Fin de obra \n 30/11",
-"ac": "",
-"mo": "",
-"te": "",
-"inv": "No valorizada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "EX IUNA",
-"s": "En stand-by",
-"a": "Hablar con Federico Bouzas",
-"h": "",
-"ac": "",
-"mo": "",
-"te": "",
-"inv": "No valorizada",
-"co": "",
-"ba": "",
-"etapa": "En stand-by",
-"imp": "",
-"desc": "",
-"obj": ""
-},
-{
-"n": "EX AU3",
-"s": "En stand-by",
+"n": "CAMINITO",
+"s": "",
 "a": "",
 "h": "",
 "ac": "",
 "mo": "",
 "te": "",
-"inv": "No valorizada",
+"inv": "",
 "co": "",
 "ba": "",
-"etapa": "En stand-by",
+"etapa": "",
 "imp": "",
 "desc": "",
 "obj": ""
 },
 {
-"n": "ANTENA STARLINK",
-"s": "En stand-by",
+"n": "PREDIO CLARIN",
+"s": "",
 "a": "",
-"h": "Tramitación CAA por parte del privado\n  A/D",
+"h": "",
 "ac": "",
 "mo": "",
 "te": "",
-"inv": "No valorizada",
+"inv": "",
 "co": "",
 "ba": "",
-"etapa": "En stand-by",
+"etapa": "",
 "imp": "",
-"desc": "El proyecto contempla la instalación de una estación terrena para la infraestructura de servicios de telecomunicaciones de la empresa SpaceX (Starlink), ubicada en la avenida Warnes N.º 2663. La estación formará parte de la red necesaria para la operación de servicios de conectividad satelital de alta capacidad.",
-"obj": "Brindar un servicio de Internet de muy alta calidad en todo el país, ampliando la oferta, mejorando la calidad del servicio y promoviendo la competencia en el sector de las telecomunicaciones."
+"desc": "",
+"obj": ""
 }
 ]
