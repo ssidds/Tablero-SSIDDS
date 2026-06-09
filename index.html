@@ -631,50 +631,33 @@ function renderInversion(){
   hole.setAttribute("fill","var(--card)");
   svg.appendChild(hole);
 
-  // Texto total en el centro
-  var tg=document.createElementNS("http://www.w3.org/2000/svg","text");
-  tg.setAttribute("x",cx);tg.setAttribute("y",cy-6);
-  tg.setAttribute("text-anchor","middle");tg.setAttribute("font-size","22");
-  tg.setAttribute("font-weight","700");tg.setAttribute("fill","var(--text)");
-  tg.setAttribute("font-family","DM Sans,sans-serif");
-  tg.textContent=Math.round(tot);
-  svg.appendChild(tg);
-  var tgsub=document.createElementNS("http://www.w3.org/2000/svg","text");
-  tgsub.setAttribute("x",cx);tgsub.setAttribute("y",cy+12);
-  tgsub.setAttribute("text-anchor","middle");tgsub.setAttribute("font-size","9");
-  tgsub.setAttribute("fill","var(--muted)");tgsub.setAttribute("font-family","DM Sans,sans-serif");
-  tgsub.textContent="USD millones";
-  svg.appendChild(tgsub);
 
-  // Etiquetas con línea fina
+  // % directo sobre cada segmento
   setTimeout(function(){
     paths.forEach(function(pd){
       var frac=pd.seg.v/tot;
-      if(frac<0.03)return;
+      if(frac<0.04)return;
       var midAngle=pd.startAngle+pd.sweepAngle/2;
-      var labelR=R+14;
-      var lx1=cx+R*Math.cos(midAngle),ly1=cy+R*Math.sin(midAngle);
-      var lx2=cx+labelR*Math.cos(midAngle),ly2=cy+labelR*Math.sin(midAngle);
-      var lx3=lx2+(Math.cos(midAngle)>=0?18:-18),ly3=ly2;
-      // Línea
-      var line=document.createElementNS("http://www.w3.org/2000/svg","polyline");
-      line.setAttribute("points",lx1+","+ly1+" "+lx2+","+ly2+" "+lx3+","+ly3);
-      line.setAttribute("stroke","rgba(21,50,68,0.4)");line.setAttribute("stroke-width","0.8");
-      line.setAttribute("fill","none");
-      svg.appendChild(line);
-      // Texto %
+      // Posición: centro del arco, entre radio interior y exterior
+      var midR=(R+r)/2;
+      var lx=cx+midR*Math.cos(midAngle);
+      var ly=cy+midR*Math.sin(midAngle);
       var pct=Math.round(frac*100);
+      // Color del texto: oscuro sobre amarillo/verde, blanco sobre azul/rosa
+      var lightSegs={"#FFCB00":true,"#8DE2D6":true};
+      var txtColor=lightSegs[pd.seg.c]?"#153244":"#ffffff";
       var txt=document.createElementNS("http://www.w3.org/2000/svg","text");
-      var anchor=Math.cos(midAngle)>=0?"start":"end";
-      txt.setAttribute("x",lx3+(Math.cos(midAngle)>=0?3:-3));
-      txt.setAttribute("y",ly3+4);
-      txt.setAttribute("text-anchor",anchor);txt.setAttribute("font-size","11");
-      txt.setAttribute("font-weight","700");txt.setAttribute("fill","#153244");
+      txt.setAttribute("x",lx);
+      txt.setAttribute("y",ly+5);
+      txt.setAttribute("text-anchor","middle");
+      txt.setAttribute("font-size","15");
+      txt.setAttribute("font-weight","700");
+      txt.setAttribute("fill",txtColor);
       txt.setAttribute("font-family","DM Sans,sans-serif");
       txt.textContent=pct+"%";
       svg.appendChild(txt);
     });
-  },600);
+  },500);
 
   var rankEl=eid("inv-ranking");
   if(rankEl){
