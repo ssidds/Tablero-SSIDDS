@@ -859,7 +859,7 @@
 "co": "Comuna 8",
 "ba": "Villa Lugano",
 "etapa": "En ejecución",
-"imp": "Complementarios",
+"imp": "Finalizado",
 "desc": "",
 "obj": ""
 },
@@ -971,7 +971,7 @@
 "co": "Comuna 8",
 "ba": "Villa Soldati",
 "etapa": "En ejecución",
-"imp": "Complementarios",
+"imp": "Finalizado",
 "desc": "Contempla la instalación de puntos gastronómicos dentro del Parque de la Ciudad, a partir de una iniciativa de desarrollo privado que busca ampliar y diversificar la oferta de servicios del predio. La propuesta se integra al entorno del parque, acompañando las actividades recreativas, culturales y deportivas, y generando nuevos espacios de permanencia y disfrute para quienes lo visitan.",
 "obj": "Potenciar la experiencia en el Parque de la Ciudad mediante una oferta gastronómica de calidad, fomentar la actividad económica vinculada al ocio y fortalecer el atractivo del parque como espacio activo durante todo el año."
 },
@@ -1131,7 +1131,7 @@
 "co": "",
 "ba": "",
 "etapa": "",
-"imp": "",
+"imp": "Complementarios, Emergentes",
 "desc": "",
 "obj": ""
 },
@@ -1147,7 +1147,7 @@
 "co": "",
 "ba": "",
 "etapa": "",
-"imp": "",
+"imp": "Complementarios, Emergentes",
 "desc": "",
 "obj": ""
 }
