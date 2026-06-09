@@ -1,83 +1,82 @@
-name: Actualizar datos del tablero
+name: Actualizar datos
 
 on:
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   actualizar:
     runs-on: ubuntu-latest
     steps:
-      - name: Bajar el repositorio
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Leer Google Sheet y generar JSONs
+      - name: Generar JSONs
         run: |
-          python3 - <<'PYEOF'
-          import urllib.request, csv, io, json
+          python3 - << 'PYEOF'
+          import csv, json, urllib.request, datetime, os
 
-          BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
+          CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
 
-          def fetch_csv(gid):
-              url = BASE + "?gid=" + gid + "&single=true&output=csv"
-              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-              return urllib.request.urlopen(req).read().decode("utf-8")
+          # ---- HOJA TABLERO (gid=0) ----
+          url = CSV_BASE + "?gid=0&single=true&output=csv"
+          with urllib.request.urlopen(url) as r:
+              rows = list(csv.reader(r.read().decode('utf-8').splitlines()))
 
-          # --- TABLERO (proyectos) ---
-          raw = fetch_csv("0")
-          rows = list(csv.reader(io.StringIO(raw)))
-          proyectos = []
-          for r in rows[1:]:
-              if not r or not r[0].strip() or r[0].strip().lower() == "proyecto":
-                  continue
-              def v(i): return r[i].strip() if i < len(r) else ""
-              proyectos.append({
-                  "n":     v(0),
-                  "s":     v(2),
-                  "a":     v(4),
-                  "h":     v(6),
-                  "ac":    v(7),
-                  "mo":    v(8),
-                  "te":    v(12),
-                  "inv":   v(13),
-                  "co":    v(10),
-                  "ba":    v(11),
-                  "etapa": v(9),
-                  "imp":   v(14),
-                  "desc":  v(15),
-                  "obj":   v(16),
+          datos = []
+          for row in rows[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(0): continue
+              datos.append({
+                  "n": c(0), "s": c(2), "a": c(4), "h": c(6),
+                  "ac": c(4), "mo": c(8), "etapa": c(9),
+                  "co": c(10), "ba": c(11), "te": c(12),
+                  "inv": c(13), "imp": c(14), "desc": c(15), "obj": c(16)
               })
+
           with open("datos.json", "w", encoding="utf-8") as f:
-              json.dump(proyectos, f, ensure_ascii=False, indent=0)
-          print(f"Proyectos: {len(proyectos)}")
+              json.dump(datos, f, ensure_ascii=False)
+          print(f"datos.json: {len(datos)} proyectos")
 
-          # --- LOGROS ---
-          raw2 = fetch_csv("1689415169")
-          rows2 = list(csv.reader(io.StringIO(raw2)))
+          # ---- HOJA LOGROS (gid=1689415169) ----
+          url2 = CSV_BASE + "?gid=1689415169&single=true&output=csv"
+          with urllib.request.urlopen(url2) as r:
+              rows2 = list(csv.reader(r.read().decode('utf-8').splitlines()))
+
           logros = []
-          for r in rows2[1:]:
-              if not r or not r[0].strip():
-                  continue
-              def v2(i): return r[i].strip() if i < len(r) else ""
-              logros.append({
-                  "fecha":    v2(0),
-                  "logro":    v2(1),
-                  "proyecto": v2(2),
-                  "tematica": v2(3),
-              })
+          for row in rows2[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(1): continue
+              logros.append({"f": c(0), "l": c(1), "p": c(2), "te": c(3)})
+
           with open("logros.json", "w", encoding="utf-8") as f:
-              json.dump(logros, f, ensure_ascii=False, indent=0)
-          print(f"Logros: {len(logros)}")
+              json.dump(logros, f, ensure_ascii=False)
+          print(f"logros.json: {len(logros)} logros")
+
+          # ---- HOJA REPORTE (gid=499814297) ----
+          url3 = CSV_BASE + "?gid=499814297&single=true&output=csv"
+          with urllib.request.urlopen(url3) as r:
+              rows3 = list(csv.reader(r.read().decode('utf-8').splitlines()))
+
+          reporte = []
+          for row in rows3[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(0): continue
+              reporte.append({
+                  "n": c(0), "s": c(1), "pp": c(2), "ac": c(3)
+              })
+
+          with open("reporte.json", "w", encoding="utf-8") as f:
+              json.dump(reporte, f, ensure_ascii=False)
+          print(f"reporte.json: {len(reporte)} proyectos")
+
           PYEOF
 
-      - name: Guardar cambios
+      - name: Commit y push
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add datos.json logros.json
-          git diff --staged --quiet || git commit -m "Actualizar datos del tablero"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add datos.json logros.json reporte.json reporte_*.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Actualizar datos $(date '+%d/%m/%Y %H:%M')"
           git push
