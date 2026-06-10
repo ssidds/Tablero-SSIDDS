@@ -1109,7 +1109,13 @@ function loadLogros(){
   fetch("logros.json?t="+Date.now())
     .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
     .then(function(data){
-      window._logrosData=data;_logrosLoaded=true;renderLogros();
+      window._logrosData=data.map(function(l){return{
+        fecha:l.fecha||l.f||"",
+        logro:l.logro||l.l||"",
+        proyecto:l.proyecto||l.p||"",
+        tematica:l.tematica||l.te||""
+      };});
+      _logrosLoaded=true;renderLogros();
     })
     .catch(function(err){
       var tl=eid("logros-timeline");
@@ -1122,14 +1128,16 @@ function renderLogros(){
   var selYr=eid("logros-yr"),selMes=eid("logros-mes");
   var filtYr=selYr?selYr.value:"",filtMes=selMes?selMes.value:"";
   var filtered=data.filter(function(l){
+    if(!l.fecha||typeof l.fecha!=="string"||!l.fecha.trim())return false;
     var parts=l.fecha.split("/");
+    if(parts.length<3)return false;
     if(filtYr&&parts[2]&&parts[2].trim()!==filtYr)return false;
     if(filtMes&&parts[1]&&parts[1].trim()!==filtMes)return false;
     return true;
   });
   var byYear={},years=[];
   filtered.forEach(function(l){
-    var parts=l.fecha.split("/");var yr=parts.length>=3?parts[2].trim():"";
+    var parts=(l.fecha||"").split("/");var yr=parts.length>=3?parts[2].trim():"";
     if(!yr)return;
     if(!byYear[yr]){byYear[yr]=[];years.push(yr);}
     byYear[yr].push(l);
