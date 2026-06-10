@@ -690,7 +690,7 @@ function renderInversion(){
       var txt=document.createElementNS("http://www.w3.org/2000/svg","text");
       txt.setAttribute("x",tx);txt.setAttribute("y",ly-3);
       txt.setAttribute("text-anchor",anchor);
-      txt.setAttribute("font-size","13");txt.setAttribute("font-weight","700");
+      txt.setAttribute("font-size","17");txt.setAttribute("font-weight","700");
       txt.setAttribute("fill",lc);txt.setAttribute("font-family","DM Sans,sans-serif");
       txt.textContent=pct+"%";
       svg.appendChild(txt);
@@ -907,17 +907,25 @@ function initMap(){
 
   // Polígonos GeoJSON de comunas (embebido)
   var comunaLayer=L.layerGroup().addTo(m);
+  var COMUNA_CENTROIDS={"1":[-34.6158,-58.3731],"4":[-34.6480,-58.3870],"8":[-34.6900,-58.4600],"9":[-34.6620,-58.5020]};
   L.geoJSON(COMUNAS_GEO,{
     style:function(f){
       var c=String(f.properties.comuna||"");
       var col=COMUNAS_COLOR[c]||"#153244";
       return{color:col,weight:2.5,fillColor:col,fillOpacity:0.07,dashArray:"5,5"};
-    },
-    onEachFeature:function(f,layer){
-      var c=String(f.properties.comuna||"");
-      layer.bindTooltip("Comuna "+c,{permanent:true,direction:"center",className:"com-label",opacity:0.7});
     }
   }).addTo(comunaLayer);
+  // Etiquetas centradas con marcador div
+  Object.keys(COMUNA_CENTROIDS).forEach(function(c){
+    var col=COMUNAS_COLOR[c]||"#153244";
+    var latlng=COMUNA_CENTROIDS[c];
+    var icon=L.divIcon({
+      html:'<div style="font-size:13px;font-weight:700;color:'+col+';font-family:DM Sans,sans-serif;text-shadow:0 0 4px #fff,0 0 4px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none">COMUNA '+c+'</div>',
+      className:"",
+      iconAnchor:[30,10]
+    });
+    L.marker(latlng,{icon:icon,interactive:false,keyboard:false}).addTo(comunaLayer);
+  });
 
   // Grupos por tipo de inversión con clustering
   var clusterOpts={
@@ -1062,6 +1070,7 @@ function initMap(){
       });
       // Filtrar polígonos GeoJSON de comunas
       comunaLayer.clearLayers();
+      var CCOL={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
       L.geoJSON(COMUNAS_GEO,{
         filter:function(f){
           var c=String(f.properties.comuna||"");
@@ -1069,15 +1078,21 @@ function initMap(){
         },
         style:function(f){
           var c=String(f.properties.comuna||"");
-          var COMUNAS_COLOR={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
-          var col=COMUNAS_COLOR[c]||"#153244";
+          var col=CCOL[c]||"#153244";
           return{color:col,weight:2.5,fillColor:col,fillOpacity:0.07,dashArray:"5,5"};
-        },
-        onEachFeature:function(f,layer){
-          var c=String(f.properties.comuna||"");
-          layer.bindTooltip("Comuna "+c,{permanent:true,direction:"center",className:"com-label",opacity:0.7});
         }
       }).addTo(comunaLayer);
+      // Etiquetas centradas
+      var CCENTR={"1":[-34.6158,-58.3731],"4":[-34.6480,-58.3870],"8":[-34.6900,-58.4600],"9":[-34.6620,-58.5020]};
+      Object.keys(CCENTR).forEach(function(c){
+        if(!comunaActivas[c])return;
+        var col=CCOL[c]||"#153244";
+        var icon=L.divIcon({
+          html:'<div style="font-size:13px;font-weight:700;color:'+col+';font-family:DM Sans,sans-serif;text-shadow:0 0 4px #fff,0 0 4px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none">COMUNA '+c+'</div>',
+          className:"",iconAnchor:[30,10]
+        });
+        L.marker(CCENTR[c],{icon:icon,interactive:false,keyboard:false}).addTo(comunaLayer);
+      });
     }
     ["chk-pub","chk-priv","chk-noval","chk-c1","chk-c4","chk-c8","chk-c9"].forEach(function(id){
       var el=document.getElementById(id);
@@ -1170,7 +1185,11 @@ function loadReportes(){
       loadRepSnapshots();
     })
     .catch(function(){
-      eid("rep-page-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted);font-size:13px'>No se encontró reporte.json</div>";
+      eid("rep-page-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted);font-size:13px'>"
+        +"<div style='font-size:24px;margin-bottom:12px'>📋</div>"
+        +"<div style='font-weight:600;margin-bottom:6px'>El reporte aún no está disponible</div>"
+        +"<div style='font-size:11px'>Corré el workflow <strong>Actualizar datos</strong> en GitHub Actions para generar el reporte.</div>"
+        +"</div>";
     });
 }
 
