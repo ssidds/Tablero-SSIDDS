@@ -100,9 +100,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .cst{font-size:10px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border);padding-top:6px;margin-top:4px}
 .cht{font-size:10px;color:var(--azul2);margin-top:5px;font-weight:500}
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;grid-column:1/-1}
-.ov{display:none;position:absolute;inset:0;background:rgba(21,50,68,.6);z-index:50;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.ov{display:none;position:fixed;inset:0;background:rgba(21,50,68,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .ov.open{display:flex}
-.modal{background:var(--card);border-radius:16px;max-width:640px;width:100%;margin-top:10px;position:relative}
+.modal{background:var(--card);border-radius:16px;max-width:640px;width:100%;margin-top:0;position:relative;max-height:90vh;overflow-y:auto}
 .mh{background:var(--azul);padding:20px 24px 16px;border-radius:16px 16px 0 0;position:relative}
 .mc{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .mc:hover{background:rgba(255,255,255,.25)}
@@ -124,6 +124,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .com-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;padding:6px 8px;border-radius:var(--r2);transition:background .15s}
 .com-row:hover{background:var(--azul3)}
 .com-row.active{background:var(--azul3)}
+.stories-bar{display:flex;gap:4px;margin-bottom:12px}
+.story-seg{flex:1;height:3px;background:rgba(21,50,68,.15);border-radius:2px;overflow:hidden;cursor:pointer}
+.story-seg-fill{height:100%;background:#153244;border-radius:2px;width:0%;transition:width .3s}
+.story-seg.done .story-seg-fill{width:100%}
+.story-seg.active .story-seg-fill{width:100%}
+.rep-pages-wrap{overflow:hidden;border-radius:10px}
+.rep-pages-inner{display:flex;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.rep-page-slide{min-width:100%}
+.rep-card-anim{opacity:0;transform:translateY(14px);transition:opacity .35s ease,transform .35s ease}
+.rep-card-anim.visible{opacity:1;transform:translateY(0)}
+.rep-fs-overlay{display:none;position:fixed;inset:0;background:#f2f6f9;z-index:2000;padding:24px;overflow-y:auto}
+.rep-fs-overlay.open{display:block}
+.rep-fs-close{position:fixed;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:#153244;color:#FFCB00;font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center}
 .com-label{background:transparent!important;border:none!important;box-shadow:none!important;font-size:11px;font-weight:700;color:#153244;font-family:DM Sans,sans-serif;text-shadow:0 0 3px #fff,0 0 3px #fff}
 .com-label::before{display:none!important}
 </style>
@@ -173,6 +186,31 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')"><div class="kpi-n" id="k1">0</div><div class="kpi-l">Estratégicos ↗</div></div>
             <div class="kpi s clickable" onclick="openKpiModal('Complementarios')"><div class="kpi-n" id="k2">0</div><div class="kpi-l">Complementarios ↗</div></div>
             <div class="kpi f clickable" onclick="openKpiModal('Emergentes')"><div class="kpi-n" id="k3">0</div><div class="kpi-l">Emergentes ↗</div></div>
+          </div>
+
+          <!-- CLASIFICACIÓN GENERAL -->
+          <div id="cls-block" style="margin-bottom:16px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+              <div id="cls-act" onclick="selectCls('act')" style="background:#fff8e0;border:2px solid #FFCB00;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+                <div style="font-size:10px;font-weight:600;color:#7a5f00;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Activos</div>
+                <div id="cls-act-n" style="font-size:32px;font-weight:700;color:#b8920a;line-height:1">0</div>
+                <div style="font-size:10px;color:#7a5f00;margin-top:4px">Ver desglose ↓</div>
+              </div>
+              <div id="cls-sby" onclick="selectCls('sby')" style="background:#fff0f0;border:0.5px solid var(--border);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+                <div style="font-size:10px;font-weight:600;color:#a32d2d;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">En stand-by</div>
+                <div id="cls-sby-n" style="font-size:32px;font-weight:700;color:#e53935;line-height:1">0</div>
+                <div style="font-size:10px;color:#a32d2d;margin-top:4px">Ver proyectos ↓</div>
+              </div>
+              <div id="cls-fin" onclick="selectCls('fin')" style="background:#f0fff8;border:0.5px solid var(--border);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+                <div style="font-size:10px;font-weight:600;color:#0a6e4a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Finalizados</div>
+                <div id="cls-fin-n" style="font-size:32px;font-weight:700;color:#00a86b;line-height:1">0</div>
+                <div style="font-size:10px;color:#0a6e4a;margin-top:4px">Ver proyectos ↓</div>
+              </div>
+            </div>
+            <!-- Panel detalle -->
+            <div id="cls-detail" style="display:none;background:var(--azul3);border-radius:var(--r);padding:14px 16px;border:0.5px solid var(--border)">
+              <div id="cls-detail-inner"></div>
+            </div>
           </div>
 
           <!-- BARRAS + CARRUSEL -->
@@ -372,18 +410,24 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <!-- REPORTES -->
     <div id="srep" style="display:none">
       <div class="sec">
-        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;position:relative">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:4px;position:relative">
           <div style="font-size:18px;font-weight:700;color:var(--azul);font-family:'Archivo',sans-serif;letter-spacing:.04em;text-transform:uppercase">Status Proyectos</div>
           <select id="rep-week-sel" style="font-family:'Archivo',sans-serif;font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer" onchange="loadReportSnapshot(this.value)">
-            <option value="current">Semana actual</option>
+            <option value="current">Cargando...</option>
           </select>
-          <div style="position:absolute;right:0;display:flex;gap:8px">
+          <div style="position:absolute;right:0;display:flex;gap:6px">
             <button onclick="downloadRepJPG()" style="font-size:11px;padding:5px 11px;border:1px solid #FFCB00;border-radius:6px;background:#fff8e0;color:#7a5f00;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600">⬇ JPG</button>
             <button onclick="downloadRepPDF()" style="font-size:11px;padding:5px 11px;border:1px solid #FFCB00;border-radius:6px;background:#fff8e0;color:#7a5f00;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600">⬇ PDF</button>
+            <button onclick="openRepFS()" style="font-size:11px;padding:5px 11px;border:1px solid #153244;border-radius:6px;background:#153244;color:#FFCB00;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600">⛶ Pantalla completa</button>
           </div>
         </div>
         <div id="rep-cards-wrap" style="background:#f2f6f9;padding:16px;border-radius:10px;min-height:200px">
-          <div id="rep-page-container"></div>
+          <div class="stories-bar" id="rep-stories-bar"></div>
+          <div class="rep-pages-wrap">
+            <div class="rep-pages-inner" id="rep-pages-inner">
+              <div class="rep-page-slide" id="rep-page-container"></div>
+            </div>
+          </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px" id="rep-nav">
             <button id="rep-prev" onclick="repNav(-1)" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center" disabled>‹</button>
             <div id="rep-pips" style="display:flex;gap:6px;align-items:center"></div>
@@ -392,6 +436,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           </div>
         </div>
       </div>
+    </div>
+    <!-- FULLSCREEN REPORTES -->
+    <div class="rep-fs-overlay" id="rep-fs-overlay">
+      <button class="rep-fs-close" onclick="closeRepFS()">✕</button>
+      <div id="rep-fs-content"></div>
     </div>
 
 
@@ -521,7 +570,7 @@ function cargar(){
       eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
       eid("ldg").style.display="none";
       eid("ind-c").style.display="block";
-      renderInd();renderCards();renderInversion();renderComunas();
+      renderInd();renderCards();renderInversion();renderComunas();renderCls();
     })
     .catch(function(err){
       eid("ldg").style.display="none";
@@ -1181,7 +1230,13 @@ function renderLogros(){
 var REP_DATA=[];
 var REP_CUR=0;
 var REP_PAGES=[];
-var REP_COLORS=["azul","amarillo","verde"];
+var REP_COLORS=["azul","celeste","amarillo"];
+var REP_DATE_LABEL="";
+var HEADER_COLORS={
+  azul:{bg:"#153244",text:"#ffffff"},
+  celeste:{bg:"#8DE2D6",text:"#153244"},
+  amarillo:{bg:"#FFCB00",text:"#153244"}
+};
 
 function getRepColor(idx,prev){
   var opts=REP_COLORS.filter(function(c){return c!==prev;});
@@ -1193,6 +1248,14 @@ function loadReportes(){
     .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
     .then(function(d){
       REP_DATA=d;
+      // Fecha de actualización desde header HTTP
+      var sel=eid("rep-week-sel");
+      if(sel){
+        var now=new Date();
+        var lbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+(now.getMonth()<9?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
+        REP_DATE_LABEL=lbl;
+        sel.innerHTML="<option value='current'>"+lbl+" (actual)</option>";
+      }
       buildRepPages(REP_DATA);
       loadRepSnapshots();
     })
@@ -1206,7 +1269,6 @@ function loadReportes(){
 }
 
 function loadRepSnapshots(){
-  // Cargar lista de snapshots desde el repo via GitHub API
   fetch("https://api.github.com/repos/valenrossiter/Tablero-SSIDDS/contents/")
     .then(function(r){return r.json();})
     .then(function(files){
@@ -1228,7 +1290,9 @@ function loadRepSnapshots(){
 }
 
 function loadReportSnapshot(url){
-  if(url==="current"){buildRepPages(REP_DATA);return;}
+  if(url==="current"){REP_DATE_LABEL=eid("rep-week-sel").options[0].text.replace(" (actual)","");buildRepPages(REP_DATA);return;}
+  var opt=eid("rep-week-sel");
+  if(opt)REP_DATE_LABEL=opt.options[opt.selectedIndex].text;
   fetch(url+"?t="+Date.now())
     .then(function(r){return r.json();})
     .then(function(d){buildRepPages(d);})
@@ -1239,133 +1303,129 @@ function buildRepPages(data){
   REP_PAGES=[];
   if(!data||data.length===0){
     eid("rep-page-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted)'>Sin datos de reporte</div>";
+    repUpdateNav();
     return;
   }
-  // Páginas 1 y 2: 4 proyectos c/u (primeros 8)
   var main=data.slice(0,8);
   var rest=data.slice(8);
   if(main.length>0)REP_PAGES.push({items:main.slice(0,4),type:"large"});
   if(main.length>4)REP_PAGES.push({items:main.slice(4,8),type:"large"});
-  // Páginas siguientes: 8 proyectos en 4x2
   for(var i=0;i<rest.length;i+=8){
     REP_PAGES.push({items:rest.slice(i,i+8),type:"small"});
   }
   REP_CUR=0;
-  renderRepNav();
-  renderRepPage(0);
+  repBuildDOM();
+  repUpdateNav();
+  repGoTo(0);
 }
 
-function renderRepNav(){
-  var pips=eid("rep-pips");
-  if(!pips)return;
-  pips.innerHTML="";
-  REP_PAGES.forEach(function(p,i){
-    var d=document.createElement("div");
-    d.style.cssText="width:8px;height:8px;border-radius:50%;background:"+(i===0?"#153244":"#dce8ef")+";cursor:pointer;transition:background .2s";
-    d.onclick=(function(idx){return function(){repGoTo(idx);};})(i);
-    d.id="rep-pip-"+i;
-    pips.appendChild(d);
+function repBuildDOM(){
+  var inner=eid("rep-pages-inner");
+  if(!inner)return;
+  inner.innerHTML="";
+  REP_PAGES.forEach(function(page,pi){
+    var slide=document.createElement("div");
+    slide.className="rep-page-slide";
+    slide.id="rep-slide-"+pi;
+    var grid=document.createElement("div");
+    grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;"+(page.type==="small"?"grid-template-rows:auto auto;":"");
+    var prevColor="";
+    page.items.forEach(function(item,i){
+      var color=getRepColor(i,prevColor);prevColor=color;
+      var card=buildRepCard(item,color,page.type==="large");
+      card.classList.add("rep-card-anim");
+      card.dataset.cardIdx=i;
+      grid.appendChild(card);
+    });
+    slide.appendChild(grid);
+    inner.appendChild(slide);
   });
-  eid("rep-plbl").textContent="1 / "+REP_PAGES.length;
-  eid("rep-prev").disabled=true;
-  eid("rep-next").disabled=REP_PAGES.length<=1;
+  inner.style.width=(REP_PAGES.length*100)+"%";
+  // Impostare width di ogni slide
+  var slides=inner.querySelectorAll(".rep-page-slide");
+  slides.forEach(function(s){s.style.width=(100/REP_PAGES.length)+"%";});
 }
 
-function repNav(dir){
-  repGoTo(REP_CUR+dir);
+function repUpdateNav(){
+  var bar=eid("rep-stories-bar");
+  var pips=eid("rep-pips");
+  if(bar){
+    bar.innerHTML="";
+    REP_PAGES.forEach(function(p,i){
+      var seg=document.createElement("div");
+      seg.className="story-seg";
+      var fill=document.createElement("div");
+      fill.className="story-seg-fill";
+      seg.appendChild(fill);
+      seg.onclick=(function(idx){return function(){repGoTo(idx);};})(i);
+      bar.appendChild(seg);
+    });
+  }
+  if(pips){
+    pips.innerHTML="";
+    REP_PAGES.forEach(function(p,i){
+      var d=document.createElement("div");
+      d.style.cssText="width:8px;height:8px;border-radius:50%;background:"+(i===0?"#153244":"#dce8ef")+";cursor:pointer;transition:background .2s";
+      d.id="rep-pip-"+i;
+      d.onclick=(function(idx){return function(){repGoTo(idx);};})(i);
+      pips.appendChild(d);
+    });
+  }
+  if(eid("rep-plbl"))eid("rep-plbl").textContent=REP_PAGES.length?"1 / "+REP_PAGES.length:"";
+  if(eid("rep-prev"))eid("rep-prev").disabled=true;
+  if(eid("rep-next"))eid("rep-next").disabled=REP_PAGES.length<=1;
 }
+
+function repNav(dir){repGoTo(REP_CUR+dir);}
 
 function repGoTo(n){
   if(n<0||n>=REP_PAGES.length)return;
-  var oldPip=eid("rep-pip-"+REP_CUR);
-  if(oldPip)oldPip.style.background="#dce8ef";
-  REP_CUR=n;
-  var newPip=eid("rep-pip-"+REP_CUR);
-  if(newPip)newPip.style.background="#153244";
-  eid("rep-prev").disabled=REP_CUR===0;
-  eid("rep-next").disabled=REP_CUR===REP_PAGES.length-1;
-  eid("rep-plbl").textContent=(REP_CUR+1)+" / "+REP_PAGES.length;
-  renderRepPage(REP_CUR);
-}
-
-function renderRepPage(pageIdx){
-  var container=eid("rep-page-container");
-  if(!container)return;
-  container.innerHTML="";
-  var page=REP_PAGES[pageIdx];
-  if(!page)return;
-
-  var isLarge=page.type==="large";
-  var cols=4;
-  var rows=isLarge?1:2;
-  var itemsPerRow=4;
-
-  // Crear grid
-  var grid=document.createElement("div");
-  grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:stretch";
-
-  var prevColor="";
-  page.items.forEach(function(item,i){
-    var color=getRepColor(i,prevColor);
-    prevColor=color;
-    var card=buildRepCard(item,color,isLarge);
-    grid.appendChild(card);
+  var inner=eid("rep-pages-inner");
+  if(inner)inner.style.transform="translateX(-"+(n*(100/REP_PAGES.length))+"%)"
+  // Barra stories
+  var segs=document.querySelectorAll("#rep-stories-bar .story-seg");
+  segs.forEach(function(s,i){
+    s.className="story-seg"+(i<n?" done":i===n?" active":"");
+    s.querySelector(".story-seg-fill").style.width=(i<=n?"100%":"0%");
   });
-
-  // Para 4x2: igualar alturas de cada fila
-  if(!isLarge){
-    grid.style.gridTemplateRows="auto auto";
+  // Pips
+  var oldPip=eid("rep-pip-"+REP_CUR);if(oldPip)oldPip.style.background="#dce8ef";
+  REP_CUR=n;
+  var newPip=eid("rep-pip-"+REP_CUR);if(newPip)newPip.style.background="#153244";
+  if(eid("rep-prev"))eid("rep-prev").disabled=REP_CUR===0;
+  if(eid("rep-next"))eid("rep-next").disabled=REP_CUR===REP_PAGES.length-1;
+  if(eid("rep-plbl"))eid("rep-plbl").textContent=(REP_CUR+1)+" / "+REP_PAGES.length;
+  // Animar tarjetas
+  var slide=eid("rep-slide-"+n);
+  if(slide){
+    var cards=slide.querySelectorAll(".rep-card-anim");
+    cards.forEach(function(c){c.classList.remove("visible");c.style.transitionDelay="0s";});
+    setTimeout(function(){
+      cards.forEach(function(c,i){
+        setTimeout(function(){
+          c.style.transitionDelay=(i*0.08)+"s";
+          c.classList.add("visible");
+        },i*80);
+      });
+    },50);
   }
-
-  container.appendChild(grid);
-
-  // Igualar alturas de tarjetas en la misma fila después del render
-  setTimeout(function(){
-    var cards=grid.querySelectorAll(".rep-card");
-    if(isLarge){
-      var maxH=0;
-      cards.forEach(function(c){maxH=Math.max(maxH,c.offsetHeight);});
-      cards.forEach(function(c){c.style.minHeight=maxH+"px";});
-    }else{
-      // Fila 1 (índices 0-3) y fila 2 (índices 4-7)
-      var row1=Array.from(cards).slice(0,4);
-      var row2=Array.from(cards).slice(4,8);
-      var maxH1=0,maxH2=0;
-      row1.forEach(function(c){maxH1=Math.max(maxH1,c.offsetHeight);});
-      row2.forEach(function(c){maxH2=Math.max(maxH2,c.offsetHeight);});
-      row1.forEach(function(c){c.style.minHeight=maxH1+"px";});
-      row2.forEach(function(c){c.style.minHeight=maxH2+"px";});
-    }
-  },50);
 }
 
 function buildRepCard(item,color,isLarge){
-  var HEADER_COLORS={
-    azul:{bg:"#153244",text:"#ffffff"},
-    amarillo:{bg:"#FFCB00",text:"#153244"},
-    verde:{bg:"#8DE2D6",text:"#153244"}
-  };
   var hc=HEADER_COLORS[color]||HEADER_COLORS.azul;
-
   var card=document.createElement("div");
-  card.className="rep-card";
   card.style.cssText="border-radius:8px;overflow:hidden;background:white;border:0.5px solid rgba(0,0,0,.08);display:flex;flex-direction:column;font-family:'Archivo',sans-serif";
-
-  // Header — altura fija con font-size adaptativo
   var header=document.createElement("div");
-  header.style.cssText="padding:10px 12px;text-align:center;background:"+hc.bg+";min-height:44px;display:flex;align-items:center;justify-content:center";
-  var name=document.createElement("div");
   var nameLen=(item.n||"").length;
   var fontSize=nameLen>30?"9px":nameLen>22?"10px":nameLen>16?"11px":"12px";
-  name.style.cssText="font-size:"+fontSize+";font-weight:700;line-height:1.3;text-transform:uppercase;color:"+hc.text+";font-family:'Archivo',sans-serif";
+  header.style.cssText="padding:10px 10px;text-align:center;background:"+hc.bg+";min-height:44px;display:flex;align-items:center;justify-content:center";
+  var name=document.createElement("div");
+  name.style.cssText="font-size:"+fontSize+";font-weight:700;line-height:1.3;text-transform:uppercase;color:"+hc.text+";font-family:'Archivo',sans-serif;letter-spacing:.02em";
   name.textContent=item.n||"";
   header.appendChild(name);
   card.appendChild(header);
-
-  // Body
   var body=document.createElement("div");
-  body.style.cssText="padding:10px 12px;font-size:"+(isLarge?"10.5px":"10px")+";line-height:1.5;color:#2c3e50;flex:1;font-family:'Archivo',sans-serif";
-
+  body.style.cssText="padding:10px 10px;font-size:"+(isLarge?"10.5px":"10px")+";line-height:1.5;color:#2c3e50;flex:1;font-family:'Archivo',sans-serif";
   function addField(emoji,label,value,isAlert){
     if(!value)return;
     var lbl=document.createElement("div");
@@ -1377,38 +1437,155 @@ function buildRepCard(item,color,isLarge){
     val.textContent=value;
     body.appendChild(val);
   }
-
-  // Separar suproyectos si el nombre tiene sub-items (líneas con mayúsculas)
   addField("📋","Status:",item.s||item.status||"");
   addField("🔜","Próximos pasos:",item.pp||item.prox||"");
-  if(item.ac||item.accionable){
-    addField("🚨","Accionable Marce:",item.ac||item.accionable,true);
-  }
-
+  if(item.ac||item.accionable)addField("🚨","Accionable Marce:",item.ac||item.accionable,true);
   card.appendChild(body);
   return card;
 }
 
+function openRepFS(){
+  var wrap=eid("rep-cards-wrap");
+  var overlay=eid("rep-fs-overlay");
+  var content=eid("rep-fs-content");
+  if(!wrap||!overlay||!content)return;
+  content.innerHTML="";
+  // Título y fecha
+  var hdr=document.createElement("div");
+  hdr.style.cssText="text-align:center;margin-bottom:16px";
+  hdr.innerHTML="<div style='font-size:22px;font-weight:700;color:#153244;font-family:Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+    +"<div style='font-size:13px;color:#6b8395;font-family:Archivo,sans-serif;margin-top:4px'>"+REP_DATE_LABEL+"</div>";
+  content.appendChild(hdr);
+  content.appendChild(wrap.cloneNode(true));
+  overlay.classList.add("open");
+}
+function closeRepFS(){eid("rep-fs-overlay").classList.remove("open");}
+
 function downloadRepJPG(){
-  var el=eid("rep-cards-wrap");
-  if(!el||typeof html2canvas==="undefined"){alert("html2canvas no disponible");return;}
-  html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#f2f6f9"}).then(function(canvas){
+  var wrap=eid("rep-cards-wrap");
+  if(!wrap||typeof html2canvas==="undefined"){alert("html2canvas no disponible");return;}
+  // Crear contenedor con título y fecha
+  var container=document.createElement("div");
+  container.style.cssText="background:#f2f6f9;padding:20px;font-family:Archivo,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
+  var hdr=document.createElement("div");
+  hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
+  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+    +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(REP_CUR+1)+" / "+REP_PAGES.length+"</div>";
+  container.appendChild(hdr);
+  var slide=eid("rep-slide-"+REP_CUR);
+  if(slide)container.appendChild(slide.cloneNode(true));
+  document.body.appendChild(container);
+  html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
+    document.body.removeChild(container);
     var a=document.createElement("a");
-    a.download="reporte_"+new Date().toISOString().slice(0,10)+".jpg";
+    a.download="reporte_p"+(REP_CUR+1)+"_"+new Date().toISOString().slice(0,10)+".jpg";
     a.href=canvas.toDataURL("image/jpeg",0.92);
     a.click();
-  });
+  }).catch(function(){document.body.removeChild(container);});
 }
 
 function downloadRepPDF(){
-  var el=eid("rep-cards-wrap");
-  if(!el||typeof html2canvas==="undefined"||typeof jspdf==="undefined"){alert("Librerías no disponibles");return;}
-  html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#f2f6f9"}).then(function(canvas){
+  var wrap=eid("rep-cards-wrap");
+  if(!wrap||typeof html2canvas==="undefined"||typeof jspdf==="undefined"){alert("Librerías no disponibles");return;}
+  var container=document.createElement("div");
+  container.style.cssText="background:#f2f6f9;padding:20px;font-family:Archivo,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
+  var hdr=document.createElement("div");
+  hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
+  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+    +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(REP_CUR+1)+" / "+REP_PAGES.length+"</div>";
+  container.appendChild(hdr);
+  var slide=eid("rep-slide-"+REP_CUR);
+  if(slide)container.appendChild(slide.cloneNode(true));
+  document.body.appendChild(container);
+  html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
+    document.body.removeChild(container);
     var imgData=canvas.toDataURL("image/jpeg",0.95);
     var pdf=new jspdf.jsPDF({orientation:"landscape",unit:"px",format:[canvas.width/2,canvas.height/2]});
     pdf.addImage(imgData,"JPEG",0,0,canvas.width/2,canvas.height/2);
-    pdf.save("reporte_"+new Date().toISOString().slice(0,10)+".pdf");
-  });
+    pdf.save("reporte_p"+(REP_CUR+1)+"_"+new Date().toISOString().slice(0,10)+".pdf");
+  }).catch(function(){document.body.removeChild(container);});
+}
+
+
+var ACTIVOS_EST=["En evaluación/diagnóstico","En armado de proyecto","En gestión de aprobaciones","En licitación","En ejecución"];
+var STANDBY_EST=["En stand-by"];
+var FINAL_EST=["Finalizado"];
+var CLS_COLORS_EST={"En evaluación/diagnóstico":"#5470b8","En armado de proyecto":"#3a5da8","En gestión de aprobaciones":"#e07830","En licitación":"#FFCB00","En ejecución":"#00c896"};
+var CLS_SEL=null;
+
+function renderCls(){
+  var act=DATA.filter(function(p){return ACTIVOS_EST.indexOf(p.e||p.s)>=0;});
+  var sby=DATA.filter(function(p){return STANDBY_EST.indexOf(p.e||p.s)>=0;});
+  var fin=DATA.filter(function(p){return FINAL_EST.indexOf(p.e||p.s)>=0;});
+  function animN(id,v){var el=eid(id);if(!el)return;var s=0,inc=Math.max(v/40,1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},20);}
+  animN("cls-act-n",act.length);
+  animN("cls-sby-n",sby.length);
+  animN("cls-fin-n",fin.length);
+  window._clsAct=act;window._clsSby=sby;window._clsFin=fin;
+}
+
+function selectCls(type){
+  var detail=eid("cls-detail");
+  var inner=eid("cls-detail-inner");
+  if(!detail||!inner)return;
+  if(CLS_SEL===type){
+    CLS_SEL=null;detail.style.display="none";
+    eid("cls-act").style.border="2px solid #FFCB00";
+    eid("cls-sby").style.border="0.5px solid var(--border)";
+    eid("cls-fin").style.border="0.5px solid var(--border)";
+    return;
+  }
+  CLS_SEL=type;
+  eid("cls-act").style.border=type==="act"?"2px solid #FFCB00":"0.5px solid var(--border)";
+  eid("cls-sby").style.border=type==="sby"?"2px solid #e53935":"0.5px solid var(--border)";
+  eid("cls-fin").style.border=type==="fin"?"2px solid #00a86b":"0.5px solid var(--border)";
+  detail.style.display="block";
+  if(type==="act"){
+    var max=0;
+    ACTIVOS_EST.forEach(function(e){var c=(window._clsAct||[]).filter(function(p){return (p.e||p.s)===e;}).length;if(c>max)max=c;});
+    if(!max)max=1;
+    var html2="<div style='font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px'>Desglose — proyectos activos</div>";
+    ACTIVOS_EST.forEach(function(e,i){
+      var proyList=(window._clsAct||[]).filter(function(p){return (p.e||p.s)===e;});
+      var c=proyList.length;
+      var col=CLS_COLORS_EST[e]||"#153244";
+      var pct=Math.round(c/max*100);
+      var bodyId="cls-body-"+i,chevId="cls-chev-"+i;
+      html2+="<div style='background:var(--card);border-radius:8px;margin-bottom:6px;border:0.5px solid var(--border);overflow:hidden'>";
+      html2+="<div onclick='toggleClsAcc(""+bodyId+"",""+chevId+"")' style='display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer'>";
+      html2+="<span style='width:8px;height:8px;border-radius:50%;background:"+col+";flex-shrink:0;display:inline-block'></span>";
+      html2+="<span style='font-size:11px;color:var(--muted);flex:1'>"+e+"</span>";
+      html2+="<div style='width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden'><div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:3px'></div></div>";
+      html2+="<span style='font-size:12px;font-weight:600;color:"+col+";min-width:20px;text-align:right'>"+c+"</span>";
+      html2+="<span id='"+chevId+"' style='font-size:11px;color:var(--muted);transition:transform .2s;display:inline-block;margin-left:4px'>▾</span>";
+      html2+="</div>";
+      html2+="<div id='"+bodyId+"' style='max-height:0;overflow:hidden;transition:max-height .3s ease'>";
+      html2+="<div style='padding:6px 12px 10px 30px;border-top:0.5px solid var(--border)'>";
+      proyList.forEach(function(p){html2+="<div style='font-size:11px;color:var(--muted);padding:3px 0;border-bottom:0.5px solid var(--border)'>"+p.n+"</div>";});
+      if(!proyList.length)html2+="<div style='font-size:11px;color:var(--muted)'>Sin proyectos</div>";
+      html2+="</div></div></div>";
+    });
+    inner.innerHTML=html2;
+  }else{
+    var lista=type==="sby"?window._clsSby:window._clsFin;
+    var color=type==="sby"?"#e53935":"#00a86b";
+    var titulo=type==="sby"?"En stand-by":"Finalizados";
+    var h3="<div style='font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px'>"+titulo+" — "+(lista||[]).length+" proyectos</div>";
+    (lista||[]).forEach(function(p){
+      h3+="<div style='display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--border)'>";
+      h3+="<span style='width:7px;height:7px;border-radius:50%;background:"+color+";flex-shrink:0;display:inline-block'></span>";
+      h3+="<span style='font-size:12px;color:var(--muted)'>"+p.n+"</span></div>";
+    });
+    inner.innerHTML=h3;
+  }
+}
+
+function toggleClsAcc(bodyId,chevId){
+  var body=eid(bodyId);var chev=eid(chevId);
+  if(!body)return;
+  var isOpen=body.style.maxHeight&&body.style.maxHeight!=="0px";
+  body.style.maxHeight=isOpen?"0px":"500px";
+  if(chev)chev.style.transform=isOpen?"":"rotate(180deg)";
 }
 
 function limpiarFiltros(){
