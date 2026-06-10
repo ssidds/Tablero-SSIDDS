@@ -927,6 +927,9 @@ function initMap(){
     L.marker(latlng,{icon:icon,interactive:false,keyboard:false}).addTo(comunaLayer);
   });
 
+  // Array global de todos los marcadores
+  var ALL_MARKERS=[];
+
   // Grupos por tipo de inversión con clustering
   var clusterOpts={
     maxClusterRadius:50,
@@ -1007,8 +1010,9 @@ function initMap(){
     });
     var marker=L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup,{maxWidth:280});
     marker._color=p.color;
-    marker._comuna=proj?String(proj.co||""):"";
+    marker._comuna=proj?String(proj.co||"").replace(/[^0-9]/g,""):"";
 
+    ALL_MARKERS.push(marker);
     if(p.color==="yellow")layerPub.addLayer(marker);
     else if(p.color==="blue")layerPriv.addLayer(marker);
     else layerNoVal.addLayer(marker);
@@ -1054,19 +1058,19 @@ function initMap(){
       var showC8=getChk("chk-c8");
       var showC9=getChk("chk-c9");
       var comunaActivas={"1":showC1,"4":showC4,"8":showC8,"9":showC9};
-      // Filtrar marcadores individualmente
-      [layerPub,layerPriv,layerNoVal].forEach(function(layer){
-        layer.eachLayer(function(mk){
-          var showTipo=(mk._color==="yellow"&&showPub)||(mk._color==="blue"&&showPriv)||(mk._color==="pink"&&showNoVal);
-          var com=mk._comuna?String(mk._comuna):"";
-          var showCom=com===""||comunaActivas[com]!==false&&(comunaActivas[com]||!(com in comunaActivas));
-          var showThisMarker=showTipo&&(com===""||comunaActivas[com]);
-          if(showThisMarker){
-            if(!layer.hasLayer(mk))layer.addLayer(mk);
-          }else{
-            if(layer.hasLayer(mk))layer.removeLayer(mk);
-          }
-        });
+      // Limpiar y reconstruir capas desde ALL_MARKERS
+      layerPub.clearLayers();
+      layerPriv.clearLayers();
+      layerNoVal.clearLayers();
+      ALL_MARKERS.forEach(function(mk){
+        var showTipo=(mk._color==="yellow"&&showPub)||(mk._color==="blue"&&showPriv)||(mk._color==="pink"&&showNoVal);
+        var com=mk._comuna?String(mk._comuna):"";
+        var showComuna=com===""||comunaActivas[com]===true;
+        if(showTipo&&showComuna){
+          if(mk._color==="yellow")layerPub.addLayer(mk);
+          else if(mk._color==="blue")layerPriv.addLayer(mk);
+          else layerNoVal.addLayer(mk);
+        }
       });
       // Filtrar polígonos GeoJSON de comunas
       comunaLayer.clearLayers();
