@@ -1552,7 +1552,7 @@ function selectCls(type){
       var pct=Math.round(c/max*100);
       var bodyId="cls-body-"+i,chevId="cls-chev-"+i;
       html2+="<div style='background:var(--card);border-radius:8px;margin-bottom:6px;border:0.5px solid var(--border);overflow:hidden'>";
-      html2+="<div onclick='toggleClsAcc(""+bodyId+"",""+chevId+"")' style='display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer'>";
+      html2+="<div data-b='"+bodyId+"' data-c='"+chevId+"' onclick='toggleClsAcc(this.getAttribute(\"data-b\"),this.getAttribute(\"data-c\"))' style='display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer'>";
       html2+="<span style='width:8px;height:8px;border-radius:50%;background:"+col+";flex-shrink:0;display:inline-block'></span>";
       html2+="<span style='font-size:11px;color:var(--muted);flex:1'>"+e+"</span>";
       html2+="<div style='width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden'><div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:3px'></div></div>";
