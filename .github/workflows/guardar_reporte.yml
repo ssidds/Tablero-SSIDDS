@@ -3,12 +3,15 @@ name: Guardar snapshot de reporte
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   snapshot:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Generar reporte.json actualizado
         run: |
