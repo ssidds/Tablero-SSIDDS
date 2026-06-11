@@ -48,7 +48,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .kpi-n{font-size:32px;font-weight:600;line-height:1;margin-bottom:3px}
 .kpi.t .kpi-n{color:var(--azul)}.kpi.e .kpi-n{color:#00a87e}.kpi.s .kpi-n{color:#7a6fa8}.kpi.f .kpi-n{color:#c49900}
 .kpi-l{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;align-items:stretch}
 .box{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:16px 18px}
 .box-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .bar-item{display:flex;align-items:center;gap:8px;margin-bottom:7px}
@@ -56,7 +56,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .bar-trk{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
 .bar-f{height:100%;border-radius:4px}
 .bar-n{font-size:11px;font-weight:600;font-family:DM Mono,monospace;width:20px;text-align:right;color:var(--text)}
-.cw{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px}
+.cw{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;display:flex;flex-direction:column}
 .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .ca{display:flex;gap:5px}
 .cb{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center}
@@ -184,9 +184,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <!-- KPIs -->
           <div class="kpi-grid">
             <div class="kpi t" style="border-color:#153244;background:var(--card)"><div class="kpi-n" id="k0" style="color:#153244">0</div><div class="kpi-l">Proyectos totales</div></div>
-            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border-color:#FFCB00;background:#fffdf0"><div class="kpi-n" id="k1" style="color:#b8920a">0</div><div class="kpi-l">Estratégicos ↗</div></div>
-            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border-color:#8DE2D6;background:#f0fdfb"><div class="kpi-n" id="k2" style="color:#0e7a6e">0</div><div class="kpi-l">Complementarios ↗</div></div>
-            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border-color:#E91E8C;background:#fff0f8"><div class="kpi-n" id="k3" style="color:#a0135e">0</div><div class="kpi-l">Emergentes ↗</div></div>
+            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border:1.5px solid #FFCB00;background:var(--card)"><div class="kpi-n" id="k1" style="color:#b8920a">0</div><div class="kpi-l">Estratégicos ↗</div></div>
+            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border:1.5px solid #8DE2D6;background:var(--card)"><div class="kpi-n" id="k2" style="color:#0e7a6e">0</div><div class="kpi-l">Complementarios ↗</div></div>
+            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border:1.5px solid #E91E8C;background:var(--card)"><div class="kpi-n" id="k3" style="color:#a0135e">0</div><div class="kpi-l">Emergentes ↗</div></div>
           </div>
 
           <!-- DIVISOR -->
@@ -228,7 +228,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             <div class="box" id="logros-recientes-box">
               <div class="box-t"><i class="ti ti-trophy" aria-hidden="true"></i> Logros recientes</div>
               <div id="logros-recientes"></div>
-              <div onclick="nav('logros',document.querySelector('.sb-item[onclick*=logros])'))" style="font-size:10px;color:var(--azul);font-weight:600;text-align:right;margin-top:10px;cursor:pointer;opacity:.7">Ver todos los logros →</div>
+              <div onclick="var el=document.querySelector('.sb-item[onclick*=logros]');if(el)nav('logros',el);" style="font-size:10px;color:var(--azul);font-weight:600;text-align:right;margin-top:10px;cursor:pointer;opacity:.7">Ver todos los logros →</div>
             </div>
             <div class="cw">
               <div class="ch">
@@ -801,7 +801,11 @@ function renderComunas(){
   var container=eid("com-cards");if(!container)return;container.innerHTML="";
   Object.keys(grupos).forEach(function(com){
     var proyectos=grupos[com],n=proyectos.length,col=COLS[com]||"#153244";
-    var estados={};proyectos.forEach(function(p){estados[p.e]=(estados[p.e]||0)+1;});
+    var estados={};proyectos.forEach(function(p){
+      var e=(p.est||"").toLowerCase().trim();
+      var label=e==="activo"?"Activo":e==="en stand by"?"En stand-by":e==="finalizado"?"Finalizado":"";
+      if(label)estados[label]=(estados[label]||0)+1;
+    });
     var card=document.createElement("div");
     card.style.cssText="background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .15s;overflow:hidden;border-top:4px solid "+col;
     card.onmouseover=function(){this.style.transform="translateY(-2px)";this.style.boxShadow="0 4px 16px rgba(21,50,68,.1)";};
@@ -853,10 +857,10 @@ function renderCards(){
   var festv=eid("fest")?eid("fest").value:"";
   var f=DATA.filter(function(p){
     if(festv){
-      var estado=p.est||p.e||p.s||"";
-      if(festv==="Activos"&&ACTIVOS_EST.indexOf(estado)<0)return false;
-      if(festv==="En stand-by"&&estado!=="En stand-by")return false;
-      if(festv==="Finalizado"&&estado!=="Finalizado")return false;
+      var estado=(p.est||p.e||p.s||"").toLowerCase().trim();
+      if(festv==="Activos"&&estado!=="activo")return false;
+      if(festv==="En stand-by"&&estado!=="en stand by")return false;
+      if(festv==="Finalizado"&&estado!=="finalizado")return false;
     }
     if(fev&&p.e!==fev)return false;
     if(ftv&&p.te!==ftv)return false;
@@ -1244,11 +1248,11 @@ function renderLogros(){
 var REP_DATA=[];
 var REP_CUR=0;
 var REP_PAGES=[];
-var REP_COLORS=["azul","celeste","amarillo"];
+var REP_COLORS=["azul","verde","amarillo"];
 var REP_DATE_LABEL="";
 var HEADER_COLORS={
   azul:{bg:"#153244",text:"#ffffff"},
-  celeste:{bg:"#8DE2D6",text:"#153244"},
+  verde:{bg:"#8DE2D6",text:"#153244"},
   amarillo:{bg:"#FFCB00",text:"#153244"}
 };
 
@@ -1460,6 +1464,12 @@ function openRepFS(){
   var overlay=eid("rep-fs-overlay");
   var content=eid("rep-fs-content");
   if(!overlay||!content)return;
+  renderRepFS();
+  overlay.classList.add("open");
+}
+function renderRepFS(){
+  var content=eid("rep-fs-content");
+  if(!content)return;
   content.innerHTML="";
   var hdr=document.createElement("div");
   hdr.style.cssText="text-align:center;margin-bottom:16px";
@@ -1477,7 +1487,22 @@ function openRepFS(){
     });
     content.appendChild(grid);
   }
-  overlay.classList.add("open");
+  // Navegación
+  var nav=document.createElement("div");
+  nav.style.cssText="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px";
+  var prevBtn=document.createElement("button");
+  prevBtn.style.cssText="width:32px;height:32px;border-radius:50%;border:1.5px solid #153244;background:white;color:#153244;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center";
+  prevBtn.innerHTML="‹";prevBtn.disabled=REP_CUR===0;
+  prevBtn.onclick=function(){if(REP_CUR>0){REP_CUR--;repGoTo(REP_CUR);renderRepFS();}};
+  var lbl=document.createElement("span");
+  lbl.style.cssText="font-size:11px;color:#6b8395;font-family:Archivo,sans-serif;min-width:50px;text-align:center";
+  lbl.textContent=(REP_CUR+1)+" / "+REP_PAGES.length;
+  var nextBtn=document.createElement("button");
+  nextBtn.style.cssText="width:32px;height:32px;border-radius:50%;border:1.5px solid #153244;background:white;color:#153244;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center";
+  nextBtn.innerHTML="›";nextBtn.disabled=REP_CUR===REP_PAGES.length-1;
+  nextBtn.onclick=function(){if(REP_CUR<REP_PAGES.length-1){REP_CUR++;repGoTo(REP_CUR);renderRepFS();}};
+  nav.appendChild(prevBtn);nav.appendChild(lbl);nav.appendChild(nextBtn);
+  content.appendChild(nav);
 }
 function closeRepFS(){eid("rep-fs-overlay").classList.remove("open");}
 
@@ -1527,16 +1552,16 @@ function downloadRepPDF(){
 }
 
 
-var ACTIVOS_EST=["En evaluación/diagnóstico","En armado de proyecto","En gestión de aprobaciones","En licitación","En ejecución"];
-var STANDBY_EST=["En stand-by"];
-var FINAL_EST=["Finalizado"];
+var ACTIVOS_EST=["En evaluación/diagnóstico","En armado de proyecto","En gestión de aprobaciones","En licitación","En ejecución","activo","Activo"];
+var STANDBY_EST=["En stand-by","en stand by","En stand by"];
+var FINAL_EST=["Finalizado","finalizado","Finalizado"];
 var CLS_COLORS_EST={"En evaluación/diagnóstico":"#5470b8","En armado de proyecto":"#3a5da8","En gestión de aprobaciones":"#e07830","En licitación":"#FFCB00","En ejecución":"#00c896"};
 var CLS_SEL=null;
 
 function renderCls(){
-  var act=DATA.filter(function(p){return ACTIVOS_EST.indexOf(p.est||p.e||p.s)>=0;});
-  var sby=DATA.filter(function(p){return STANDBY_EST.indexOf(p.est||p.e||p.s)>=0;});
-  var fin=DATA.filter(function(p){return FINAL_EST.indexOf(p.est||p.e||p.s)>=0;});
+  var act=DATA.filter(function(p){return (p.est||"").toLowerCase().trim()==="activo";});
+  var sby=DATA.filter(function(p){return (p.est||"").toLowerCase().trim()==="en stand by";});
+  var fin=DATA.filter(function(p){return (p.est||"").toLowerCase().trim()==="finalizado";});
   var tot=DATA.length||1;
   function animN(id,v){var el=eid(id);if(!el)return;var s=0,inc=Math.max(v/40,1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},20);}
   animN("cls-act-n",act.length);
@@ -1635,7 +1660,7 @@ function renderLogrosRecientes(){
       sorted.forEach(function(l){
         var col=TECOLS[l.te]||"#153244";
         out+="<div style='display:flex;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border)'>";
-        out+="<div style='font-size:10px;color:var(--muted);min-width:42px;padding-top:1px;font-family:DM Mono,monospace'>"+l.f+"</div>";
+        out+="<div style='font-size:10px;font-weight:700;color:var(--text);min-width:52px;padding-top:1px;font-family:DM Mono,monospace'>"+l.f+"</div>";
         out+="<div style='flex:1'>";
         out+="<div style='font-size:11px;color:var(--text);line-height:1.4;margin-bottom:2px'>"+l.l+"</div>";
         if(l.p||l.te){
