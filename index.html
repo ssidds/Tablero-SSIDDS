@@ -61,7 +61,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .ca{display:flex;gap:5px}
 .cb{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .cb i{font-size:12px;color:var(--muted)}
-.hc{border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center}
+.hc{flex:1;border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center}
 .hp{font-size:11px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.3}
 .hd{font-size:32px;font-weight:600;line-height:1}
 .hm{font-size:11px;color:var(--muted);margin-top:2px;margin-bottom:8px}
@@ -184,9 +184,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <!-- KPIs -->
           <div class="kpi-grid">
             <div class="kpi t" style="border-color:#153244;background:var(--card)"><div class="kpi-n" id="k0" style="color:#153244">0</div><div class="kpi-l">Proyectos totales</div></div>
-            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border:1.5px solid #FFCB00;background:var(--card)"><div class="kpi-n" id="k1" style="color:#b8920a">0</div><div class="kpi-l">Estratégicos ↗</div></div>
-            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border:1.5px solid #8DE2D6;background:var(--card)"><div class="kpi-n" id="k2" style="color:#0e7a6e">0</div><div class="kpi-l">Complementarios ↗</div></div>
-            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border:1.5px solid #E91E8C;background:var(--card)"><div class="kpi-n" id="k3" style="color:#a0135e">0</div><div class="kpi-l">Emergentes ↗</div></div>
+            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border:1.5px solid #00c896;background:var(--card)"><div class="kpi-n" id="k1" style="color:#b8920a">0</div><div class="kpi-l">Estratégicos ↗</div></div>
+            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border:1.5px solid #a89dc8;background:var(--card)"><div class="kpi-n" id="k2" style="color:#0e7a6e">0</div><div class="kpi-l">Complementarios ↗</div></div>
+            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border:1.5px solid #e89a40;background:var(--card)"><div class="kpi-n" id="k3" style="color:#a0135e">0</div><div class="kpi-l">Emergentes ↗</div></div>
           </div>
 
           <!-- DIVISOR -->
@@ -241,7 +241,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                   </div>
                 </div>
               </div>
-              <div id="hcard" class="hc hc-n">
+              <div id="hcard" class="hc hc-n" style="flex:1;display:flex;flex-direction:column;justify-content:center">
                 <div class="hp" id="hp"></div>
                 <div class="hd" id="hd"></div>
                 <div class="hm" id="hm"></div>
@@ -826,7 +826,7 @@ function renderComunas(){
       +"<div style='display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:6px;padding-top:6px;border-top:0.5px solid var(--border)'>"
       +Object.keys(estados).map(function(e){
         var cnt=estados[e];
-        var col=ECOLS[e]||"#888";
+        var col=e==="Activo"?"#FFCB00":e==="En stand-by"?"#e53935":e==="Finalizado"?"#00a86b":"#888";
         return "<div style='display:flex;align-items:center;gap:4px;font-size:9px;color:var(--muted)'><span style='width:7px;height:7px;border-radius:50%;background:"+col+";flex-shrink:0;display:inline-block'></span>"+cnt+" "+e+"</div>";
       }).join("")
       +"</div>";
@@ -1257,8 +1257,11 @@ var HEADER_COLORS={
 };
 
 function getRepColor(idx,prev){
-  var opts=REP_COLORS.filter(function(c){return c!==prev;});
-  return opts[idx%opts.length];
+  // Rotación fija: azul → verde → amarillo → azul...
+  // Si el color calculado coincide con el anterior, avanzar uno más
+  var color=REP_COLORS[idx%REP_COLORS.length];
+  if(color===prev)color=REP_COLORS[(idx+1)%REP_COLORS.length];
+  return color;
 }
 
 function loadReportes(){
