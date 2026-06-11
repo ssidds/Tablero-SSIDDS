@@ -61,11 +61,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .ca{display:flex;gap:5px}
 .cb{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .cb i{font-size:12px;color:var(--muted)}
-.hc{flex:1;border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center}
+.hc{flex:1;border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px;text-align:center;font-size:14px}
 .hp{font-size:11px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.3}
 .hd{font-size:32px;font-weight:600;line-height:1}
 .hm{font-size:11px;color:var(--muted);margin-top:2px;margin-bottom:8px}
-.hx{font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;line-height:1.4}
+.hx{font-size:13px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;line-height:1.4}
 .hc-u{background:#fef8f8}.hc-u .hd{color:#a32d2d}
 .hc-p{background:#fff8e0}.hc-p .hd{color:#8a6a00}
 .hc-n{background:var(--bg)}.hc-n .hd{color:var(--azul)}
@@ -184,9 +184,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <!-- KPIs -->
           <div class="kpi-grid">
             <div class="kpi t" style="border-color:#153244;background:var(--card)"><div class="kpi-n" id="k0" style="color:#153244">0</div><div class="kpi-l">Proyectos totales</div></div>
-            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border:1.5px solid #00c896;background:var(--card)"><div class="kpi-n" id="k1" style="color:#b8920a">0</div><div class="kpi-l">Estratégicos ↗</div></div>
-            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border:1.5px solid #a89dc8;background:var(--card)"><div class="kpi-n" id="k2" style="color:#0e7a6e">0</div><div class="kpi-l">Complementarios ↗</div></div>
-            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border:1.5px solid #e89a40;background:var(--card)"><div class="kpi-n" id="k3" style="color:#a0135e">0</div><div class="kpi-l">Emergentes ↗</div></div>
+            <div class="kpi e clickable" onclick="openKpiModal('Estratégicos')" style="border:1.5px solid #00c896;background:var(--card)"><div class="kpi-n" id="k1" style="color:#00c896">0</div><div class="kpi-l">Estratégicos ↗</div></div>
+            <div class="kpi s clickable" onclick="openKpiModal('Complementarios')" style="border:1.5px solid #a89dc8;background:var(--card)"><div class="kpi-n" id="k2" style="color:#a89dc8">0</div><div class="kpi-l">Complementarios ↗</div></div>
+            <div class="kpi f clickable" onclick="openKpiModal('Emergentes')" style="border:1.5px solid #e89a40;background:var(--card)"><div class="kpi-n" id="k3" style="color:#e89a40">0</div><div class="kpi-l">Emergentes ↗</div></div>
           </div>
 
           <!-- DIVISOR -->
@@ -811,17 +811,10 @@ function renderComunas(){
     card.onmouseover=function(){this.style.transform="translateY(-2px)";this.style.boxShadow="0 4px 16px rgba(21,50,68,.1)";};
     card.onmouseout=function(){this.style.transform="";this.style.boxShadow="";};
     card.onclick=function(){openCom(com);};
-    var segsHTML="<div style='display:flex;gap:3px;margin:8px 0'>";
-    Object.keys(estados).forEach(function(e){
-      var pct=Math.round(estados[e]/Math.max(n,1)*100);
-      segsHTML+="<div title='"+e+": "+estados[e]+"' style='height:5px;border-radius:3px;background:"+(ECOLS[e]||"#888")+";width:"+pct+"%'></div>";
-    });
-    segsHTML+="</div>";
-    card.innerHTML="<div style='font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em'>"+com+"</div>"
+        card.innerHTML="<div style='font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em'>"+com+"</div>"
       +"<div style='font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.4'>"+BARRIOS[com]+"</div>"
       +"<div style='font-size:34px;font-weight:700;color:"+col+";line-height:1'>"+n+"</div>"
       +"<div style='font-size:10px;color:var(--muted)'>proyectos</div>"
-      +segsHTML
       +"<div style='font-size:9px;color:var(--muted);text-align:right'>Ver proyectos →</div>"
       +"<div style='display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:6px;padding-top:6px;border-top:0.5px solid var(--border)'>"
       +Object.keys(estados).map(function(e){
@@ -1507,7 +1500,12 @@ function renderRepFS(){
   nav.appendChild(prevBtn);nav.appendChild(lbl);nav.appendChild(nextBtn);
   content.appendChild(nav);
 }
-function closeRepFS(){eid("rep-fs-overlay").classList.remove("open");}
+function closeRepFS(){
+  eid("rep-fs-overlay").classList.remove("open");
+  // Restaurar la página actual correctamente
+  var slides=document.querySelectorAll(".rep-page-slide");
+  slides.forEach(function(s,i){s.classList.toggle("active",i===REP_CUR);});
+}
 
 function downloadRepJPG(){
   var wrap=eid("rep-cards-wrap");
