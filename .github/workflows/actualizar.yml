@@ -23,6 +23,10 @@ jobs:
           CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
 
           # ---- HOJA TABLERO (gid=0) ----
+          # 0=Proyecto, 1=Fecha carga, 2=Status, 3=Pasos/Hitos, 4=Accionable Marce,
+          # 5=Próx paso, 6=Próximo hito y fecha, 7=Actores, 8=Monto,
+          # 9=Estado, 10=Etapa, 11=Comuna, 12=Barrio, 13=Temática,
+          # 14=Tipo inversión, 15=Importancia, 16=Descripción, 17=Objetivo
           url = CSV_BASE + "?gid=0&single=true&output=csv"
           with urllib.request.urlopen(url) as r:
               rows = list(csv.reader(r.read().decode('utf-8').splitlines()))
@@ -32,10 +36,21 @@ jobs:
               def c(i): return row[i].strip() if i < len(row) else ""
               if not c(0): continue
               datos.append({
-                  "n": c(0), "s": c(2), "a": c(4), "h": c(6),
-                  "ac": c(4), "mo": c(8), "etapa": c(9),
-                  "co": c(10), "ba": c(11), "te": c(12),
-                  "inv": c(13), "imp": c(14), "desc": c(15), "obj": c(16)
+                  "n":    c(0),
+                  "s":    c(2),
+                  "a":    c(4),
+                  "h":    c(6),
+                  "ac":   c(4),
+                  "mo":   c(8),
+                  "est":  c(9),
+                  "e":    c(10),
+                  "co":   c(11),
+                  "ba":   c(12),
+                  "te":   c(13),
+                  "inv":  c(14),
+                  "imp":  c(15),
+                  "desc": c(16),
+                  "obj":  c(17)
               })
 
           with open("datos.json", "w", encoding="utf-8") as f:
