@@ -1767,7 +1767,7 @@ function loadGantt(){
         var hitos=grouped[p].sort(function(a,b){
           return parseGanttDate(a.fecha)-parseGanttDate(b.fecha);
         });
-        var done=hitos.filter(function(h){return h.estado.toLowerCase()==="activo";}).length;
+        var done=hitos.filter(function(h){return h.estado.toLowerCase()==="cumplido";}).length;
         var pct=hitos.length>0?Math.round(done/hitos.length*100):0;
         var fechaInicio=hitos[0]?hitos[0].fecha:"";
         var fechaFin=hitos[hitos.length-1]?hitos[hitos.length-1].fecha:"";
@@ -1814,8 +1814,10 @@ function renderGantt(data){
   var minD=allDates.length?Math.min.apply(null,allDates):Date.now();
   var maxD=allDates.length?Math.max.apply(null,allDates):Date.now()+1;
   var range=maxD-minD||1;
-  var today=Date.now();
-  var todayPct=Math.min(100,Math.max(0,Math.round((today-minD)/range*100)));
+  var today=new Date();
+  today.setHours(0,0,0,0);
+  var todayMs=today.getTime();
+  var todayPct=Math.min(100,Math.max(0,Math.round((todayMs-minD)/range*100)));
 
   // Header con meses
   var months=[];
@@ -1863,8 +1865,7 @@ function renderGantt(data){
     var widthPct=endD2&&startD?Math.round((endD2-startD)/range*100):50;
     widthPct=Math.max(widthPct,3);
 
-    var activeHito=p.hitos.find(function(h){return h.estado.toLowerCase()==="en curso";});
-    var barColor=p.hitos.some(function(h){return h.estado.toLowerCase()==="pendiente"&&parseGanttDate(h.fecha)<today;})?"#e89a40":"#153244";
+    var barColor=p.hitos.some(function(h){return h.estado.toLowerCase()==="pendiente"&&parseGanttDate(h.fecha)>0&&parseGanttDate(h.fecha)<todayMs;})?"#e89a40":"#153244";
 
     var bar=document.createElement("div");
     bar.style.cssText="position:absolute;height:18px;border-radius:var(--r2);background:"+barColor+";left:"+leftPct+"%;width:"+widthPct+"%;display:flex;align-items:center;padding:0 6px;overflow:hidden";
@@ -1874,11 +1875,11 @@ function renderGantt(data){
     // Hitos
     p.hitos.forEach(function(h){
       var hd=parseGanttDate(h.fecha);
-      if(!hd)return;
+      if(!hd||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0)return;
       var hPct=Math.round((hd-minD)/range*100);
       var dot=document.createElement("div");
       var est=h.estado.toLowerCase();
-      var dotColor=est==="activo"?"#00c896":est==="en curso"?"#FFCB00":"rgba(255,255,255,0.5)";
+      var dotColor=est==="cumplido"?"#00c896":est==="en curso"?"#FFCB00":"rgba(255,255,255,0.5)";
       var dotBorder=est==="en curso"?"#153244":"white";
       dot.title=h.hito+" ("+h.fecha+")";
       dot.style.cssText="position:absolute;width:10px;height:10px;border-radius:50%;background:"+dotColor+";border:2px solid "+dotBorder+";left:"+hPct+"%;top:50%;transform:translate(-50%,-50%);z-index:2";
@@ -1886,9 +1887,12 @@ function renderGantt(data){
     });
 
     // Línea de hoy
-    var todayEl=document.createElement("div");
-    todayEl.style.cssText="position:absolute;left:"+todayPct+"%;top:0;bottom:0;width:1.5px;background:rgba(229,57,53,.5);z-index:3";
-    barArea.appendChild(todayEl);
+    if(todayPct>=0&&todayPct<=100){
+      var todayEl=document.createElement("div");
+      todayEl.title="Hoy";
+      todayEl.style.cssText="position:absolute;left:"+todayPct+"%;top:0;bottom:0;width:3px;background:#e53935;z-index:3;border-radius:1px";
+      barArea.appendChild(todayEl);
+    }
 
     row.appendChild(label);
     row.appendChild(barArea);
@@ -1901,29 +1905,34 @@ function openGanttModal(p){
   eid("gantt-modal-title").textContent=p.n;
   var projData=DATA.find(function(d){return d.n&&d.n.toUpperCase().trim()===p.n.toUpperCase().trim();});
   var sub=projData?(projData.co||"")+(projData.te?" · "+projData.te:""):"";
-  var done=p.hitos.filter(function(h){return h.estado.toLowerCase()==="activo";}).length;
+  var done=p.hitos.filter(function(h){return h.estado.toLowerCase()==="cumplido";}).length;
   var pct=p.hitos.length?Math.round(done/p.hitos.length*100):0;
   eid("gantt-modal-sub").textContent=sub+(sub?" · ":"")+pct+"% completado";
 
   // Construir nodos de la línea de tiempo
   var nodes=eid("gantt-tl-nodes");
   nodes.innerHTML="";
-  p.hitos.forEach(function(h){
+  // Separar hitos con fecha y A/D
+  var hitosConFecha=p.hitos.filter(function(h){return !(!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0);});
+  var hitosAD=p.hitos.filter(function(h){return !parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;});
+  var hitosOrdenados=hitosConFecha.concat(hitosAD);
+  hitosOrdenados.forEach(function(h){
     var est=h.estado.toLowerCase();
+    var esAD=!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
     var node=document.createElement("div");
     node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0";
 
     var circle=document.createElement("div");
-    var bgC=est==="activo"?"#153244":est==="en curso"?"#FFCB00":"var(--azul3)";
-    var borderC=est==="activo"?"#153244":est==="en curso"?"#153244":"var(--border)";
-    var textC=est==="activo"?"white":est==="en curso"?"#153244":"var(--muted)";
+    var bgC=est==="cumplido"?"#153244":est==="en curso"?"#FFCB00":"var(--azul3)";
+    var borderC=est==="cumplido"?"#153244":est==="en curso"?"#153244":"var(--border)";
+    var textC=est==="cumplido"?"white":est==="en curso"?"#153244":"var(--muted)";
     circle.style.cssText="width:28px;height:28px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";display:flex;align-items:center;justify-content:center;flex-shrink:0";
-    if(est==="activo")circle.innerHTML='<i class="ti ti-check" style="font-size:13px;color:white" aria-hidden="true"></i>';
+    if(est==="cumplido")circle.innerHTML='<i class="ti ti-check" style="font-size:13px;color:white" aria-hidden="true"></i>';
     else if(est==="en curso")circle.innerHTML='<i class="ti ti-player-play" style="font-size:11px;color:#153244" aria-hidden="true"></i>';
 
     var date=document.createElement("div");
     date.style.cssText="font-size:10px;color:var(--muted);text-align:center";
-    date.textContent=h.fecha;
+    date.textContent=esAD?"A definir":h.fecha;
 
     var lbl=document.createElement("div");
     lbl.style.cssText="font-size:10px;color:var(--muted);text-align:center;line-height:1.3;max-width:70px;overflow:hidden";
