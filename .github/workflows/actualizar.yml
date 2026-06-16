@@ -80,7 +80,7 @@ jobs:
           for row in rows3[1:]:
               def c(i): return row[i].strip() if i < len(row) else ""
               if not c(0): continue
-              reporte.append({"n": c(0), "s": c(1), "pp": c(2), "ac": c(3)})
+              reporte.append({"n": c(0), "sub": c(1), "s": c(2), "pp": c(3), "ac": c(4)})
 
           with open("reporte.json", "w", encoding="utf-8") as f:
               json.dump(reporte, f, ensure_ascii=False)
