@@ -18,18 +18,21 @@ jobs:
       - name: Generar JSONs
         run: |
           python3 - << 'PYEOF'
-          import csv, json, urllib.request
+          import csv, json, urllib.request, io
 
           CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
+
+          def fetch_csv(url):
+              with urllib.request.urlopen(url) as r:
+                  content = r.read().decode('utf-8')
+              return list(csv.reader(io.StringIO(content)))
 
           # ---- HOJA TABLERO (gid=0) ----
           # 0=Proyecto, 1=Fecha carga, 2=Status, 3=Pasos/Hitos, 4=Accionable Marce,
           # 5=Próx paso, 6=Próximo hito y fecha, 7=Actores, 8=Monto,
           # 9=Estado, 10=Etapa, 11=Comuna, 12=Barrio, 13=Temática,
           # 14=Tipo inversión, 15=Importancia, 16=Descripción, 17=Objetivo
-          url = CSV_BASE + "?gid=0&single=true&output=csv"
-          with urllib.request.urlopen(url) as r:
-              rows = list(csv.reader(r.read().decode('utf-8').splitlines()))
+          rows = fetch_csv(CSV_BASE + "?gid=0&single=true&output=csv")
 
           datos = []
           for row in rows[1:]:
@@ -58,9 +61,7 @@ jobs:
           print(f"datos.json: {len(datos)} proyectos")
 
           # ---- HOJA LOGROS (gid=1689415169) ----
-          url2 = CSV_BASE + "?gid=1689415169&single=true&output=csv"
-          with urllib.request.urlopen(url2) as r:
-              rows2 = list(csv.reader(r.read().decode('utf-8').splitlines()))
+          rows2 = fetch_csv(CSV_BASE + "?gid=1689415169&single=true&output=csv")
 
           logros = []
           for row in rows2[1:]:
@@ -73,9 +74,7 @@ jobs:
           print(f"logros.json: {len(logros)} logros")
 
           # ---- HOJA REPORTE (gid=499814297) ----
-          url3 = CSV_BASE + "?gid=499814297&single=true&output=csv"
-          with urllib.request.urlopen(url3) as r:
-              rows3 = list(csv.reader(r.read().decode('utf-8').splitlines()))
+          rows3 = fetch_csv(CSV_BASE + "?gid=499814297&single=true&output=csv")
 
           reporte = []
           for row in rows3[1:]:
