@@ -1581,7 +1581,7 @@ function buildRepCard(item,color,isLarge){
     lbl.textContent=emoji+" "+label;
     body.appendChild(lbl);
     var val=document.createElement("div");
-    val.style.cssText="font-size:"+(isLarge?"12px":"11px")+";line-height:1.45;color:"+(isAlert?"#c0392b":"#374151")+(isAlert?";font-weight:600":"");
+    val.style.cssText="font-size:"+(isLarge?"12px":"11px")+";line-height:1.45;color:"+(isAlert?"#c0392b":"#374151")+(isAlert?";font-weight:600":"")+";white-space:pre-wrap";
     val.textContent=value;
     body.appendChild(val);
   }
