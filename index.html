@@ -343,12 +343,12 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <div style="margin-top:20px">
             <div class="s-ttl" style="margin-bottom:14px">Empresas</div>
             <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:16px">
-              <button id="emp-prev" onclick="empCarMove(-1)" style="width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+              <button id="emp-prev" onclick="empCarMove(-1)" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--azul);background:var(--azul);color:#FFCB00;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;transition:all .15s" onmouseover="this.style.background='var(--azul2)'" onmouseout="this.style.background='var(--azul)'"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
               <div id="emp-track" style="flex:1;display:flex;gap:10px;overflow:hidden"></div>
-              <button id="emp-next" onclick="empCarMove(1)" style="width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+              <button id="emp-next" onclick="empCarMove(1)" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--azul);background:var(--azul);color:#FFCB00;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;transition:all .15s" onmouseover="this.style.background='var(--azul2)'" onmouseout="this.style.background='var(--azul)'"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
             </div>
             <div id="emp-dots" style="display:flex;justify-content:center;gap:5px;margin-top:8px;margin-bottom:16px"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="display:grid;grid-template-columns:3fr 2fr;gap:12px">
               <div class="box">
                 <div class="box-t">Reuniones por mes</div>
                 <div id="emp-chart-months" style="position:relative;padding:8px 0 4px;width:100%"></div>
@@ -2272,13 +2272,22 @@ function buildLogoEl(e,size){
   var sz=size||56;
   wrap.style.cssText="width:"+sz+"px;height:"+sz+"px;border-radius:50%;background:"+empColor(e.n)+";display:flex;align-items:center;justify-content:center;font-size:"+(sz/3)+"px;font-weight:600;color:#153244;overflow:hidden;flex-shrink:0";
   if(e.web&&e.web.trim()){
-    var domain=e.web.trim().replace(/^https?:\/\//,"").replace(/\/.*$/,"");
+    var rawWeb=e.web.trim();
+    // Limpiar el dominio: quitar protocolo, www, paths, query strings
+    var domain=rawWeb
+      .replace(/^https?:\/\//i,"")
+      .replace(/^www\./i,"")
+      .replace(/[\/\?#].*/,"")
+      .replace(/\s/g,"")
+      .toLowerCase();
     var img=document.createElement("img");
     img.src="https://logo.clearbit.com/"+domain;
+    img.crossOrigin="anonymous";
     img.style.cssText="width:100%;height:100%;object-fit:contain;padding:6px";
     img.onerror=function(){
-      this.parentNode.removeChild(this);
+      this.style.display="none";
       wrap.textContent=empInitials(e.n);
+      wrap.style.fontSize=(sz/3)+"px";
     };
     wrap.appendChild(img);
   }else{
@@ -2287,6 +2296,15 @@ function buildLogoEl(e,size){
   return wrap;
 }
 
+var EMP_TIMER=null;
+function empStartTimer(){
+  if(EMP_TIMER)clearInterval(EMP_TIMER);
+  EMP_TIMER=setInterval(function(){
+    var pages=Math.ceil(EMP_DATA.length/EMP_PER_PAGE);
+    EMP_CUR_PAGE=(EMP_CUR_PAGE+1)%pages;
+    renderEmpCarrusel();
+  },20000);
+}
 function renderEmpCarrusel(){
   var track=eid("emp-track");
   var dots=eid("emp-dots");
@@ -2324,6 +2342,7 @@ function renderEmpCarrusel(){
   var prev=eid("emp-prev");var next=eid("emp-next");
   if(prev)prev.style.opacity=EMP_CUR_PAGE===0?"0.3":"1";
   if(next)next.style.opacity=EMP_CUR_PAGE===pages-1?"0.3":"1";
+  empStartTimer();
 }
 
 function empCarMove(dir){
