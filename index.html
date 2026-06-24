@@ -369,11 +369,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                     <button id="emp-hm-anio" onclick="empSetHeatmap('anio')" style="font-size:10px;padding:3px 10px;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:DM Sans,sans-serif">Por año</button>
                   </div>
                 </div>
-                <div id="emp-chart-months" style="position:relative;padding:4px 0;width:100%"></div>
+                <div id="emp-chart-months" style="position:relative;padding:4px 0;width:100%;display:flex;align-items:center;min-height:110px"></div>
               </div>
               <div class="box">
                 <div class="box-t">Empresas por rubro</div>
-                <div id="emp-chart-rubros" style="margin-top:8px"></div>
+                <div id="emp-chart-rubros" style="margin-top:8px;display:flex;align-items:center;min-height:110px"></div>
               <div id="emp-rubros-modal" style="display:none;position:fixed;inset:0;background:rgba(21,50,68,.6);z-index:1000;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
                 <div style="background:var(--card);border-radius:var(--r);padding:20px;max-width:440px;width:90%;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">
                   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><div style="font-size:14px;font-weight:600;color:var(--text)">Todos los rubros</div><button onclick="eid('emp-rubros-modal').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px">×</button></div>
@@ -2454,45 +2454,34 @@ function empRenderHeatmap(mode){
   var mc=eid("emp-chart-months");if(!mc)return;
   var MESES=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
   if(mode==="mes"){
-    // Últimos 12 meses desde hoy hacia atrás
+    // Últimos 12 meses desde hoy hacia atrás — gráfico de línea SVG
     var now2=new Date();
     var months12=[];
     for(var i=11;i>=0;i--){
       var d=new Date(now2.getFullYear(),now2.getMonth()-i,1);
       months12.push({
         key:d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"),
-        mes:MESES[d.getMonth()],
-        anio:String(d.getFullYear()).slice(2)
+        lbl:MESES[d.getMonth()]+" "+String(d.getFullYear()).slice(2)
       });
     }
     var vals=months12.map(function(m){return window._empMonthMap[m.key]||0;});
     var maxV=Math.max.apply(null,vals)||1;
     var todayKey2=now2.getFullYear()+"-"+String(now2.getMonth()+1).padStart(2,"0");
-    var html2="<div style='display:flex;gap:4px;flex-wrap:nowrap'>";
-    months12.forEach(function(m,i){
-      var v=vals[i];
-      var pct=v/maxV;
-      var isToday=m.key===todayKey2;
-      // Escala amarillo→naranja: 0 = gris claro, max = naranja oscuro
-      var bg,txtColor;
-      if(isToday){bg="#FFCB00";txtColor="#153244";}
-      else if(v===0){bg="var(--azul3)";txtColor="var(--muted)";}
-      else{
-        // Interpolación amarillo claro (#fff3cd) → naranja oscuro (#e07830)
-        var r=Math.round(255-pct*(255-224));
-        var g=Math.round(243-pct*(243-120));
-        var b=Math.round(205-pct*(205-48));
-        bg="rgb("+r+","+g+","+b+")";
-        txtColor=pct>0.5?"#7a3500":"#7a3500";
-      }
-      html2+="<div title='"+m.mes+" "+m.anio+": "+v+" reuniones' style='flex:1;min-width:0;border-radius:6px;background:"+bg+";padding:6px 2px;text-align:center;cursor:default'>"
-        +"<div style='font-size:8px;color:"+txtColor+";font-weight:600;line-height:1.2'>"+m.mes+"</div>"
-        +"<div style='font-size:8px;color:"+txtColor+";opacity:.7'>"+m.anio+"</div>"
-        +"<div style='font-size:11px;font-weight:700;color:"+txtColor+"'>"+v+"</div>"
-        +"</div>";
+    var W=500,H=70,PAD=20;
+    var step=(W-PAD*2)/(months12.length-1||1);
+    var pts=months12.map(function(m,i){
+      return{x:PAD+i*step,y:H-Math.round((vals[i]/maxV)*(H-12))-4,v:vals[i],lbl:m.lbl,isToday:m.key===todayKey2};
     });
-    html2+="</div>";
-    mc.innerHTML=html2;
+    var polyline=pts.map(function(p){return p.x+","+p.y;}).join(" ");
+    var svgH='<svg width="100%" height="'+(H+28)+'" viewBox="0 0 500 '+(H+28)+'" style="display:block;overflow:visible">';
+    svgH+='<polyline points="'+polyline+'" fill="none" stroke="#153244" stroke-width="2" stroke-linejoin="round"/>';
+    pts.forEach(function(p){
+      svgH+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(p.isToday?5:3.5)+'" fill="'+(p.isToday?"#FFCB00":"#153244")+'" stroke="white" stroke-width="1.5"/>';
+      svgH+='<text x="'+p.x+'" y="'+(p.y-8)+'" text-anchor="middle" font-size="9" fill="#6b8395" font-family="DM Sans,sans-serif">'+p.v+'</text>';
+      svgH+='<text x="'+p.x+'" y="'+(H+22)+'" text-anchor="middle" font-size="8" fill="#6b8395" font-family="DM Sans,sans-serif">'+p.lbl+'</text>';
+    });
+    svgH+='</svg>';
+    mc.innerHTML=svgH;
   } else {
     // Por año
     var years=Object.keys(window._empYearMap||{}).sort();
