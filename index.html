@@ -2436,6 +2436,7 @@ function renderEmpCharts(){
     });
   });
   empRenderHeatmap("mes");
+  renderEmpRubros();
 }
 function empSetHeatmap(mode){
   var btnM=eid("emp-hm-mes");var btnA=eid("emp-hm-anio");
@@ -2498,6 +2499,7 @@ function empRenderHeatmap(mode){
   }
 }
 
+function renderEmpRubros(){
   // ---- Treemap rubros: top 5 + "X más" ----
   var rubroMap={};
   EMP_DATA.forEach(function(e){if(e.rubro)rubroMap[e.rubro]=(rubroMap[e.rubro]||0)+1;});
@@ -2605,6 +2607,8 @@ function limpiarFiltros(){
   if(input){input.value="";}
   buscar("");
 }
+}
+
 function limpiarFiltrosLogros(){
   var sels=document.querySelectorAll("#slogros select");
   sels.forEach(function(s){s.value="";});
