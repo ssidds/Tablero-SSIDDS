@@ -360,7 +360,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           </button>
             </div>
             <div id="emp-dots" style="display:flex;justify-content:center;gap:5px;margin-top:8px;margin-bottom:16px"></div>
-            <div style="display:grid;grid-template-columns:3fr 2fr;gap:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="box">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
                   <div class="box-t" style="margin:0">Reuniones</div>
@@ -1991,7 +1991,9 @@ function renderGantt(data){
   var maxD=allDates.length?Math.max.apply(null,allDates):Date.now()+1;
   var range=maxD-minD||1;
   var now=new Date();
-  var todayMs=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+  // Ajustar a UTC-3 (Buenos Aires)
+  var bsas=new Date(now.getTime()-now.getTimezoneOffset()*60000);
+  var todayMs=Date.UTC(bsas.getFullYear(),bsas.getMonth(),bsas.getDate());
   var todayPct=Math.min(100,Math.max(0,Math.round((todayMs-minD)/range*100)));
 
   // Header con meses
@@ -2452,28 +2454,43 @@ function empRenderHeatmap(mode){
   var mc=eid("emp-chart-months");if(!mc)return;
   var MESES=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
   if(mode==="mes"){
-    // Sumar todas las reuniones por mes (ignorando año)
-    var mesTotal={};
-    Object.keys(window._empMonthMap||{}).forEach(function(k){
-      var m=k.split("-")[1];
-      mesTotal[m]=(mesTotal[m]||0)+(window._empMonthMap[k]||0);
-    });
-    var vals=[];
-    for(var i=1;i<=12;i++){vals.push(mesTotal[String(i).padStart(2,"0")]||0);}
+    // Últimos 12 meses desde hoy hacia atrás
+    var now2=new Date();
+    var months12=[];
+    for(var i=11;i>=0;i--){
+      var d=new Date(now2.getFullYear(),now2.getMonth()-i,1);
+      months12.push({
+        key:d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"),
+        mes:MESES[d.getMonth()],
+        anio:String(d.getFullYear()).slice(2)
+      });
+    }
+    var vals=months12.map(function(m){return window._empMonthMap[m.key]||0;});
     var maxV=Math.max.apply(null,vals)||1;
-    var today=new Date();var todayM=String(today.getMonth()+1).padStart(2,"0");
+    var todayKey2=now2.getFullYear()+"-"+String(now2.getMonth()+1).padStart(2,"0");
     var html2="<div style='display:flex;gap:4px;flex-wrap:nowrap'>";
-    for(var i=0;i<12;i++){
+    months12.forEach(function(m,i){
       var v=vals[i];
       var pct=v/maxV;
-      var isToday=String(i+1).padStart(2,"0")===todayM;
-      var bg=isToday?"#FFCB00":v===0?"var(--azul3)":"rgba(21,50,68,"+Math.max(0.08,pct.toFixed(2))+")";
-      var txtColor=isToday?"#153244":pct>0.5?"white":"var(--muted)";
-      html2+="<div title='"+MESES[i]+": "+v+" reuniones' style='flex:1;min-width:0;border-radius:6px;background:"+bg+";padding:6px 2px;text-align:center;cursor:default'>"
-        +"<div style='font-size:9px;color:"+txtColor+";font-weight:600'>"+MESES[i]+"</div>"
+      var isToday=m.key===todayKey2;
+      // Escala amarillo→naranja: 0 = gris claro, max = naranja oscuro
+      var bg,txtColor;
+      if(isToday){bg="#FFCB00";txtColor="#153244";}
+      else if(v===0){bg="var(--azul3)";txtColor="var(--muted)";}
+      else{
+        // Interpolación amarillo claro (#fff3cd) → naranja oscuro (#e07830)
+        var r=Math.round(255-pct*(255-224));
+        var g=Math.round(243-pct*(243-120));
+        var b=Math.round(205-pct*(205-48));
+        bg="rgb("+r+","+g+","+b+")";
+        txtColor=pct>0.5?"#7a3500":"#7a3500";
+      }
+      html2+="<div title='"+m.mes+" "+m.anio+": "+v+" reuniones' style='flex:1;min-width:0;border-radius:6px;background:"+bg+";padding:6px 2px;text-align:center;cursor:default'>"
+        +"<div style='font-size:8px;color:"+txtColor+";font-weight:600;line-height:1.2'>"+m.mes+"</div>"
+        +"<div style='font-size:8px;color:"+txtColor+";opacity:.7'>"+m.anio+"</div>"
         +"<div style='font-size:11px;font-weight:700;color:"+txtColor+"'>"+v+"</div>"
         +"</div>";
-    }
+    });
     html2+="</div>";
     mc.innerHTML=html2;
   } else {
@@ -2486,8 +2503,16 @@ function empRenderHeatmap(mode){
       var v=window._empYearMap[y]||0;
       var pct=v/maxY;
       var isToday=y===todayY;
-      var bg=isToday?"#FFCB00":v===0?"var(--azul3)":"rgba(21,50,68,"+Math.max(0.1,pct.toFixed(2))+")";
-      var txtColor=isToday?"#153244":pct>0.5?"white":"var(--muted)";
+        var bg,txtColor;
+      if(isToday){bg="#FFCB00";txtColor="#153244";}
+      else if(v===0){bg="var(--azul3)";txtColor="var(--muted)";}
+      else{
+        var r=Math.round(255-pct*(255-224));
+        var g=Math.round(243-pct*(243-120));
+        var b=Math.round(205-pct*(205-48));
+        bg="rgb("+r+","+g+","+b+")";
+        txtColor="#7a3500";
+      }
       html2+="<div title='"+y+": "+v+" reuniones' style='flex:1;min-width:60px;border-radius:8px;background:"+bg+";padding:10px 8px;text-align:center;cursor:default'>"
         +"<div style='font-size:10px;color:"+txtColor+";font-weight:600'>"+y+"</div>"
         +"<div style='font-size:16px;font-weight:700;color:"+txtColor+"'>"+v+"</div>"
@@ -2500,7 +2525,6 @@ function empRenderHeatmap(mode){
 }
 
 function renderEmpRubros(){
-  // ---- Treemap rubros: top 5 + "X más" ----
   var rubroMap={};
   EMP_DATA.forEach(function(e){if(e.rubro)rubroMap[e.rubro]=(rubroMap[e.rubro]||0)+1;});
   var rubros=Object.keys(rubroMap).map(function(r){return{n:r,v:rubroMap[r]};});
@@ -2510,93 +2534,60 @@ function renderEmpRubros(){
   var rc=eid("emp-chart-rubros");
   if(!rc)return;
   var rColors=["#153244","#1e4a63","#8DE2D6","#FFCB00","#a89dc8"];
-  // Calcular total para proporciones
-  var totalTop=top5.reduce(function(a,r){return a+r.v;},0);
-  var totalResto=resto.reduce(function(a,r){return a+r.v;},0);
-  var grand=totalTop+totalResto||1;
-  // Treemap simple: dividir en 2 filas
-  // Fila 1: los 2 más grandes (50% del alto cada uno horizontalmente)
-  // Fila 2: rubros 3,4,5 + "X más"
-  var TW=300,TH=120;
-  var svgT='<svg width="100%" height="'+TH+'" viewBox="0 0 '+TW+' '+TH+'" preserveAspectRatio="none" style="display:block;border-radius:var(--r2);overflow:hidden;width:100%">';
-  var items=top5.map(function(r,i){return{n:r.n,v:r.v,c:rColors[i]};});
-  if(resto.length)items.push({n:resto.length+" rubros más →",v:totalResto,c:"#dce8ef",extra:true,rubros:resto});
-  var total=items.reduce(function(a,r){return a+r.v;},0)||1;
-  // Layout: fila superior = top 2, fila inferior = resto
-  var row1=items.slice(0,2),row2=items.slice(2);
-  var y0=0,h1=Math.round(TH*(row1.reduce(function(a,r){return a+r.v;},0)/total*1.2));
-  h1=Math.max(40,Math.min(TH-40,h1));
-  var h2=TH-h1;
-  // Fila 1
-  var x=0;
+  var row1=top5.slice(0,2);
+  var row2items=top5.slice(2);
+  if(resto.length){
+    var totalResto=resto.reduce(function(a,r){return a+r.v;},0);
+    row2items.push({n:resto.length+" más",v:totalResto,extra:true,rubros:resto});
+  }
+  var container=document.createElement("div");
+  container.style.cssText="width:100%;display:flex;flex-direction:column;gap:3px";
+  function makeCell(item,height,bg,isExtra){
+    var txtColor=bg==="#FFCB00"||bg==="#8DE2D6"||bg==="#dce8ef"?"#153244":"#fff";
+    var cell=document.createElement("div");
+    cell.style.cssText="flex:"+item.v+";background:"+bg+";border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;cursor:pointer;transition:filter .15s,transform .15s;overflow:hidden;height:"+height+"px";
+    if(isExtra){
+      cell.innerHTML="<div style='font-size:11px;font-weight:700;color:"+txtColor+";text-align:center'>"+item.n+" →</div>"
+        +"<div style='font-size:10px;color:"+txtColor+";opacity:.8'>"+item.v+" emp.</div>";
+      cell.onclick=function(){
+        var modal=eid("emp-rubros-modal");var list=eid("emp-rubros-list");
+        if(modal&&list){
+          list.innerHTML=rubros.map(function(r,i){
+            var colR=i<5?rColors[i]:"var(--muted)";
+            return "<div style='display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border)'>"
+              +"<span style='width:8px;height:8px;border-radius:50%;background:"+colR+";flex-shrink:0;display:inline-block'></span>"
+              +"<span style='font-size:12px;color:var(--text);flex:1'>"+r.n+"</span>"
+              +"<span style='font-size:12px;font-weight:600;color:var(--text)'>"+r.v+"</span>"
+              +"<span style='font-size:10px;color:var(--muted)'>emp.</span></div>";
+          }).join("");
+          modal.style.display="flex";
+        }
+      };
+    }else{
+      var fs=item.n.length>15?"9px":item.n.length>10?"10px":"11px";
+      cell.innerHTML="<div style='font-size:"+fs+";font-weight:700;color:"+txtColor+";text-align:center;line-height:1.2'>"+item.n+"</div>"
+        +"<div style='font-size:14px;font-weight:700;color:"+txtColor+";margin-top:3px'>"+item.v+"</div>"
+        +"<div style='font-size:8px;color:"+txtColor+";opacity:.7'>emp.</div>";
+      cell.title=item.n+": "+item.v+" empresas";
+    }
+    cell.onmouseover=function(){this.style.filter="brightness(1.12)";this.style.transform="scale(1.02)";};
+    cell.onmouseout=function(){this.style.filter="";this.style.transform="";};
+    return cell;
+  }
+  var fila1=document.createElement("div");
+  fila1.style.cssText="display:flex;gap:3px";
   var r1total=row1.reduce(function(a,r){return a+r.v;},0)||1;
-  row1.forEach(function(item,i){
-    var w=Math.round(TW*(item.v/r1total));
-    if(i===row1.length-1)w=TW-x;
-    var txtColor=item.c==="#FFCB00"||item.c==="#8DE2D6"||item.c==="#dce8ef"?"#153244":"#fff";
-    svgT+='<rect x="'+x+'" y="0" width="'+w+'" height="'+h1+'" fill="'+item.c+'" rx="0"/>';
-    if(item.extra){
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1/2-6)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.n+'</text>';
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1/2+10)+'" text-anchor="middle" font-size="10" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.v+' emp.</text>';
-    }else{
-      var name=item.n.length>12?item.n.slice(0,11)+"…":item.n;
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1/2-5)+'" text-anchor="middle" font-size="10" font-weight="600" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+name+'</text>';
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1/2+9)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.v+'</text>';
-    }
-    x+=w;
+  row1.forEach(function(item,i){fila1.appendChild(makeCell(item,80,rColors[i],false));});
+  var fila2=document.createElement("div");
+  fila2.style.cssText="display:flex;gap:3px";
+  row2items.forEach(function(item,i){
+    var bg=item.extra?"#dce8ef":(rColors[2+i]||"#a89dc8");
+    fila2.appendChild(makeCell(item,64,bg,item.extra||false));
   });
-  // Fila 2
-  x=0;
-  var r2total=row2.reduce(function(a,r){return a+r.v;},0)||1;
-  row2.forEach(function(item,i){
-    var w=Math.round(TW*(item.v/r2total));
-    if(i===row2.length-1)w=TW-x;
-    var txtColor=item.c==="#FFCB00"||item.c==="#8DE2D6"||item.c==="#dce8ef"?"#153244":"#fff";
-    svgT+='<rect x="'+x+'" y="'+h1+'" width="'+w+'" height="'+h2+'" fill="'+item.c+'" rx="0"/>';
-    if(item.extra){
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1+h2/2-5)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.n+'</text>';
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1+h2/2+10)+'" text-anchor="middle" font-size="10" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.v+' emp.</text>';
-    }else{
-      var name=item.n.length>10?item.n.slice(0,9)+"…":item.n;
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1+h2/2-4)+'" text-anchor="middle" font-size="9" font-weight="600" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+name+'</text>';
-      svgT+='<text x="'+(x+w/2)+'" y="'+(h1+h2/2+9)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+txtColor+'" font-family="DM Sans,sans-serif">'+item.v+'</text>';
-    }
-    x+=w;
-  });
-  // Líneas divisorias
-  svgT+='<line x1="0" y1="'+h1+'" x2="'+TW+'" y2="'+h1+'" stroke="white" stroke-width="2"/>';
-  svgT+='</svg>';
-  var svgWrap=document.createElement("div");
-  svgWrap.style.cssText="cursor:pointer;border-radius:var(--r2);overflow:hidden;width:100%";
-  svgWrap.innerHTML=svgT;
-  // Click en el SVG abre modal si hay resto
-  svgWrap.onclick=function(evt){
-    var svgEl=this.querySelector("svg");
-    if(!svgEl)return;
-    var rect=svgEl.getBoundingClientRect();
-    var px=evt.clientX-rect.left;
-    var py=evt.clientY-rect.top;
-    var scaleX=TW/rect.width;
-    var sx=px*scaleX,sy=py*(TH/rect.height);
-    // Si hizo click en zona del "X más" (último item)
-    if(resto.length){
-      var modal=eid("emp-rubros-modal");
-      var list=eid("emp-rubros-list");
-      if(modal&&list){
-        list.innerHTML=rubros.map(function(r,i){
-          var colR=i<5?rColors[i]:"var(--muted)";
-          return "<div style='display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border)'>"
-            +"<span style='width:8px;height:8px;border-radius:50%;background:"+colR+";flex-shrink:0;display:inline-block'></span>"
-            +"<span style='font-size:12px;color:var(--text);flex:1'>"+r.n+"</span>"
-            +"<span style='font-size:12px;font-weight:600;color:var(--text)'>"+r.v+"</span>"
-            +"<span style='font-size:10px;color:var(--muted)'>emp.</span></div>";
-        }).join("");
-        modal.style.display="flex";
-      }
-    }
-  };
+  container.appendChild(fila1);
+  container.appendChild(fila2);
   rc.innerHTML="";
-  rc.appendChild(svgWrap);
+  rc.appendChild(container);
 }
 
 function limpiarFiltros(){
