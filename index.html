@@ -1734,9 +1734,18 @@ function downloadRepJPG(mode){
 }
 function downloadRepAllJPG(){
   if(!REP_PAGES.length||typeof html2canvas==="undefined")return;
-  var origCur=REP_CUR;
-  var promises=REP_PAGES.map(function(page,pi){
-    return new Promise(function(resolve){
+  var noAnimStyle=document.createElement("style");
+  noAnimStyle.id="rep-no-anim-jpg";
+  noAnimStyle.textContent=".rep-card-anim{opacity:1!important;transform:none!important;transition:none!important}";
+  document.head.appendChild(noAnimStyle);
+  var processJPG=function(pi){
+    if(pi>=REP_PAGES.length){
+      var s=document.getElementById("rep-no-anim-jpg");if(s)s.remove();
+      return;
+    }
+    var slides=document.querySelectorAll(".rep-page-slide");
+    slides.forEach(function(s,i){s.classList.toggle("active",i===pi);});
+    setTimeout(function(){
       var container=document.createElement("div");
       container.style.cssText="background:#f2f6f9;padding:20px;font-family:Archivo,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
       var hdr=document.createElement("div");
@@ -1745,18 +1754,25 @@ function downloadRepAllJPG(){
         +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(pi+1)+" / "+REP_PAGES.length+"</div>";
       container.appendChild(hdr);
       var slide=eid("rep-slide-"+pi);
-      if(slide)container.appendChild(slide.cloneNode(true));
+      if(slide){
+        var clone=slide.cloneNode(true);
+        clone.querySelectorAll(".rep-card-anim").forEach(function(c){
+          c.style.opacity="1";c.style.transform="none";c.style.transition="none";
+        });
+        container.appendChild(clone);
+      }
       document.body.appendChild(container);
       html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
         document.body.removeChild(container);
         var a=document.createElement("a");
         a.download="reporte_p"+(pi+1)+"_"+new Date().toISOString().slice(0,10)+".jpg";
         a.href=canvas.toDataURL("image/jpeg",0.92);
-        setTimeout(function(){a.click();},pi*300);
-        resolve();
-      }).catch(function(){document.body.removeChild(container);resolve();});
-    });
-  });
+        a.click();
+        processJPG(pi+1);
+      }).catch(function(){document.body.removeChild(container);processJPG(pi+1);});
+    },200);
+  };
+  processJPG(0);
 }
 
 function downloadRepPDF(mode){
@@ -2170,15 +2186,25 @@ function downloadRepAllPDF(){
   if(!REP_PAGES.length||typeof html2canvas==="undefined"||typeof jspdf==="undefined")return;
   var origCur=REP_CUR;
   var pdf=null;
+  // Agregar estilos temporales para desactivar animaciones durante captura
+  var noAnimStyle=document.createElement("style");
+  noAnimStyle.id="rep-no-anim";
+  noAnimStyle.textContent=".rep-card-anim{opacity:1!important;transform:none!important;transition:none!important}";
+  document.head.appendChild(noAnimStyle);
   var processPage=function(pi){
     if(pi>=REP_PAGES.length){
       if(pdf)pdf.save("reporte_completo_"+new Date().toISOString().slice(0,10)+".pdf");
-      // Restaurar página original
+      // Restaurar animaciones y página original
+      var s=document.getElementById("rep-no-anim");if(s)s.remove();
       repGoTo(origCur);
       return;
     }
-    // Navegar a la página pi para que el DOM esté renderizado
-    repGoTo(pi);
+    // Mostrar la página sin animación
+    var slides=document.querySelectorAll(".rep-page-slide");
+    slides.forEach(function(s,i){s.classList.toggle("active",i===pi);});
+    // Forzar todas las tarjetas visibles
+    var cards=document.querySelectorAll("#rep-slide-"+pi+" .rep-card-anim");
+    cards.forEach(function(c){c.style.opacity="1";c.style.transform="none";});
     setTimeout(function(){
       var container=document.createElement("div");
       container.style.cssText="background:#f2f6f9;padding:20px;font-family:Archivo,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
@@ -2188,7 +2214,14 @@ function downloadRepAllPDF(){
         +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(pi+1)+" / "+REP_PAGES.length+"</div>";
       container.appendChild(hdr);
       var slide=eid("rep-slide-"+pi);
-      if(slide)container.appendChild(slide.cloneNode(true));
+      if(slide){
+        var clone=slide.cloneNode(true);
+        // Forzar visibilidad en el clon
+        clone.querySelectorAll(".rep-card-anim").forEach(function(c){
+          c.style.opacity="1";c.style.transform="none";c.style.transition="none";
+        });
+        container.appendChild(clone);
+      }
       document.body.appendChild(container);
       html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
         document.body.removeChild(container);
@@ -2198,7 +2231,7 @@ function downloadRepAllPDF(){
         pdf.addImage(imgData,"JPEG",0,0,canvas.width/2,canvas.height/2);
         processPage(pi+1);
       }).catch(function(){document.body.removeChild(container);processPage(pi+1);});
-    },150);
+    },200);
   };
   processPage(0);
 }
