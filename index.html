@@ -1794,8 +1794,10 @@ function downloadRepPDF(mode){
   html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
     document.body.removeChild(container);
     var imgData=canvas.toDataURL("image/jpeg",0.95);
-    var pdf=new jspdf.jsPDF({orientation:"landscape",unit:"px",format:[canvas.width/2,canvas.height/2]});
-    pdf.addImage(imgData,"JPEG",0,0,canvas.width/2,canvas.height/2);
+    var imgW=canvas.width/2;
+    var imgH=canvas.height/2;
+    var pdf=new jspdf.jsPDF({orientation:imgW>imgH?"landscape":"portrait",unit:"px",format:[imgW,imgH]});
+    pdf.addImage(imgData,"JPEG",0,0,imgW,imgH);
     pdf.save("reporte_p"+(REP_CUR+1)+"_"+new Date().toISOString().slice(0,10)+".pdf");
   }).catch(function(){document.body.removeChild(container);});
 }
@@ -2226,9 +2228,11 @@ function downloadRepAllPDF(){
       html2canvas(container,{scale:2,useCORS:true,backgroundColor:"#f2f6f9",width:1200}).then(function(canvas){
         document.body.removeChild(container);
         var imgData=canvas.toDataURL("image/jpeg",0.95);
-        if(!pdf){pdf=new jspdf.jsPDF({orientation:"landscape",unit:"px",format:[canvas.width/2,canvas.height/2]});}
-        else{pdf.addPage([canvas.width/2,canvas.height/2],"landscape");}
-        pdf.addImage(imgData,"JPEG",0,0,canvas.width/2,canvas.height/2);
+        var pgW=canvas.width/2;var pgH=canvas.height/2;
+        var orient=pgW>pgH?"landscape":"portrait";
+        if(!pdf){pdf=new jspdf.jsPDF({orientation:orient,unit:"px",format:[pgW,pgH]});}
+        else{pdf.addPage([pgW,pgH],orient);}
+        pdf.addImage(imgData,"JPEG",0,0,pgW,pgH);
         processPage(pi+1);
       }).catch(function(){document.body.removeChild(container);processPage(pi+1);});
     },200);
