@@ -1625,12 +1625,12 @@ function buildRepCard(item,color,isLarge){
       subTitle.textContent=sub.sub;
       body.appendChild(subTitle);
       addField("📋","Status:",sub.s||"");
-      addField("🔜","Próximos pasos:",sub.pp||"");
+      addField("🔜","Próximo/s paso/s:",sub.pp||"");
       if(sub.ac)addField("🚨","Accionable:",sub.ac,true);
     });
   } else {
     addField("📋","Status:",item.s||item.status||"");
-    addField("🔜","Próximos pasos:",item.pp||item.prox||"");
+    addField("🔜","Próximo/s paso/s:",item.pp||item.prox||"");
     if(item.ac||item.accionable)addField("🚨","Accionable Marce:",item.ac||item.accionable,true);
   }
   card.appendChild(body);
