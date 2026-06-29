@@ -2020,7 +2020,15 @@ function renderGantt(data){
   var todayLocal=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   todayLocal.setHours(0,0,0,0);
   var todayMs=todayLocal.getTime();
-  var todayPct=Math.min(100,Math.max(0,((todayMs-minDt.getTime())/rangeMs*100)));
+  // Calcular fracción dentro del mes actual para posición más precisa
+  var daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  var dayFraction=(now.getDate()-1)/daysInMonth;
+  var monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  monthStart.setHours(0,0,0,0);
+  var monthEnd=new Date(now.getFullYear(),now.getMonth()+1,0);
+  monthEnd.setHours(0,0,0,0);
+  var todayExactMs=monthStart.getTime()+(monthEnd.getTime()-monthStart.getTime())*dayFraction;
+  var todayPct=Math.min(99.9,Math.max(0,((todayExactMs-minDt.getTime())/rangeMs*100)));
 
   // Recalcular posiciones de hitos usando el mismo rango normalizado
   var range=rangeMs;
