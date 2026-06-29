@@ -2012,17 +2012,24 @@ function renderGantt(data){
   });
   var minD=allDates.length?Math.min.apply(null,allDates):Date.now();
   var maxD=allDates.length?Math.max.apply(null,allDates):Date.now()+1;
-  var range=maxD-minD||1;
+  // Normalizar minD y maxD al primer día del mes para alinear con el header
+  var minDt=new Date(minD);minDt.setDate(1);minDt.setHours(0,0,0,0);
+  var maxDt=new Date(maxD);maxDt.setDate(1);maxDt.setMonth(maxDt.getMonth()+1);maxDt.setHours(0,0,0,0);
+  var rangeMs=maxDt.getTime()-minDt.getTime()||1;
   var now=new Date();
   var todayLocal=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   todayLocal.setHours(0,0,0,0);
   var todayMs=todayLocal.getTime();
-  var todayPct=Math.min(100,Math.max(0,Math.round((todayMs-minD)/range*100)));
+  var todayPct=Math.min(100,Math.max(0,((todayMs-minDt.getTime())/rangeMs*100)));
+
+  // Recalcular posiciones de hitos usando el mismo rango normalizado
+  var range=rangeMs;
+  minD=minDt.getTime();
 
   // Header con meses
   var months=[];
-  var cur=new Date(minD);cur.setDate(1);
-  var endD=new Date(maxD);endD.setMonth(endD.getMonth()+1);
+  var cur=new Date(minDt);
+  var endD=new Date(maxDt);
   while(cur<=endD){
     months.push(new Date(cur));
     cur.setMonth(cur.getMonth()+1);
