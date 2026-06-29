@@ -16,19 +16,28 @@ jobs:
       - name: Generar reporte.json actualizado
         run: |
           python3 - << 'PYEOF'
-          import csv, json, urllib.request
+          import csv, json, urllib.request, io
 
           CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
 
+          # ---- HOJA REPORTE (gid=499814297) ----
+          # Columnas: Proyecto(0) | Sub-proyecto(1) | Status(2) | Próximo paso(3) | Accionable(4)
           url = CSV_BASE + "?gid=499814297&single=true&output=csv"
           with urllib.request.urlopen(url) as r:
-              rows = list(csv.reader(r.read().decode('utf-8').splitlines()))
+              content = r.read().decode('utf-8')
+          rows = list(csv.reader(io.StringIO(content)))
 
           reporte = []
           for row in rows[1:]:
               def c(i): return row[i].strip() if i < len(row) else ""
               if not c(0): continue
-              reporte.append({"n": c(0), "s": c(1), "pp": c(2), "ac": c(3)})
+              reporte.append({
+                  "n":   c(0),
+                  "sub": c(1),
+                  "s":   c(2),
+                  "pp":  c(3),
+                  "ac":  c(4)
+              })
 
           with open("reporte.json", "w", encoding="utf-8") as f:
               json.dump(reporte, f, ensure_ascii=False)
