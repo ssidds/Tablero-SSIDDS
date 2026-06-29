@@ -1977,8 +1977,13 @@ function loadGantt(){
 
 function parseGanttDate(str){
   if(!str)return 0;
-  var parts=str.split("/");
-  if(parts.length===3)return new Date(parts[2],parts[1]-1,parts[0]).getTime();
+  var s=str.trim();
+  var parts=s.split("/");
+  if(parts.length===3){
+    var d=new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0]));
+    d.setHours(0,0,0,0);
+    return d.getTime();
+  }
   return 0;
 }
 
@@ -2009,8 +2014,9 @@ function renderGantt(data){
   var maxD=allDates.length?Math.max.apply(null,allDates):Date.now()+1;
   var range=maxD-minD||1;
   var now=new Date();
-  // Usar fecha local directamente, sin conversión UTC
-  var todayMs=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  var todayLocal=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  todayLocal.setHours(0,0,0,0);
+  var todayMs=todayLocal.getTime();
   var todayPct=Math.min(100,Math.max(0,Math.round((todayMs-minD)/range*100)));
 
   // Header con meses
