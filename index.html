@@ -185,11 +185,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <div id="sind">
       <!-- ÍNDICE STICKY -->
       <div style="position:sticky;top:0;z-index:40;background:var(--bg);padding:10px 0;margin-bottom:6px;border-bottom:0.5px solid var(--border)">
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a href="#sec-indicadores" onclick="event.preventDefault();document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">INDICADORES GENERALES</a>
-          <a href="#sec-inversion" onclick="event.preventDefault();document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">TIPO DE INVERSIÓN</a>
-          <a href="#sec-distribucion" onclick="event.preventDefault();document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">DISTRIBUCIÓN POR COMUNA</a>
-          <a href="#sec-empresas" onclick="event.preventDefault();document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">EMPRESAS CON LAS QUE TRABAJAMOS</a>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <a href="#sec-indicadores" onclick="event.preventDefault();document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">INDICADORES GENERALES</a>
+          <a href="#sec-inversion" onclick="event.preventDefault();document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">TIPO DE INVERSIÓN</a>
+          <a href="#sec-distribucion" onclick="event.preventDefault();document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">DISTRIBUCIÓN POR COMUNA</a>
+          <a href="#sec-empresas" onclick="event.preventDefault();document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">EMPRESAS CON LAS QUE TRABAJAMOS</a>
         </div>
       </div>
       <div class="sec">
@@ -396,17 +396,6 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
               <div class="box">
                 <div class="box-t">Empresas por rubro</div>
                 <div id="emp-chart-rubros" style="margin-top:8px;display:flex;align-items:center;min-height:110px"></div>
-              <div class="ov" id="emp-rubros-modal" onclick="if(event.target===this)this.classList.remove('open')">
-                <div class="modal" onclick="event.stopPropagation()" style="max-width:440px">
-                  <div class="mh">
-                    <button class="mc" onclick="eid('emp-rubros-modal').classList.remove('open')">×</button>
-                    <div class="mt2">Todos los rubros</div>
-                  </div>
-                  <div class="mb">
-                    <div id="emp-rubros-list"></div>
-                  </div>
-                </div>
-              </div>
               </div>
             </div>
           </div>
@@ -442,6 +431,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       <div class="sec" style="height:calc(100vh - 120px)">
         <div class="s-ttl" style="margin-bottom:10px">Mapa de proyectos</div>
         <div id="map"></div>
+      </div>
+    </div>
+
+    <!-- MODAL RUBROS EMPRESAS -->
+    <div class="ov" id="emp-rubros-modal" onclick="if(event.target===this)this.classList.remove('open')">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:440px">
+        <div class="mh">
+          <button class="mc" onclick="eid('emp-rubros-modal').classList.remove('open')">×</button>
+          <div class="mt2">Todos los rubros</div>
+        </div>
+        <div class="mb">
+          <div id="emp-rubros-list"></div>
+        </div>
       </div>
     </div>
 
