@@ -183,10 +183,10 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       <!-- ÍNDICE STICKY -->
       <div style="position:sticky;top:0;z-index:40;background:var(--bg);padding:10px 0;margin-bottom:6px;border-bottom:0.5px solid var(--border)">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a href="#sec-indicadores" onclick="event.preventDefault();document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">Indicadores generales</a>
-          <a href="#sec-inversion" onclick="event.preventDefault();document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">Tipo de inversión</a>
-          <a href="#sec-distribucion" onclick="event.preventDefault();document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">Distribución por comuna</a>
-          <a href="#sec-empresas" onclick="event.preventDefault();document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">Empresas con las que trabajamos</a>
+          <a href="#sec-indicadores" onclick="event.preventDefault();document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">INDICADORES GENERALES</a>
+          <a href="#sec-inversion" onclick="event.preventDefault();document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">TIPO DE INVERSIÓN</a>
+          <a href="#sec-distribucion" onclick="event.preventDefault();document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">DISTRIBUCIÓN POR COMUNA</a>
+          <a href="#sec-empresas" onclick="event.preventDefault();document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#dce8ef'" onmouseout="this.style.background='var(--azul3)'">EMPRESAS CON LAS QUE TRABAJAMOS</a>
         </div>
       </div>
       <div class="sec">
@@ -250,8 +250,12 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                 <div style="display:flex;align-items:center;gap:6px">
                   <span style="font-size:10px;color:var(--muted);font-family:DM Mono,monospace" id="ccnt">1/10</span>
                   <div class="ca">
-                    <button class="cb" onclick="carNav(-1)" aria-label="Anterior"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
-                    <button class="cb" onclick="carNav(1)" aria-label="Siguiente"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+                    <button class="cb" onclick="carNav(-1)" aria-label="Anterior">
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="cb" onclick="carNav(1)" aria-label="Siguiente">
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -342,7 +346,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             </div>
             <div class="box" id="box-desglose" style="display:flex;flex-direction:column">
               <div class="box-t">Desglose por proyecto</div>
-              <div style="padding-right:4px;overflow-y:auto;flex:1" id="inv-ranking"></div>
+              <div style="padding-right:4px;overflow-y:auto" id="inv-ranking"></div>
             </div>
           </div>
 
@@ -735,7 +739,7 @@ function cargar(){
       eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
       eid("ldg").style.display="none";
       eid("ind-c").style.display="block";
-      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas();setTimeout(initSecAnim,300);
+      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas();setTimeout(initSecAnim,300);setTimeout(syncDesgloseHeight,700);
     })
     .catch(function(err){
       eid("ldg").style.display="none";
@@ -2678,6 +2682,19 @@ function initSecAnim(){
   els.forEach(function(el){obs.observe(el);});
 }
 
+
+function syncDesgloseHeight(){
+  var boxInv=eid("box-inversion");
+  var ranking=eid("inv-ranking");
+  if(!boxInv||!ranking)return;
+  var boxTInv=boxInv.querySelector(".box-t");
+  var totalH=boxInv.offsetHeight;
+  var boxTH=boxTInv?boxTInv.offsetHeight:0;
+  var boxPadding=32; // padding del .box (16px arriba + 16px abajo aprox)
+  var availableH=totalH-boxTH-boxPadding-14; // 14px margin-bottom del box-t
+  if(availableH>50)ranking.style.maxHeight=availableH+"px";
+}
+
 function limpiarFiltros(){
   var sel=document.querySelectorAll("#sproy select");
   sel.forEach(function(s){s.value="";});
@@ -2693,6 +2710,7 @@ function limpiarFiltrosLogros(){
   renderLogros();
 }
 cargar();
+window.addEventListener("resize",function(){setTimeout(syncDesgloseHeight,200);});
 
 </script>
 </body>
