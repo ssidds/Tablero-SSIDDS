@@ -38,9 +38,6 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .content{flex:1;overflow-y:auto;position:relative}
 .bg-torre{position:absolute;right:0;bottom:0;height:100%;opacity:.08;pointer-events:none;z-index:0;object-fit:contain;object-position:bottom right}
 .sec{padding:20px;position:relative;z-index:1}
-[id^="s"][style*="display"]{transition:opacity .25s ease}
-.fade-out{opacity:0!important}
-.fade-in{opacity:1}
 .card-hover{transition:transform .2s ease,box-shadow .2s ease}
 .card-hover:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(21,50,68,.12)}
 .sec-anim{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
@@ -1111,26 +1108,19 @@ function closeAllModals(){
 function nav(sec,el){
   closeAllModals();
   var sections=["ind","proy","mapa","logros","rep","gantt"];
-  var current=sections.find(function(s){var e=eid("s"+s);return e&&e.style.display!=="none"&&e.style.display!=="";});
-  var newEl=eid("s"+sec);
-  if(current&&current!==sec){
-    var curEl=eid("s"+current);
-    if(curEl){
-      curEl.style.transition="opacity .15s ease";
-      curEl.style.opacity="0";
-      setTimeout(function(){
-        sections.forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
-        if(newEl){
-          newEl.style.opacity="0";
-          newEl.offsetHeight; // reflow
-          newEl.style.transition="opacity .25s ease";
-          newEl.style.opacity="1";
-        }
-      },150);
+  sections.forEach(function(s){
+    var e=eid("s"+s);
+    if(!e)return;
+    if(s===sec){
+      e.style.display="block";
+      e.style.opacity="0";
+      e.offsetHeight; // reflow para forzar la transición
+      e.style.transition="opacity .25s ease";
+      e.style.opacity="1";
+    }else{
+      e.style.display="none";
     }
-  }else{
-    sections.forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
-  }
+  });
   document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
   el.classList.add("active");
   if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
@@ -2716,7 +2706,11 @@ function renderEmpRubros(){
 
 function initSecAnim(){
   var els=document.querySelectorAll(".sec-anim");
-  if(!els.length||typeof IntersectionObserver==="undefined")return;
+  if(!els.length)return;
+  if(typeof IntersectionObserver==="undefined"){
+    els.forEach(function(el){el.classList.add("visible");});
+    return;
+  }
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){
@@ -2724,8 +2718,12 @@ function initSecAnim(){
         obs.unobserve(entry.target);
       }
     });
-  },{threshold:0.15});
+  },{threshold:0.05,rootMargin:"0px 0px 200px 0px"});
   els.forEach(function(el){obs.observe(el);});
+  // Fallback de seguridad: si por algún motivo el observer no dispara, forzar visibilidad
+  setTimeout(function(){
+    els.forEach(function(el){el.classList.add("visible");});
+  },1200);
 }
 
 
