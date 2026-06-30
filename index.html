@@ -1000,7 +1000,18 @@ function renderComunas(){
 function openCom(com){
   var proyectos=(window._comData||{})[com]||[];
   eid("com-tit").textContent=com+" — "+proyectos.length+" proyectos";
-  var out="";for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
+  var ESTCOL={"Activo":"#FFCB00","En stand-by":"#e53935","Finalizado":"#00a86b"};
+  var out="";
+  for(var i=0;i<proyectos.length;i++){
+    var p=proyectos[i];
+    var e=(p.est||"").toLowerCase().trim();
+    var estLabel=e==="activo"?"Activo":e==="en stand by"?"En stand-by":e==="finalizado"?"Finalizado":"";
+    var col=ESTCOL[estLabel]||"#888";
+    out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between'>"
+      +"<span>"+p.n+"</span>"
+      +(estLabel?"<span style='display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:"+col+"'><span style='width:7px;height:7px;border-radius:50%;background:"+col+";display:inline-block'></span>"+estLabel+"</span>":"")
+      +"</div>";
+  }
   eid("com-lista").innerHTML=out;eid("com-ov").classList.add("open");
 }
 function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.remove("open");}
@@ -2463,10 +2474,7 @@ function renderEmpCarrusel(){
   visible.forEach(function(e){
     var card=document.createElement("div");
     var pct=Math.floor(100/EMP_PER_PAGE);
-    card.className="card-hover";
     card.style.cssText="flex:0 0 calc("+pct+"% - 10px);background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:18px 8px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;min-width:0";
-    card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.background="var(--azul3)";};
-    card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.background="var(--card)";};
     var logo=buildLogoEl(e,68);
     var name=document.createElement("div");
     name.style.cssText="font-size:12px;font-weight:600;color:var(--text);text-align:center;line-height:1.3";
@@ -2713,6 +2721,7 @@ function initSecAnim(){
     els.forEach(function(el){el.classList.add("visible");});
     return;
   }
+  var scrollRoot=document.querySelector(".content");
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){
@@ -2720,7 +2729,7 @@ function initSecAnim(){
         obs.unobserve(entry.target);
       }
     });
-  },{threshold:0.05,rootMargin:"0px 0px 150px 0px"});
+  },{root:scrollRoot,threshold:0.05,rootMargin:"0px 0px 150px 0px"});
   els.forEach(function(el){obs.observe(el);});
   // Fallback de seguridad: si por algún motivo el observer no dispara, forzar visibilidad
   setTimeout(function(){
