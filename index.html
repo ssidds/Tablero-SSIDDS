@@ -31,13 +31,18 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .sb-logo{padding:14px 14px 12px;border-bottom:0.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
 .sb-logo img{width:100px;object-fit:contain}
 .sb-sec{font-size:9px;color:rgba(255,255,255,.25);padding:10px 14px 3px;text-transform:uppercase;letter-spacing:.08em}
-.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;border-left:2px solid transparent;transition:all .15s}
-.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
+.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;border-left:2px solid transparent;transition:all .15s,transform .15s}
+.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);transform:translateX(3px)}
 .sb-item.active{background:rgba(141,226,214,.12);color:var(--verde);border-left-color:var(--verde)}
 .sb-item i{font-size:15px}
 .content{flex:1;overflow-y:auto;position:relative}
 .bg-torre{position:absolute;right:0;bottom:0;height:100%;opacity:.08;pointer-events:none;z-index:0;object-fit:contain;object-position:bottom right}
 .sec{padding:20px;position:relative;z-index:1}
+[id^="s"][style*="display"]{transition:opacity .25s ease}
+.fade-out{opacity:0!important}
+.fade-in{opacity:1}
+.card-hover{transition:transform .2s ease,box-shadow .2s ease}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(21,50,68,.12)}
 .sec-anim{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
 .sec-anim.visible{opacity:1;transform:translateY(0)}
 .s-ttl{font-size:12px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;scroll-margin-top:60px}
@@ -209,21 +214,21 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <!-- CLASIFICACIÓN GENERAL -->
           <div id="cls-block" style="margin-bottom:16px">
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-              <div id="cls-act" onclick="selectCls('act')" style="background:#fff8e0;border:2px solid #FFCB00;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-act" onclick="selectCls('act')" style="background:#fff8e0;border:2px solid #FFCB00;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
                 <div style="font-size:10px;font-weight:600;color:#7a5f00;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Activos</div>
                 <div id="cls-act-n" style="font-size:32px;font-weight:700;color:#b8920a;line-height:1">0</div>
                 <div style="font-size:10px;color:#7a5f00;margin-top:6px;margin-bottom:6px">Ver desglose ↓</div>
                 <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-act-bar" style="height:100%;border-radius:2px;background:#FFCB00;width:0%;transition:width .6s ease"></div></div>
                 <div id="cls-act-pct" style="font-size:10px;font-weight:600;color:#7a5f00;margin-top:4px">0%</div>
               </div>
-              <div id="cls-sby" onclick="selectCls('sby')" style="background:#fff0f0;border:1.5px solid #e53935;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-sby" onclick="selectCls('sby')" style="background:#fff0f0;border:1.5px solid #e53935;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
                 <div style="font-size:10px;font-weight:600;color:#a32d2d;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">En stand-by</div>
                 <div id="cls-sby-n" style="font-size:32px;font-weight:700;color:#e53935;line-height:1">0</div>
                 <div style="font-size:10px;color:#a32d2d;margin-top:6px;margin-bottom:6px">Ver proyectos ↓</div>
                 <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-sby-bar" style="height:100%;border-radius:2px;background:#e53935;width:0%;transition:width .6s ease"></div></div>
                 <div id="cls-sby-pct" style="font-size:10px;font-weight:600;color:#a32d2d;margin-top:4px">0%</div>
               </div>
-              <div id="cls-fin" onclick="selectCls('fin')" style="background:#f0fff8;border:1.5px solid #00a86b;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-fin" onclick="selectCls('fin')" style="background:#f0fff8;border:1.5px solid #00a86b;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
                 <div style="font-size:10px;font-weight:600;color:#0a6e4a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Finalizados</div>
                 <div id="cls-fin-n" style="font-size:32px;font-weight:700;color:#00a86b;line-height:1">0</div>
                 <div style="font-size:10px;color:#0a6e4a;margin-top:6px;margin-bottom:6px">Ver proyectos ↓</div>
@@ -301,7 +306,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 
           <!-- TORTA + BARRAS -->
           <div class="row2" style="margin-bottom:14px;align-items:stretch">
-            <div class="box" id="box-inversion" style="display:flex;flex-direction:column">
+            <div class="box" id="box-inversion">
               <div class="box-t">Monto Total por tipo de Inversión</div>
               <!-- TOTAL ARRIBA CENTRADO -->
               <div style="text-align:center;padding-bottom:14px;border-bottom:0.5px solid var(--border);margin-bottom:14px">
@@ -344,9 +349,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                 </div>
               </div>
             </div>
-            <div class="box" id="box-desglose" style="display:flex;flex-direction:column">
+            <div class="box" id="box-desglose">
               <div class="box-t">Desglose por proyecto</div>
-              <div style="padding-right:4px;overflow-y:auto" id="inv-ranking"></div>
+              <div style="padding-right:4px;overflow-y:auto;max-height:420px" id="inv-ranking"></div>
             </div>
           </div>
 
@@ -739,7 +744,7 @@ function cargar(){
       eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
       eid("ldg").style.display="none";
       eid("ind-c").style.display="block";
-      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas();setTimeout(initSecAnim,300);setTimeout(syncDesgloseHeight,700);
+      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas();setTimeout(initSecAnim,300);
     })
     .catch(function(err){
       eid("ldg").style.display="none";
@@ -814,7 +819,13 @@ function renderInversion(){
     var m=parseMonto(p.mo);
     if(m>0&&p.inv&&montos[p.inv]!==undefined){montos[p.inv]+=m;proyConMonto.push({n:p.n,m:m,t:p.inv});}
   });
-  function anim(id,v){var el=eid(id);if(!el)return;if(v<=0){el.textContent="--";return;}var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
+  function animNum(el,v,suffix){
+  if(!el)return;
+  if(v<=0){el.textContent="0"+(suffix||"");return;}
+  var s=0,inc=Math.max(v/40,0.1);
+  var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s)+(suffix||"");if(s>=v)clearInterval(iv);},18);
+}
+function anim(id,v){var el=eid(id);if(!el)return;if(v<=0){el.textContent="--";return;}var s=0,inc=Math.max(v/50,0.1);var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s);if(s>=v)clearInterval(iv);},16);}
   anim("bdg-pub",counts["Pública"]);anim("bdg-priv",counts["Privada"]);anim("bdg-mix",counts["Mixta"]);anim("bdg-noval",counts["No valorizada"]);
   var total=montos["Pública"]+montos["Privada"]+montos["Mixta"];
   anim("inv-pub",Math.round(montos["Pública"]));anim("inv-priv",Math.round(montos["Privada"]));anim("inv-mix",Math.round(montos["Mixta"]));anim("inv-total",Math.round(total));
@@ -964,13 +975,12 @@ function renderComunas(){
       if(label)estados[label]=(estados[label]||0)+1;
     });
     var card=document.createElement("div");
-    card.style.cssText="background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .15s;overflow:hidden;border-top:4px solid "+col;
-    card.onmouseover=function(){this.style.transform="translateY(-2px)";this.style.boxShadow="0 4px 16px rgba(21,50,68,.1)";};
-    card.onmouseout=function(){this.style.transform="";this.style.boxShadow="";};
+    card.className="card-hover";
+    card.style.cssText="background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;cursor:pointer;overflow:hidden;border-top:4px solid "+col;
     card.onclick=function(){openCom(com);};
         card.innerHTML="<div style='font-size:11px;font-weight:700;color:"+col+";text-transform:uppercase;letter-spacing:.06em'>"+com+"</div>"
       +"<div style='font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.4'>"+BARRIOS[com]+"</div>"
-      +"<div style='font-size:34px;font-weight:700;color:"+col+";line-height:1'>"+n+"</div>"
+      +"<div style='font-size:34px;font-weight:700;color:"+col+";line-height:1' class='com-count-anim' data-target='"+n+"'>0</div>"
       +"<div style='font-size:10px;color:var(--muted)'>proyectos</div>"
       +"<div style='font-size:9px;color:var(--muted);text-align:right'>Ver proyectos →</div>"
       +"<div style='display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:6px;padding-top:6px;border-top:0.5px solid var(--border)'>"
@@ -983,6 +993,11 @@ function renderComunas(){
     container.appendChild(card);
   });
   window._comData=grupos;
+  // Animar contadores de comunas
+  document.querySelectorAll(".com-count-anim").forEach(function(el){
+    var target=parseInt(el.dataset.target)||0;
+    animNum(el,target);
+  });
 }
 
 function openCom(com){
@@ -1095,7 +1110,27 @@ function closeAllModals(){
 }
 function nav(sec,el){
   closeAllModals();
-  ["ind","proy","mapa","logros","rep","gantt"].forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
+  var sections=["ind","proy","mapa","logros","rep","gantt"];
+  var current=sections.find(function(s){var e=eid("s"+s);return e&&e.style.display!=="none"&&e.style.display!=="";});
+  var newEl=eid("s"+sec);
+  if(current&&current!==sec){
+    var curEl=eid("s"+current);
+    if(curEl){
+      curEl.style.transition="opacity .15s ease";
+      curEl.style.opacity="0";
+      setTimeout(function(){
+        sections.forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
+        if(newEl){
+          newEl.style.opacity="0";
+          newEl.offsetHeight; // reflow
+          newEl.style.transition="opacity .25s ease";
+          newEl.style.opacity="1";
+        }
+      },150);
+    }
+  }else{
+    sections.forEach(function(s){eid("s"+s).style.display=s===sec?"block":"none";});
+  }
   document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
   el.classList.add("active");
   if(sec==="mapa"&&!MAPOK){initMap();MAPOK=true;}
@@ -2347,7 +2382,17 @@ function loadEmpresas(){
       EMP_DATA=Object.values(grouped);
       EMP_DATA.sort(function(a,b){return b.fechas.length-a.fechas.length;});
       EMP_FILTERED=EMP_DATA.slice();
-      var cntEl=eid("emp-count");if(cntEl)cntEl.textContent=EMP_DATA.length+" empresas";
+      var cntEl=eid("emp-count");
+      if(cntEl){
+        cntEl.textContent="0 empresas";
+        var cntTarget=EMP_DATA.length;
+        var cntS=0,cntInc=Math.max(cntTarget/30,0.1);
+        var cntIv=setInterval(function(){
+          cntS=Math.min(cntS+cntInc,cntTarget);
+          cntEl.textContent=Math.round(cntS)+" empresas";
+          if(cntS>=cntTarget)clearInterval(cntIv);
+        },20);
+      }
       EMP_OFFSET=0;
       renderEmpCarrusel();
       renderEmpCharts();
@@ -2428,7 +2473,8 @@ function renderEmpCarrusel(){
   visible.forEach(function(e){
     var card=document.createElement("div");
     var pct=Math.floor(100/EMP_PER_PAGE);
-    card.style.cssText="flex:0 0 calc("+pct+"% - 10px);background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:18px 8px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .15s;min-width:0";
+    card.className="card-hover";
+    card.style.cssText="flex:0 0 calc("+pct+"% - 10px);background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:18px 8px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;min-width:0";
     card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.background="var(--azul3)";};
     card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.background="var(--card)";};
     var logo=buildLogoEl(e,68);
@@ -2683,18 +2729,6 @@ function initSecAnim(){
 }
 
 
-function syncDesgloseHeight(){
-  var boxInv=eid("box-inversion");
-  var ranking=eid("inv-ranking");
-  if(!boxInv||!ranking)return;
-  var boxTInv=boxInv.querySelector(".box-t");
-  var totalH=boxInv.offsetHeight;
-  var boxTH=boxTInv?boxTInv.offsetHeight:0;
-  var boxPadding=32; // padding del .box (16px arriba + 16px abajo aprox)
-  var availableH=totalH-boxTH-boxPadding-14; // 14px margin-bottom del box-t
-  if(availableH>50)ranking.style.maxHeight=availableH+"px";
-}
-
 function limpiarFiltros(){
   var sel=document.querySelectorAll("#sproy select");
   sel.forEach(function(s){s.value="";});
@@ -2710,7 +2744,6 @@ function limpiarFiltrosLogros(){
   renderLogros();
 }
 cargar();
-window.addEventListener("resize",function(){setTimeout(syncDesgloseHeight,200);});
 
 </script>
 </body>
