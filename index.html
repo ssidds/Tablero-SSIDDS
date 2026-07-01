@@ -261,13 +261,13 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       <!-- ÍNDICE STICKY -->
       <div style="position:sticky;top:0;z-index:40;background:var(--bg);padding:10px 0;margin-bottom:6px;border-bottom:0.5px solid var(--border)">
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-          <a href="#sec-indicadores" onclick="event.preventDefault();document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">INDICADORES GENERALES</a>
-          <a href="#sec-inversion" onclick="event.preventDefault();document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">TIPO DE INVERSIÓN</a>
-          <a href="#sec-distribucion" onclick="event.preventDefault();document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">DISTRIBUCIÓN POR COMUNA</a>
-          <a href="#sec-empresas" onclick="event.preventDefault();document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">EMPRESAS CON LAS QUE TRABAJAMOS</a>
+          <a href="javascript:void(0)" onclick="document.getElementById('sec-indicadores').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">INDICADORES GENERALES</a>
+          <a href="javascript:void(0)" onclick="document.getElementById('sec-inversion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">TIPO DE INVERSIÓN</a>
+          <a href="javascript:void(0)" onclick="document.getElementById('sec-distribucion').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">DISTRIBUCIÓN POR COMUNA</a>
+          <a href="javascript:void(0)" onclick="document.getElementById('sec-empresas').scrollIntoView({behavior:'smooth'});" style="font-size:11px;font-weight:600;color:var(--azul);background:var(--azul3);padding:6px 12px;border-radius:14px;text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#b8ccd8'" onmouseout="this.style.background='var(--azul3)'">EMPRESAS CON LAS QUE TRABAJAMOS</a>
         </div>
       </div>
-      <div class="sec">
+      <div class="sec" style="padding-bottom:120px">
         <div class="sec-anim" id="anim-indicadores"><div class="s-ttl" id="sec-indicadores">Indicadores generales</div>
         <div id="eb" class="eb" style="display:none"></div>
         <div id="ldg" class="ldg"><div class="spin"></div><div>Cargando proyectos...</div></div>
@@ -574,7 +574,12 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <!-- REPORTES -->
     <div id="srep" style="display:none">
       <div class="sec">
-        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:4px;position:relative">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;position:relative">
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            <button id="rep-prev" onclick="repNav(-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center" disabled>‹</button>
+            <span id="rep-plbl" style="font-size:11px;color:var(--muted);font-family:'Archivo',sans-serif;min-width:42px;text-align:center"></span>
+            <button id="rep-next" onclick="repNav(1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
+          </div>
           <div style="font-size:18px;font-weight:700;color:var(--azul);font-family:'Archivo',sans-serif;letter-spacing:.04em;text-transform:uppercase">Status Proyectos</div>
           <select id="rep-week-sel" style="font-family:'Archivo',sans-serif;font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer" onchange="loadReportSnapshot(this.value)">
             <option value="current">Cargando...</option>
@@ -604,12 +609,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
               <div class="rep-page-slide" id="rep-page-container"></div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px" id="rep-nav">
-            <button id="rep-prev" onclick="repNav(-1)" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center" disabled>‹</button>
-            <div id="rep-pips" style="display:flex;gap:6px;align-items:center"></div>
-            <span id="rep-plbl" style="font-size:11px;color:var(--muted);font-family:'Archivo',sans-serif;min-width:50px;text-align:center"></span>
-            <button id="rep-next" onclick="repNav(1)" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
-          </div>
+          <div id="rep-pips" style="display:none"></div>
         </div>
       </div>
     </div>
