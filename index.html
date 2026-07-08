@@ -2001,7 +2001,7 @@ function downloadRepCardPDF(item,hc){
 
   if(item._subs&&item._subs.length){
     addF("📋","Status",item.s||"");
-    addF("🔜","Próximos pasos",item.pp||"");
+    addF("🔜","Próximo/s paso/s",item.pp||"");
     if(item.ac)addF("🚨","Accionable Marce",item.ac,true);
     item._subs.forEach(function(sub){
       addSep();
@@ -2010,12 +2010,12 @@ function downloadRepCardPDF(item,hc){
       st.textContent=sub.sub||"";
       body.appendChild(st);
       addF("📋","Status",sub.s||"");
-      addF("🔜","Próximos pasos",sub.pp||"");
+      addF("🔜","Próximo/s paso/s",sub.pp||"");
       if(sub.ac)addF("🚨","Accionable",sub.ac,true);
     });
   } else {
     addF("📋","Status",item.s||item.status||"");
-    addF("🔜","Próximos pasos",item.pp||item.prox||"");
+    addF("🔜","Próximo/s paso/s",item.pp||item.prox||"");
     if(item.ac||item.accionable)addF("🚨","Accionable Marce",item.ac||item.accionable,true);
   }
 
@@ -2033,10 +2033,11 @@ function downloadRepCardPDF(item,hc){
     document.body.removeChild(wrap);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-    var pdfw=canvas.width/2+40;
-    var pdfh=canvas.height/2+40;
-    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[pdfw,pdfh]});
-    doc.addImage(imgData,"PNG",20,20,canvas.width/2,canvas.height/2);
+    var imgW=canvas.width/2;
+    var imgH=canvas.height/2;
+    var mg=30;
+    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[imgW+mg*2,imgH+mg*2]});
+    doc.addImage(imgData,"PNG",mg,mg,imgW,imgH);
     var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
     doc.save(fname);
   }).catch(function(err){
