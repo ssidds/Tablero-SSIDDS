@@ -1337,17 +1337,20 @@ var MAP_OPTS={
 var MAP_TODAS={inv:"Todos",com:"Todas",est:"Todos",tem:"Todos",bar:"Todos"};
 var MAP_TITLES={inv:"Tipo de inversión",com:"Comunas",est:"Estado",tem:"Temática",bar:"Barrio"};
 
+var MAP_LABELS={inv:"Inversión",com:"Comunas",est:"Estado",tem:"Temática",bar:"Barrio"};
+
 function buildMapDD(dim){
   var wrap=eid("mf-"+dim+"-wrap");
   if(!wrap)return;
   wrap.innerHTML="";
   var todosLabel=MAP_TODAS[dim];
+  var shortLbl=MAP_LABELS[dim];
   var opts=MAP_OPTS[dim]||[];
-  // Botón trigger
+  // Botón trigger con etiqueta
   var btn=document.createElement("div");
   btn.id="mf-"+dim+"-btn";
   btn.style.cssText="font-size:10px;padding:4px 10px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;min-width:80px;user-select:none;font-family:DM Sans,sans-serif";
-  btn.innerHTML='<span id="mf-'+dim+'-lbl">'+todosLabel+'</span><span style="margin-left:auto;font-size:9px;opacity:.5">▾</span>';
+  btn.innerHTML='<span style="color:var(--muted);font-weight:500">'+shortLbl+':</span><span id="mf-'+dim+'-lbl">'+todosLabel+'</span><span style="margin-left:auto;font-size:9px;opacity:.5">▾</span>';
   btn.onclick=function(e){
     e.stopPropagation();
     document.querySelectorAll(".mf-dd").forEach(function(d){if(d.id!=="mf-"+dim+"-dd")d.style.display="none";});
@@ -1444,7 +1447,7 @@ function initMap(){
   function renderComunaLayer(comunaActivas){
     comunaLayer.clearLayers();
     L.geoJSON(COMUNAS_GEO,{
-      filter:function(f){var c=String(f.properties.comuna||"");return comunaActivas[c]!==false;},
+      filter:function(f){var c=String(f.properties.comuna||"");return comunaActivas[c]===true;},
       style:function(f){
         var c=String(f.properties.comuna||"");
         var col=COMUNAS_COLOR[c]||"#153244";
@@ -2030,9 +2033,10 @@ function downloadRepCardPDF(item,hc){
     document.body.removeChild(wrap);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[canvas.width/2,canvas.height/2+40]});
-    var margin=20;
-    doc.addImage(imgData,"PNG",margin,margin,canvas.width/2-margin*2,(canvas.height/2-margin*2));
+    var pdfw=canvas.width/2+40;
+    var pdfh=canvas.height/2+40;
+    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[pdfw,pdfh]});
+    doc.addImage(imgData,"PNG",20,20,canvas.width/2,canvas.height/2);
     var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
     doc.save(fname);
   }).catch(function(err){
