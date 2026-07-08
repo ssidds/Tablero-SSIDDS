@@ -1,39 +1,27 @@
 name: Actualizar datos
-
 on:
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   actualizar:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Generar JSONs
         run: |
           python3 - << 'PYEOF'
           import csv, json, urllib.request, io
-
           CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub"
-
           def fetch_csv(url):
               with urllib.request.urlopen(url) as r:
                   content = r.read().decode('utf-8')
               return list(csv.reader(io.StringIO(content)))
-
           # ---- HOJA TABLERO (gid=0) ----
-          # 0=Proyecto, 1=Fecha carga, 2=Status, 3=Pasos/Hitos, 4=Accionable Marce,
-          # 5=Próx paso, 6=Próximo hito y fecha, 7=Actores, 8=Monto,
-          # 9=Estado, 10=Etapa, 11=Comuna, 12=Barrio, 13=Temática,
-          # 14=Tipo inversión, 15=Importancia, 16=Descripción, 17=Objetivo
           rows = fetch_csv(CSV_BASE + "?gid=0&single=true&output=csv")
-
           datos = []
           for row in rows[1:]:
               def c(i): return row[i].strip() if i < len(row) else ""
@@ -55,42 +43,60 @@ jobs:
                   "desc": c(16),
                   "obj":  c(17)
               })
-
           with open("datos.json", "w", encoding="utf-8") as f:
               json.dump(datos, f, ensure_ascii=False)
           print(f"datos.json: {len(datos)} proyectos")
-
           # ---- HOJA LOGROS (gid=1689415169) ----
           rows2 = fetch_csv(CSV_BASE + "?gid=1689415169&single=true&output=csv")
-
           logros = []
           for row in rows2[1:]:
               def c(i): return row[i].strip() if i < len(row) else ""
               if not c(1): continue
               logros.append({"f": c(0), "l": c(1), "p": c(2), "te": c(3)})
-
           with open("logros.json", "w", encoding="utf-8") as f:
               json.dump(logros, f, ensure_ascii=False)
           print(f"logros.json: {len(logros)} logros")
-
           # ---- HOJA REPORTE (gid=499814297) ----
           rows3 = fetch_csv(CSV_BASE + "?gid=499814297&single=true&output=csv")
-
           reporte = []
           for row in rows3[1:]:
               def c(i): return row[i].strip() if i < len(row) else ""
               if not c(0): continue
               reporte.append({"n": c(0), "sub": c(1), "s": c(2), "pp": c(3), "ac": c(4)})
-
           with open("reporte.json", "w", encoding="utf-8") as f:
               json.dump(reporte, f, ensure_ascii=False)
           print(f"reporte.json: {len(reporte)} proyectos")
+          # ---- HOJA MAPA (gid=1782300802) ----
+          # A=Proyecto, B=Nombre del punto, C=Coordenadas DMS, D=Tipo,
+          # E=Coords extra, F=Tamaño, G=Solo mapa,
+          # H=Estado, I=Comuna, J=Barrio, K=Temática, L=Tipo inversión
+          rows4 = fetch_csv(CSV_BASE + "?gid=1782300802&single=true&output=csv")
+          mapa = []
+          for row in rows4[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(0): continue
+              mapa.append({
+                  "pr": c(0),   # Proyecto
+                  "pt": c(1),   # Nombre del punto
+                  "co": c(2),   # Coordenadas DMS
+                  "ti": c(3),   # Tipo (punto/linea/zona)
+                  "ex": c(4),   # Coords extra (decimal pipe-separated)
+                  "sz": c(5),   # Tamaño (chico/mediano/grande)
+                  "sm": c(6),   # Solo mapa (si/vacío)
+                  "es": c(7),   # Estado (solo si solo mapa)
+                  "cm": c(8),   # Comuna (solo si solo mapa)
+                  "ba": c(9),   # Barrio (solo si solo mapa)
+                  "te": c(10),  # Temática (solo si solo mapa)
+                  "iv": c(11),  # Tipo inversión (solo si solo mapa)
+              })
+          with open("mapa.json", "w", encoding="utf-8") as f:
+              json.dump(mapa, f, ensure_ascii=False)
+          print(f"mapa.json: {len(mapa)} puntos")
           PYEOF
-
       - name: Commit y push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add datos.json logros.json reporte.json
+          git add datos.json logros.json reporte.json mapa.json
           git diff --cached --quiet || git commit -m "Actualizar datos $(date '+%d/%m/%Y %H:%M')"
           git push
