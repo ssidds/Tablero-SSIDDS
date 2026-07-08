@@ -504,41 +504,14 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <!-- MAPA -->
     <div id="smapa" style="display:none">
       <div class="sec" style="height:calc(100vh - 46px);padding:0;display:flex;flex-direction:column;overflow:hidden">
-        <!-- Barra de filtros -->
-        <div style="padding:7px 14px;background:var(--card);border-bottom:0.5px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex-shrink:0">
+        <!-- Barra de filtros (poblada por JS) -->
+        <div id="mapa-fbar" style="padding:7px 14px;background:var(--card);border-bottom:0.5px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex-shrink:0">
           <div style="font-size:12px;font-weight:700;color:var(--azul);white-space:nowrap;font-family:DM Sans,sans-serif;margin-right:4px">Mapa de proyectos</div>
-          <!-- Tipo de inversión (dots + select) -->
-          <div style="display:flex;align-items:center;gap:4px">
-            <span title="Pública" style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block;flex-shrink:0"></span>
-            <span title="Privada" style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block;flex-shrink:0"></span>
-            <span title="Mixta" style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block;flex-shrink:0"></span>
-            <span title="No valorizada" style="width:7px;height:7px;border-radius:50%;background:#E91E8C;display:inline-block;flex-shrink:0"></span>
-            <select id="mf-inv" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 7px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
-              <option value="">Inversión: todas</option>
-              <option value="Pública">Pública</option>
-              <option value="Privada">Privada</option>
-              <option value="Mixta">Mixta</option>
-              <option value="No valorizada">No valorizada</option>
-            </select>
-          </div>
-          <!-- Comunas (dots + select) -->
-          <div style="display:flex;align-items:center;gap:4px">
-            <span title="Comuna 1" style="width:7px;height:7px;border-radius:50%;background:#153244;display:inline-block;flex-shrink:0"></span>
-            <span title="Comuna 4" style="width:7px;height:7px;border-radius:50%;background:#1e7a9e;display:inline-block;flex-shrink:0"></span>
-            <span title="Comuna 8" style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block;flex-shrink:0"></span>
-            <span title="Comuna 9" style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block;flex-shrink:0"></span>
-            <select id="mf-comuna" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 7px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
-              <option value="">Comunas: todas</option>
-              <option value="1">Comuna 1</option>
-              <option value="4">Comuna 4</option>
-              <option value="8">Comuna 8</option>
-              <option value="9">Comuna 9</option>
-            </select>
-          </div>
-          <!-- Filtros dinámicos -->
-          <select id="mf-estado" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 7px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Estado</option></select>
-          <select id="mf-tematica" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 7px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Temática</option></select>
-          <select id="mf-barrio" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 7px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Barrio</option></select>
+          <div id="mf-inv-wrap" style="position:relative"></div>
+          <div id="mf-com-wrap" style="position:relative"></div>
+          <div id="mf-est-wrap" style="position:relative"></div>
+          <div id="mf-tem-wrap" style="position:relative"></div>
+          <div id="mf-bar-wrap" style="position:relative"></div>
           <button onclick="resetMapFiltros()" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--border);border-radius:6px;background:var(--azul3);color:var(--azul);cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap">Limpiar</button>
         </div>
         <!-- Mapa -->
@@ -1352,6 +1325,100 @@ function reanimateInd(){
   },660);
 }
 
+// ── FILTROS DEL MAPA ──────────────────────────────────────────
+var MAP_FILT={inv:new Set(),com:new Set(),est:new Set(),tem:new Set(),bar:new Set()};
+var MAP_OPTS={
+  inv:[{v:"Pública",l:"Pública",c:"#FFCB00"},{v:"Privada",l:"Privada",c:"#4A90D9"},{v:"Mixta",l:"Mixta",c:"#8DE2D6"},{v:"No valorizada",l:"No valorizada",c:"#E91E8C"}],
+  com:[{v:"1",l:"Comuna 1",c:"#153244"},{v:"4",l:"Comuna 4",c:"#1e7a9e"},{v:"8",l:"Comuna 8",c:"#FFCB00"},{v:"9",l:"Comuna 9",c:"#8DE2D6"}],
+  est:[],
+  tem:["Ambiente","Infraestructura","Deportes","Educación y empleo","Comercio","Vivienda","Salud","Desarrollo Urbano","Movilidad","Industria","Turismo"].map(function(v){return{v:v,l:v};}),
+  bar:["La Boca","Barracas","Nueva Pompeya","Parque Patricios","Constitución","Villa Soldati","Villa Lugano","Villa Riachuelo","Liniers","Mataderos","Parque Avellaneda","Puerto Madero","Retiro","San Nicolás","San Telmo","Monserrat"].map(function(v){return{v:v,l:v};})
+};
+var MAP_TODAS={inv:"Todos",com:"Todas",est:"Todos",tem:"Todos",bar:"Todos"};
+var MAP_TITLES={inv:"Tipo de inversión",com:"Comunas",est:"Estado",tem:"Temática",bar:"Barrio"};
+
+function buildMapDD(dim){
+  var wrap=eid("mf-"+dim+"-wrap");
+  if(!wrap)return;
+  wrap.innerHTML="";
+  var todosLabel=MAP_TODAS[dim];
+  var opts=MAP_OPTS[dim]||[];
+  // Botón trigger
+  var btn=document.createElement("div");
+  btn.id="mf-"+dim+"-btn";
+  btn.style.cssText="font-size:10px;padding:4px 10px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;min-width:80px;user-select:none;font-family:DM Sans,sans-serif";
+  btn.innerHTML='<span id="mf-'+dim+'-lbl">'+todosLabel+'</span><span style="margin-left:auto;font-size:9px;opacity:.5">▾</span>';
+  btn.onclick=function(e){
+    e.stopPropagation();
+    document.querySelectorAll(".mf-dd").forEach(function(d){if(d.id!=="mf-"+dim+"-dd")d.style.display="none";});
+    var dd=eid("mf-"+dim+"-dd");
+    if(dd)dd.style.display=(dd.style.display==="block")?"none":"block";
+  };
+  wrap.appendChild(btn);
+  // Panel
+  var dd=document.createElement("div");
+  dd.id="mf-"+dim+"-dd";
+  dd.className="mf-dd";
+  dd.style.cssText="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:2000;background:var(--card);border:0.5px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);min-width:160px;max-height:220px;overflow-y:auto;font-family:DM Sans,sans-serif";
+  // Opción "Todos/Todas"
+  var allO=document.createElement("div");
+  allO.style.cssText="padding:7px 12px;cursor:pointer;font-size:11px;color:var(--muted);font-style:italic;border-bottom:0.5px solid var(--border)";
+  allO.textContent=todosLabel;
+  allO.onclick=function(e){e.stopPropagation();MAP_FILT[dim].clear();updateMapDD(dim);applyMapFiltros();};
+  allO.onmouseover=function(){this.style.background="var(--azul3)";};
+  allO.onmouseout=function(){this.style.background="";};
+  dd.appendChild(allO);
+  // Opciones
+  opts.forEach(function(opt){
+    var o=document.createElement("div");
+    o.id="mf-"+dim+"-o-"+opt.v.replace(/[^a-zA-Z0-9]/g,"-");
+    o.style.cssText="padding:6px 12px;cursor:pointer;font-size:11px;color:var(--text);display:flex;align-items:center;gap:7px";
+    if(opt.c){var dot=document.createElement("span");dot.style.cssText="width:8px;height:8px;border-radius:50%;background:"+opt.c+";flex-shrink:0;display:inline-block";o.appendChild(dot);}
+    var lbl=document.createElement("span");lbl.textContent=opt.l;o.appendChild(lbl);
+    o.onclick=(function(v){return function(e){
+      e.stopPropagation();
+      if(MAP_FILT[dim].has(v)){MAP_FILT[dim].delete(v);}else{MAP_FILT[dim].add(v);}
+      updateMapDD(dim);applyMapFiltros();
+    };})(opt.v);
+    o.onmouseover=function(){this.style.background="var(--azul3)";};
+    o.onmouseout=(function(v){return function(){this.style.background=MAP_FILT[dim].has(v)?"var(--azul3)":"";};;})(opt.v);
+    dd.appendChild(o);
+  });
+  wrap.appendChild(dd);
+}
+
+function updateMapDD(dim){
+  var s=MAP_FILT[dim];
+  var lbl=eid("mf-"+dim+"-lbl");
+  if(lbl){
+    if(s.size===0){lbl.textContent=MAP_TODAS[dim];}
+    else if(s.size===1){lbl.textContent=Array.from(s)[0].substring(0,18);}
+    else{lbl.textContent=s.size+" selec.";}
+  }
+  var btn=eid("mf-"+dim+"-btn");
+  if(btn){
+    if(s.size>0){btn.style.borderColor="var(--azul)";btn.style.background="var(--azul3)";btn.style.color="var(--azul)";}
+    else{btn.style.borderColor="";btn.style.background="";btn.style.color="";}
+  }
+  (MAP_OPTS[dim]||[]).forEach(function(opt){
+    var el=eid("mf-"+dim+"-o-"+opt.v.replace(/[^a-zA-Z0-9]/g,"-"));
+    if(el){el.style.background=s.has(opt.v)?"var(--azul3)":"";el.style.fontWeight=s.has(opt.v)?"600":"";}
+  });
+}
+
+function mapMatchMulti(val,filterSet){
+  if(!filterSet||filterSet.size===0)return true;
+  if(!val)return false;
+  var parts=(val+"").split(/[,|\/]/).map(function(v){return v.trim();});
+  for(var i=0;i<parts.length;i++){if(filterSet.has(parts[i]))return true;}
+  return false;
+}
+
+// Cerrar dropdowns al hacer click fuera
+document.addEventListener("click",function(){
+  document.querySelectorAll(".mf-dd").forEach(function(d){d.style.display="none";});
+});
+
 function initMap(){
   var INV_COLORS={
     "Pública":      {f:"#FFCB00",s:"#b8920a",key:"pub"},
@@ -1512,23 +1579,14 @@ function initMap(){
 
   // Poblar dropdowns con valores únicos
   function populateDropdowns(){
-    var estados=new Set(),tematicas=new Set(),barrios=new Set();
+    // Estado: dinámico desde datos
+    var estados=new Set();
     ALL_ITEMS.forEach(function(l){
-      var it=l._mi;
-      if(it.es_r)estados.add(it.es_r);
-      if(it.te_r)tematicas.add(it.te_r);
-      if(it.ba_r)barrios.add(it.ba_r);
+      if(l._mi.es_r)(l._mi.es_r+"").split(/[,|]/).forEach(function(v){v=v.trim();if(v)estados.add(v);});
     });
-    function fill(id,vals){
-      var sel=eid(id);if(!sel)return;
-      Array.from(vals).sort().forEach(function(v){
-        var o=document.createElement("option");
-        o.value=v;o.textContent=v;sel.appendChild(o);
-      });
-    }
-    fill("mf-estado",estados);
-    fill("mf-tematica",tematicas);
-    fill("mf-barrio",barrios);
+    MAP_OPTS.est=Array.from(estados).sort().map(function(v){return{v:v,l:v};});
+    // Construir todos los dropdowns (tem y bar usan listas hardcodeadas)
+    ["inv","com","est","tem","bar"].forEach(function(d){buildMapDD(d);});
   }
 
   // Renderizar items de mapa.json
@@ -1577,35 +1635,30 @@ function initMap(){
     m.invalidateSize();
   }
 
-  // Función de filtrado (global para los selects del HTML)
+  // Filtrado con Sets (multi-select)
   window.applyMapFiltros=function(){
-    var filInv=eid("mf-inv")?eid("mf-inv").value:"";
-    var filCom=eid("mf-comuna")?eid("mf-comuna").value:"";
-    var filEst=eid("mf-estado")?eid("mf-estado").value:"";
-    var filTem=eid("mf-tematica")?eid("mf-tematica").value:"";
-    var filBa=eid("mf-barrio")?eid("mf-barrio").value:"";
-    var invMap={"Pública":"pub","Privada":"priv","Mixta":"mix","No valorizada":"noval"};
+    var invNM={pub:"Pública",priv:"Privada",mix:"Mixta",noval:"No valorizada"};
     layerPub.clearLayers();layerPriv.clearLayers();
     layerMix.clearLayers();layerNoVal.clearLayers();
     shapeLayer.clearLayers();
     ALL_ITEMS.forEach(function(l){
       var it=l._mi,ik=l._ik,ti=l._ti;
-      var pI=!filInv||(invMap[filInv]===ik);
+      var pI=MAP_FILT.inv.size===0||MAP_FILT.inv.has(invNM[ik]||"");
       var cm=String(it.cm_r||"").replace(/[^0-9]/g,"");
-      var pC=!filCom||cm===filCom;
-      var pE=!filEst||(it.es_r===filEst);
-      var pT=!filTem||(it.te_r===filTem);
-      var pB=!filBa||(it.ba_r===filBa);
+      var pC=MAP_FILT.com.size===0||(cm&&MAP_FILT.com.has(cm));
+      var pE=mapMatchMulti(it.es_r,MAP_FILT.est);
+      var pT=mapMatchMulti(it.te_r,MAP_FILT.tem);
+      var pB=mapMatchMulti(it.ba_r,MAP_FILT.bar);
       if(pI&&pC&&pE&&pT&&pB)addToLayer(l,ik,ti);
     });
-    var comunaVis={};
-    if(!filCom){["1","4","8","9"].forEach(function(c){comunaVis[c]=true;});}
-    else{comunaVis[filCom]=true;}
-    renderComunaLayer(comunaVis);
+    var cv={};
+    if(MAP_FILT.com.size===0){["1","4","8","9"].forEach(function(c){cv[c]=true;});}
+    else{MAP_FILT.com.forEach(function(c){cv[c]=true;});}
+    renderComunaLayer(cv);
   };
 
   window.resetMapFiltros=function(){
-    ["mf-inv","mf-comuna","mf-estado","mf-tematica","mf-barrio"].forEach(function(id){var e=eid(id);if(e)e.value="";});
+    Object.keys(MAP_FILT).forEach(function(k){MAP_FILT[k].clear();updateMapDD(k);});
     window.applyMapFiltros();
   };
 
@@ -1908,90 +1961,84 @@ function repGoTo(n){
 }
 
 function downloadRepCardPDF(item,hc){
-  var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-  if(!jsPDF){console.error("jsPDF no disponible");return;}
-
-  var doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
-  var W=doc.internal.pageSize.getWidth();
-  var mg=18;
-  var cw=W-mg*2;
-
-  // Convertir hex a RGB
-  function h2r(h){
-    h=(h||"#153244").replace("#","");
-    if(h.length===3)h=h.split("").map(function(c){return c+c;}).join("");
-    var n=parseInt(h,16);
-    return[(n>>16)&255,(n>>8)&255,n&255];
-  }
-  var bgR=h2r(hc.bg);
-  var txtW=(hc.text==="white"||hc.text==="#fff"||hc.text==="#ffffff");
-  var txtR=txtW?[255,255,255]:[21,50,68];
-  var y=mg;
+  // Crear div invisible con el diseño exacto de la tarjeta
+  var W=580;
+  var wrap=document.createElement("div");
+  wrap.style.cssText="position:fixed;left:-9999px;top:0;width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'Archivo',sans-serif;z-index:-1";
 
   // Header
-  doc.setFillColor(bgR[0],bgR[1],bgR[2]);
-  doc.roundedRect(mg,y,cw,22,3,3,"F");
-  doc.setTextColor(txtR[0],txtR[1],txtR[2]);
-  doc.setFont("helvetica","bold");
-  doc.setFontSize(12);
-  var tl=doc.splitTextToSize((item.n||"").toUpperCase(),cw-8);
-  doc.text(tl,W/2,y+8+(tl.length>1?0:2),{align:"center"});
-  y+=22+6;
+  var hdr=document.createElement("div");
+  hdr.style.cssText="background:"+hc.bg+";padding:18px 22px;text-align:center";
+  var htit=document.createElement("div");
+  htit.style.cssText="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:"+hc.text+";line-height:1.4;font-family:'Archivo',sans-serif";
+  htit.textContent=item.n||"";
+  hdr.appendChild(htit);
+  wrap.appendChild(hdr);
 
-  // Body helper
-  function addF(label,val,alert){
+  // Body
+  var body=document.createElement("div");
+  body.style.cssText="padding:18px 22px 20px;font-family:'Archivo',sans-serif";
+
+  function addF(emoji,label,val,isAlert){
     if(!val||!val.trim())return;
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(8);
-    doc.setTextColor(107,131,149);
-    doc.text(label.toUpperCase(),mg,y);
-    y+=4;
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(11);
-    if(alert){doc.setTextColor(192,57,43);}else{doc.setTextColor(55,65,81);}
-    var lines=doc.splitTextToSize(val,cw);
-    doc.text(lines,mg,y);
-    y+=lines.length*5+5;
+    var lbl=document.createElement("div");
+    lbl.style.cssText="font-size:9px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.08em;margin-top:14px;margin-bottom:4px;font-family:'Archivo',sans-serif";
+    lbl.textContent=emoji+" "+label;
+    body.appendChild(lbl);
+    var v=document.createElement("div");
+    v.style.cssText="font-size:12px;line-height:1.6;color:"+(isAlert?"#c0392b":"#374151")+(isAlert?";font-weight:600":"")+";white-space:pre-wrap;font-family:'Archivo',sans-serif";
+    v.textContent=val;
+    body.appendChild(v);
   }
   function addSep(){
-    doc.setDrawColor(220,232,239);
-    doc.line(mg,y,W-mg,y);
-    y+=5;
+    var s=document.createElement("div");
+    s.style.cssText="height:0.5px;background:#dce8ef;margin:14px 0";
+    body.appendChild(s);
   }
 
   if(item._subs&&item._subs.length){
-    addF("Status",item.s||"");
-    addF("Próximos pasos",item.pp||"");
-    if(item.ac)addF("Accionable Marce",item.ac,true);
+    addF("📋","Status",item.s||"");
+    addF("🔜","Próximos pasos",item.pp||"");
+    if(item.ac)addF("🚨","Accionable Marce",item.ac,true);
     item._subs.forEach(function(sub){
       addSep();
-      doc.setFont("helvetica","bold");
-      doc.setFontSize(10);
-      doc.setTextColor(21,50,68);
-      var sl=doc.splitTextToSize(sub.sub||"",cw);
-      doc.text(sl,mg,y);
-      y+=sl.length*5+3;
-      addF("Status",sub.s||"");
-      addF("Próximos pasos",sub.pp||"");
-      if(sub.ac)addF("Accionable",sub.ac,true);
+      var st=document.createElement("div");
+      st.style.cssText="font-size:11px;font-weight:700;color:#153244;border-left:3px solid "+hc.bg+";padding-left:8px;margin-bottom:6px;font-family:'Archivo',sans-serif";
+      st.textContent=sub.sub||"";
+      body.appendChild(st);
+      addF("📋","Status",sub.s||"");
+      addF("🔜","Próximos pasos",sub.pp||"");
+      if(sub.ac)addF("🚨","Accionable",sub.ac,true);
     });
   } else {
-    addF("Status",item.s||item.status||"");
-    addF("Próximos pasos",item.pp||item.prox||"");
-    if(item.ac||item.accionable)addF("Accionable Marce",item.ac||item.accionable,true);
+    addF("📋","Status",item.s||item.status||"");
+    addF("🔜","Próximos pasos",item.pp||item.prox||"");
+    if(item.ac||item.accionable)addF("🚨","Accionable Marce",item.ac||item.accionable,true);
   }
 
   // Footer
   var date=typeof REP_DATE_LABEL!=="undefined"?REP_DATE_LABEL:new Date().toLocaleDateString("es-AR");
-  doc.setDrawColor(220,232,239);
-  doc.line(mg,275,W-mg,275);
-  doc.setFont("helvetica","italic");
-  doc.setFontSize(8);
-  doc.setTextColor(107,131,149);
-  doc.text("Status al "+date+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur",W/2,280,{align:"center"});
+  var ft=document.createElement("div");
+  ft.style.cssText="margin-top:18px;font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;font-family:'Archivo',sans-serif;text-align:right";
+  ft.textContent="Status al "+date+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur";
+  body.appendChild(ft);
 
-  var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
-  doc.save(fname);
+  wrap.appendChild(body);
+  document.body.appendChild(wrap);
+
+  html2canvas(wrap,{scale:2,useCORS:true,allowTaint:true,backgroundColor:"white",logging:false}).then(function(canvas){
+    document.body.removeChild(wrap);
+    var imgData=canvas.toDataURL("image/png");
+    var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
+    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[canvas.width/2,canvas.height/2+40]});
+    var margin=20;
+    doc.addImage(imgData,"PNG",margin,margin,canvas.width/2-margin*2,(canvas.height/2-margin*2));
+    var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
+    doc.save(fname);
+  }).catch(function(err){
+    document.body.removeChild(wrap);
+    console.error("Error generando PDF:",err);
+  });
 }
 
 function buildRepCard(item,color,isLarge){
