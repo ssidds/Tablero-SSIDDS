@@ -503,9 +503,34 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 
     <!-- MAPA -->
     <div id="smapa" style="display:none">
-      <div class="sec" style="height:calc(100vh - 120px)">
-        <div class="s-ttl" style="margin-bottom:10px">Mapa de proyectos</div>
-        <div id="map"></div>
+      <div class="sec" style="height:calc(100vh - 46px);padding:0;display:flex;flex-direction:column;overflow:hidden">
+        <!-- Barra de filtros -->
+        <div style="padding:8px 16px;background:var(--card);border-bottom:0.5px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;flex-shrink:0">
+          <div style="font-size:12px;font-weight:700;color:var(--azul);white-space:nowrap;font-family:DM Sans,sans-serif">Mapa de proyectos</div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex:1">
+            <!-- Tipo inversión -->
+            <div style="display:flex;gap:8px;align-items:center;border-right:0.5px solid var(--border);padding-right:10px">
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-pub" checked onchange="applyMapFiltros()" style="accent-color:#FFCB00"><span style="width:8px;height:8px;background:#FFCB00;border-radius:50%;display:inline-block;flex-shrink:0"></span>Pública</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-priv" checked onchange="applyMapFiltros()" style="accent-color:#4A90D9"><span style="width:8px;height:8px;background:#4A90D9;border-radius:50%;display:inline-block;flex-shrink:0"></span>Privada</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-mix" checked onchange="applyMapFiltros()" style="accent-color:#8DE2D6"><span style="width:8px;height:8px;background:#8DE2D6;border-radius:50%;display:inline-block;flex-shrink:0"></span>Mixta</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-noval" checked onchange="applyMapFiltros()" style="accent-color:#E91E8C"><span style="width:8px;height:8px;background:#E91E8C;border-radius:50%;display:inline-block;flex-shrink:0"></span>No val.</label>
+            </div>
+            <!-- Comunas -->
+            <div style="display:flex;gap:8px;align-items:center;border-right:0.5px solid var(--border);padding-right:10px">
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-c1" checked onchange="applyMapFiltros()" style="accent-color:#153244"><span style="width:8px;height:8px;background:#153244;border-radius:50%;display:inline-block;flex-shrink:0"></span>C1</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-c4" checked onchange="applyMapFiltros()" style="accent-color:#1e7a9e"><span style="width:8px;height:8px;background:#1e7a9e;border-radius:50%;display:inline-block;flex-shrink:0"></span>C4</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-c8" checked onchange="applyMapFiltros()" style="accent-color:#b8920a"><span style="width:8px;height:8px;background:#FFCB00;border-radius:50%;display:inline-block;flex-shrink:0"></span>C8</label>
+              <label style="font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--text);white-space:nowrap"><input type="checkbox" id="chk-c9" checked onchange="applyMapFiltros()" style="accent-color:#00967a"><span style="width:8px;height:8px;background:#8DE2D6;border-radius:50%;display:inline-block;flex-shrink:0"></span>C9</label>
+            </div>
+            <!-- Dropdowns dinámicos -->
+            <select id="mf-estado" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 8px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Estado</option></select>
+            <select id="mf-tematica" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 8px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Temática</option></select>
+            <select id="mf-barrio" onchange="applyMapFiltros()" style="font-size:10px;padding:3px 8px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer"><option value="">Barrio</option></select>
+            <button onclick="resetMapFiltros()" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--border);border-radius:6px;background:var(--azul3);color:var(--azul);cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap">Limpiar</button>
+          </div>
+        </div>
+        <!-- Mapa -->
+        <div id="map" style="flex:1"></div>
       </div>
     </div>
 
@@ -563,6 +588,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             <option value="12">Diciembre</option>
           </select>
           <button onclick="limpiarFiltrosLogros()" style="font-size:11px;padding:6px 12px;border:1px solid #FFCB00;border-radius:var(--r2);background:#fff8e0;color:#7a5f00;cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap;font-weight:500" onmouseover="this.style.background='#FFCB00'" onmouseout="this.style.background='#fff8e0'">Borrar filtros</button>
+          <span id="logros-count" style="font-size:11px;color:var(--muted);font-family:DM Mono,monospace;padding:6px 10px;background:var(--azul3);border-radius:var(--r2);white-space:nowrap;align-self:center"></span>
         </div>
         <div style="position:relative;padding-left:20px">
           <div style="position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--azul),var(--verde));border-radius:1px"></div>
@@ -858,13 +884,16 @@ function renderInd(){
     return null;
   }
   var hitosConFecha=[];
+  var hitosSinFecha=[];
   DATA.forEach(function(p){
     if(!p.h||!p.h.trim())return;
     var f=parseFecha(p.h);
-    if(f&&f>=hoy)hitosConFecha.push({p:p,fecha:f});
+    if(f&&f>=hoy){hitosConFecha.push({p:p,fecha:f});}
+    else if(!f){hitosSinFecha.push(p);}
   });
   hitosConFecha.sort(function(a,b){return a.fecha-b.fecha;});
-  HITOS=hitosConFecha.slice(0,10).map(function(x){return x.p;});
+  // Primero los que tienen fecha futura, luego los "A definir" para llegar a 5
+  HITOS=hitosConFecha.map(function(x){return x.p;}).concat(hitosSinFecha).slice(0,5);
   var de=eid("cdots");de.innerHTML="";
   HITOS.forEach(function(_,i){var d=document.createElement("div");d.className="cdot"+(i===0?" on":"");d.onclick=function(){renderCar(i,true);};de.appendChild(d);});
   if(HITOS.length)renderCar(0,false);
@@ -1107,10 +1136,27 @@ function openCom(com){
 function closeCom(ev){if(!ev||ev.target===eid("com-ov"))eid("com-ov").classList.remove("open");}
 
 function openKpiModal(cat){
-  var proyectos=DATA.filter(function(p){return p.imp===cat;});
+  var proyectos=[];
+  DATA.forEach(function(p,idx){if(p.imp===cat)proyectos.push({p:p,idx:idx});});
   eid("kpi-tit").textContent=cat+" ("+proyectos.length+" proyectos)";
-  var out="";for(var i=0;i<proyectos.length;i++){out+="<div style='padding:8px 10px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px'>"+proyectos[i].n+"</div>";}
-  eid("kpi-lista").innerHTML=out;eid("kpi-ov").classList.add("open");
+  var lista=eid("kpi-lista");
+  lista.innerHTML="";
+  proyectos.forEach(function(item){
+    var div=document.createElement("div");
+    div.style.cssText="padding:8px 12px;background:#f2f6f9;border-radius:8px;font-size:12px;color:#153244;margin-bottom:4px;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:space-between;gap:8px";
+    var nombre=document.createElement("span");
+    nombre.textContent=item.p.n;
+    var arrow=document.createElement("span");
+    arrow.style.cssText="font-size:11px;color:#6b8395;flex-shrink:0";
+    arrow.textContent="Ver →";
+    div.appendChild(nombre);
+    div.appendChild(arrow);
+    div.onmouseover=function(){this.style.background="#dce8ef";};
+    div.onmouseout=function(){this.style.background="#f2f6f9";};
+    div.onclick=function(){closeKpiModal();openM(item.idx);};
+    lista.appendChild(div);
+  });
+  eid("kpi-ov").classList.add("open");
 }
 function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
 
@@ -1295,225 +1341,268 @@ function reanimateInd(){
 }
 
 function initMap(){
-  var CM={
-    yellow:{f:"#FFCB00",s:"#b8920a",l:"Inversión pública"},
-    blue:{f:"#4A90D9",s:"#1a5fa8",l:"Inversión privada"},
-    pink:{f:"#E91E8C",s:"#a0135e",l:"No valorizada"}
+  var INV_COLORS={
+    "Pública":      {f:"#FFCB00",s:"#b8920a",key:"pub"},
+    "Privada":      {f:"#4A90D9",s:"#1a5fa8",key:"priv"},
+    "Mixta":        {f:"#8DE2D6",s:"#00967a",key:"mix"},
+    "No valorizada":{f:"#E91E8C",s:"#a0135e",key:"noval"}
   };
+  var TAMANIOS={chico:8,mediano:12,grande:18};
+  var COMUNAS_COLOR={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
   var COLMAP={
     "En ejecución":"#00c896","En licitación":"#FFCB00","En stand-by":"#a89dc8",
     "Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8",
-    "En ajustes del proyecto":"#3a5da8","En tramitación de permisos":"#e07830",
-    "En proceso licitatorio":"#c07820"
+    "activo":"#00c896","en stand by":"#a89dc8","finalizado":"#8DE2D6"
   };
-  var COMUNAS_COLOR={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
 
+  // Mapa Leaflet
   var m=L.map("map").setView([-34.655,-58.43],13);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"CARTO",maxZoom:19}).addTo(m);
 
-  // Polígonos GeoJSON de comunas (embebido)
+  // Polígonos de comunas
   var comunaLayer=L.layerGroup().addTo(m);
-  var COMUNA_CENTROIDS={"1":[-34.6158,-58.3731],"4":[-34.6480,-58.3870],"8":[-34.6900,-58.4600],"9":[-34.6620,-58.5020]};
-  L.geoJSON(COMUNAS_GEO,{
-    style:function(f){
-      var c=String(f.properties.comuna||"");
+  var CCENTR={"1":[-34.6158,-58.3731],"4":[-34.6480,-58.3870],"8":[-34.6900,-58.4600],"9":[-34.6620,-58.5020]};
+  function renderComunaLayer(comunaActivas){
+    comunaLayer.clearLayers();
+    L.geoJSON(COMUNAS_GEO,{
+      filter:function(f){var c=String(f.properties.comuna||"");return comunaActivas[c]!==false;},
+      style:function(f){
+        var c=String(f.properties.comuna||"");
+        var col=COMUNAS_COLOR[c]||"#153244";
+        return{color:col,weight:2.5,fillColor:col,fillOpacity:0.07,dashArray:"5,5"};
+      }
+    }).addTo(comunaLayer);
+    Object.keys(CCENTR).forEach(function(c){
+      if(comunaActivas[c]===false)return;
       var col=COMUNAS_COLOR[c]||"#153244";
-      return{color:col,weight:2.5,fillColor:col,fillOpacity:0.07,dashArray:"5,5"};
-    }
-  }).addTo(comunaLayer);
-  // Etiquetas centradas con marcador div
-  Object.keys(COMUNA_CENTROIDS).forEach(function(c){
-    var col=COMUNAS_COLOR[c]||"#153244";
-    var latlng=COMUNA_CENTROIDS[c];
-    var icon=L.divIcon({
-      html:'<div style="font-size:13px;font-weight:700;color:'+col+';font-family:DM Sans,sans-serif;text-shadow:0 0 4px #fff,0 0 4px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none">COMUNA '+c+'</div>',
-      className:"",
-      iconAnchor:[30,10]
+      L.marker(CCENTR[c],{icon:L.divIcon({
+        html:'<div style="font-size:13px;font-weight:700;color:'+col+';font-family:DM Sans,sans-serif;text-shadow:0 0 4px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none">COMUNA '+c+'</div>',
+        className:"",iconAnchor:[30,10]
+      }),interactive:false,keyboard:false}).addTo(comunaLayer);
     });
-    L.marker(latlng,{icon:icon,interactive:false,keyboard:false}).addTo(comunaLayer);
-  });
+  }
+  renderComunaLayer({"1":true,"4":true,"8":true,"9":true});
 
-  // Array global de todos los marcadores
-  var ALL_MARKERS=[];
-
-  // Grupos por tipo de inversión con clustering
+  // Cluster options
   var clusterOpts={
     maxClusterRadius:50,
     iconCreateFunction:function(cluster){
-      var markers=cluster.getAllChildMarkers();
-      var colors={yellow:0,blue:0,pink:0};
-      markers.forEach(function(mk){colors[mk._color]=(colors[mk._color]||0)+1;});
-      var dominant=Object.keys(colors).reduce(function(a,b){return colors[a]>=colors[b]?a:b;});
-      var colMap={yellow:"#FFCB00",blue:"#4A90D9",pink:"#E91E8C"};
-      var bg=colMap[dominant]||"#153244";
-      var txt=dominant==="yellow"?"#153244":"#fff";
       var n=cluster.getChildCount();
-      var size=n<10?32:n<20?38:44;
+      var sz=n<10?32:n<20?38:44;
       return L.divIcon({
-        html:'<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+bg+';color:'+txt+';display:flex;align-items:center;justify-content:center;font-size:'+(size<38?12:14)+'px;font-weight:700;font-family:DM Sans,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.6)">'+n+'</div>',
-        className:"",iconSize:[size,size],iconAnchor:[size/2,size/2]
+        html:'<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:#153244;color:#FFCB00;display:flex;align-items:center;justify-content:center;font-size:'+(sz<38?12:14)+'px;font-weight:700;font-family:DM Sans,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.6)">'+n+'</div>',
+        className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]
       });
     }
   };
   var layerPub=L.markerClusterGroup(clusterOpts);
   var layerPriv=L.markerClusterGroup(clusterOpts);
+  var layerMix=L.markerClusterGroup(clusterOpts);
   var layerNoVal=L.markerClusterGroup(clusterOpts);
+  [layerPub,layerPriv,layerMix,layerNoVal].forEach(function(l){l.addTo(m);});
 
-  PINES.forEach(function(p){
-    var c=CM[p.color]||CM.yellow;
+  // Capa para líneas y zonas (sin cluster)
+  var shapeLayer=L.layerGroup().addTo(m);
 
-    // Buscar proyecto en DATA
-    var proj=null;
-    var projIdx=-1;
-    for(var j=0;j<DATA.length;j++){
-      if(DATA[j].n&&DATA[j].n.toUpperCase().trim()===p.name.toUpperCase().trim()){
-        proj=DATA[j];projIdx=j;break;
-      }
+  // Todos los items para filtrado
+  var ALL_ITEMS=[];
+
+  // Conversión DMS → decimal
+  function parseDMS(s){
+    var neg=/[SsOoWw]/i.test(s);
+    var n=s.match(/[\d.]+/g);
+    if(!n||n.length<3)return null;
+    var v=parseFloat(n[0])+parseFloat(n[1])/60+parseFloat(n[2])/3600;
+    return neg?-v:v;
+  }
+  function dmsToLL(str){
+    var p=str.split(",");
+    if(p.length<2)return null;
+    var lat=parseDMS(p[0].trim()),lng=parseDMS(p[1].trim());
+    if(lat===null||lng===null)return null;
+    return[lat,lng];
+  }
+  function parseExtraCoords(s){
+    if(!s||!s.trim())return[];
+    return s.split("|").map(function(c){
+      var p=c.trim().split(",");
+      return[parseFloat(p[0]),parseFloat(p[1])];
+    }).filter(function(p){return!isNaN(p[0])&&!isNaN(p[1]);});
+  }
+
+  // Lookup de proyectos por nombre normalizado
+  function normN(s){
+    return s.toLowerCase().trim()
+      .replace(/[áàäâã]/g,"a").replace(/[éèëê]/g,"e")
+      .replace(/[íìïî]/g,"i").replace(/[óòöôõ]/g,"o")
+      .replace(/[úùüû]/g,"u").replace(/ñ/g,"n");
+  }
+  var projLookup={};
+  DATA.forEach(function(p,idx){if(p.n)projLookup[normN(p.n)]={p:p,idx:idx};});
+
+  function getInvColor(inv){return INV_COLORS[inv]||{f:"#aaa",s:"#888",key:"noval"};}
+  function getEstColor(s){return COLMAP[(s||"").toLowerCase()]||COLMAP[s]||"#888";}
+
+  // Construir popup
+  function buildMapPopup(item,projIdx){
+    var wrap=document.createElement("div");
+    wrap.style.cssText="min-width:180px;max-width:240px;font-family:DM Sans,sans-serif;padding:2px 0";
+    var tit=document.createElement("div");
+    tit.style.cssText="font-size:13px;font-weight:600;color:#153244;line-height:1.3;margin-bottom:2px";
+    tit.textContent=item.pr;
+    wrap.appendChild(tit);
+    if(item.pt&&item.pt.trim()&&item.pt.trim()!==item.pr.trim()){
+      var sub=document.createElement("div");
+      sub.style.cssText="font-size:10px;color:#6b8395;margin-bottom:5px";
+      sub.textContent=item.pt;
+      wrap.appendChild(sub);
     }
-    var estadoColor=proj?COLMAP[proj.s]||"#888":"#888";
-
-    // Construir popup sin escapes problemáticos
-    var popup=document.createElement("div");
-    popup.style.cssText="min-width:200px;max-width:260px";
-
-    var title=document.createElement("div");
-    title.style.cssText="font-size:13px;font-weight:600;color:#153244;margin-bottom:6px;line-height:1.3";
-    title.textContent=p.name;
-    popup.appendChild(title);
-
-    var tipo=document.createElement("div");
-    tipo.style.cssText="display:flex;align-items:center;gap:6px;margin-bottom:4px";
-    tipo.innerHTML='<span style="width:10px;height:10px;border-radius:50%;background:'+c.f+';flex-shrink:0;display:inline-block"></span>'
-      +'<span style="font-size:10px;color:#6b8395">'+c.l+'</span>';
-    popup.appendChild(tipo);
-
-    if(proj){
-      var det=document.createElement("div");
-      det.style.cssText="margin-top:6px;border-top:1px solid #dce8ef;padding-top:6px";
-      if(proj.s){
-        det.innerHTML+='<div style="font-size:10px;margin-bottom:3px">'
-          +'<span style="background:'+estadoColor+'20;color:'+estadoColor+';padding:1px 7px;border-radius:10px;font-weight:600">'+proj.s+'</span></div>';
+    var invC=getInvColor(item.iv_r);
+    if(item.iv_r||item.es_r){
+      var meta=document.createElement("div");
+      meta.style.cssText="display:flex;flex-direction:column;gap:4px;margin-top:5px";
+      if(item.iv_r){
+        var ivRow=document.createElement("div");
+        ivRow.style.cssText="display:flex;align-items:center;gap:5px;font-size:10px;color:#6b8395";
+        ivRow.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+invC.f+';flex-shrink:0;display:inline-block"></span>'+item.iv_r;
+        meta.appendChild(ivRow);
       }
-      if(proj.mo){
-        det.innerHTML+='<div style="font-size:11px;font-weight:600;color:#153244;margin-top:4px">'+proj.mo+'</div>';
+      if(item.es_r){
+        var ec=getEstColor(item.es_r);
+        var eb=document.createElement("span");
+        eb.style.cssText="font-size:10px;padding:1px 8px;border-radius:20px;font-weight:600;display:inline-block;background:"+ec+"20;color:"+ec;
+        eb.textContent=item.es_r;
+        meta.appendChild(eb);
       }
-      if(proj.e){
-        det.innerHTML+='<div style="font-size:10px;color:#6b8395;margin-top:2px">'+proj.e+'</div>';
-      }
-      if(projIdx>=0){
-        var btn=document.createElement("button");
-        btn.style.cssText="margin-top:8px;width:100%;padding:5px;background:#153244;color:#FFCB00;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer";
-        btn.textContent="Ver proyecto →";
-        btn.onclick=function(){openM(projIdx);};
-        det.appendChild(btn);
-      }
-      popup.appendChild(det);
+      wrap.appendChild(meta);
     }
+    if(!item.sm_b&&projIdx>=0){
+      var btn=document.createElement("button");
+      btn.style.cssText="margin-top:8px;width:100%;padding:5px 8px;background:#153244;color:#FFCB00;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif";
+      btn.textContent="Ver proyecto →";
+      btn.onclick=function(){m.closePopup();openM(projIdx);};
+      wrap.appendChild(btn);
+    }
+    return wrap;
+  }
 
-    var icon=L.divIcon({
-      html:'<div style="width:14px;height:14px;border-radius:50%;background:'+c.f+';border:2px solid '+c.s+';box-shadow:0 2px 5px rgba(0,0,0,.35)"></div>',
-      className:"",iconSize:[14,14],iconAnchor:[7,7]
+  // Agregar a la capa correcta
+  function addToLayer(l,invKey,tipo){
+    if(tipo==="punto"){
+      if(invKey==="pub")layerPub.addLayer(l);
+      else if(invKey==="priv")layerPriv.addLayer(l);
+      else if(invKey==="mix")layerMix.addLayer(l);
+      else layerNoVal.addLayer(l);
+    } else {
+      shapeLayer.addLayer(l);
+    }
+  }
+
+  // Poblar dropdowns con valores únicos
+  function populateDropdowns(){
+    var estados=new Set(),tematicas=new Set(),barrios=new Set();
+    ALL_ITEMS.forEach(function(l){
+      var it=l._mi;
+      if(it.es_r)estados.add(it.es_r);
+      if(it.te_r)tematicas.add(it.te_r);
+      if(it.ba_r)barrios.add(it.ba_r);
     });
-    var marker=L.marker([p.lat,p.lon],{icon:icon}).bindPopup(popup,{maxWidth:280});
-    marker._color=p.color;
-    marker._comuna=proj?String(proj.co||"").replace(/[^0-9]/g,""):"";
-
-    ALL_MARKERS.push(marker);
-    if(p.color==="yellow")layerPub.addLayer(marker);
-    else if(p.color==="blue")layerPriv.addLayer(marker);
-    else layerNoVal.addLayer(marker);
-  });
-
-  layerPub.addTo(m);
-  layerPriv.addTo(m);
-  layerNoVal.addTo(m);
-
-  // Panel de filtros
-  var filterControl=L.Control.extend({
-    options:{position:"topright"},
-    onAdd:function(){
-      var div=L.DomUtil.create("div","");
-      div.style.cssText="background:white;padding:10px 14px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.15);min-width:170px;font-family:DM Sans,sans-serif";
-      div.innerHTML=''
-        +'<div style="font-size:10px;font-weight:700;color:#6b8395;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Tipo de inversión</div>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:6px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-pub" checked style="accent-color:#FFCB00"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública</span></label>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:6px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-priv" checked style="accent-color:#4A90D9"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada</span></label>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:10px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-noval" checked style="accent-color:#E91E8C"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#E91E8C;display:inline-block"></span>No valorizada</span></label>'
-        +'<div style="border-top:1px solid #dce8ef;padding-top:8px;margin-bottom:6px">'
-        +'<div style="font-size:10px;font-weight:700;color:#6b8395;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Comunas</div>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:5px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-c1" checked style="accent-color:#153244"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#153244;display:inline-block"></span>Comuna 1</span></label>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:5px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-c4" checked style="accent-color:#1e7a9e"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#1e7a9e;display:inline-block"></span>Comuna 4</span></label>'
-        +'<label style="display:flex;align-items:center;gap:7px;margin-bottom:5px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-c8" checked style="accent-color:#b8920a"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Comuna 8</span></label>'
-        +'<label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:11px;color:#153244"><input type="checkbox" id="chk-c9" checked style="accent-color:#00967a"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Comuna 9</span></label>'
-        +'</div>';
-      L.DomEvent.disableClickPropagation(div);
-      return div;
-    }
-  });
-  new filterControl().addTo(m);
-
-  // Eventos de filtro
-  setTimeout(function(){
-    function getChk(id){var el=document.getElementById(id);return el?el.checked:true;}
-    function applyFilters(){
-      var showPub=getChk("chk-pub");
-      var showPriv=getChk("chk-priv");
-      var showNoVal=getChk("chk-noval");
-      var showC1=getChk("chk-c1");
-      var showC4=getChk("chk-c4");
-      var showC8=getChk("chk-c8");
-      var showC9=getChk("chk-c9");
-      var comunaActivas={"1":showC1,"4":showC4,"8":showC8,"9":showC9};
-      // Limpiar y reconstruir capas desde ALL_MARKERS
-      layerPub.clearLayers();
-      layerPriv.clearLayers();
-      layerNoVal.clearLayers();
-      ALL_MARKERS.forEach(function(mk){
-        var showTipo=(mk._color==="yellow"&&showPub)||(mk._color==="blue"&&showPriv)||(mk._color==="pink"&&showNoVal);
-        var com=mk._comuna?String(mk._comuna):"";
-        var showComuna=com===""||comunaActivas[com]===true;
-        if(showTipo&&showComuna){
-          if(mk._color==="yellow")layerPub.addLayer(mk);
-          else if(mk._color==="blue")layerPriv.addLayer(mk);
-          else layerNoVal.addLayer(mk);
-        }
+    function fill(id,vals){
+      var sel=eid(id);if(!sel)return;
+      Array.from(vals).sort().forEach(function(v){
+        var o=document.createElement("option");
+        o.value=v;o.textContent=v;sel.appendChild(o);
       });
-      // Filtrar polígonos GeoJSON de comunas
-      comunaLayer.clearLayers();
-      var CCOL={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
-      L.geoJSON(COMUNAS_GEO,{
-        filter:function(f){
-          var c=String(f.properties.comuna||"");
-          return comunaActivas[c]!==false&&comunaActivas[c];
-        },
-        style:function(f){
-          var c=String(f.properties.comuna||"");
-          var col=CCOL[c]||"#153244";
-          return{color:col,weight:2.5,fillColor:col,fillOpacity:0.07,dashArray:"5,5"};
-        }
-      }).addTo(comunaLayer);
-      // Etiquetas centradas
-      var CCENTR={"1":[-34.6158,-58.3731],"4":[-34.6480,-58.3870],"8":[-34.6900,-58.4600],"9":[-34.6620,-58.5020]};
-      Object.keys(CCENTR).forEach(function(c){
-        if(!comunaActivas[c])return;
-        var col=CCOL[c]||"#153244";
+    }
+    fill("mf-estado",estados);
+    fill("mf-tematica",tematicas);
+    fill("mf-barrio",barrios);
+  }
+
+  // Renderizar items de mapa.json
+  function renderItems(data){
+    data.forEach(function(item){
+      if(!item.co||!item.co.trim())return;
+      var ll=dmsToLL(item.co);
+      if(!ll)return;
+      var projKey=normN(item.pr||"");
+      var pe=projLookup[projKey];
+      var projIdx=pe?pe.idx:-1;
+      var projData=pe?pe.p:null;
+      var smB=(item.sm||"").toLowerCase().trim()==="si";
+      item.iv_r=smB?(item.iv||""):(projData?projData.inv:"");
+      item.es_r=smB?(item.es||""):(projData?projData.est:"");
+      item.te_r=smB?(item.te||""):(projData?projData.te:"");
+      item.ba_r=smB?(item.ba||""):(projData?projData.ba:"");
+      item.cm_r=smB?(item.cm||""):(projData?String(projData.co||"").replace(/[^0-9]/g,""):"");
+      item.sm_b=smB;
+      var invC=getInvColor(item.iv_r);
+      var tipo=(item.ti||"").toLowerCase().trim()||"punto";
+      var sz=TAMANIOS[(item.sz||"").toLowerCase().trim()]||12;
+      var popup=L.popup({maxWidth:260}).setContent(buildMapPopup(item,projIdx));
+      var layerObj=null;
+      if(tipo==="punto"){
         var icon=L.divIcon({
-          html:'<div style="font-size:13px;font-weight:700;color:'+col+';font-family:DM Sans,sans-serif;text-shadow:0 0 4px #fff,0 0 4px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none">COMUNA '+c+'</div>',
-          className:"",iconAnchor:[30,10]
+          html:'<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+invC.f+';border:2px solid '+invC.s+';box-shadow:0 2px 6px rgba(0,0,0,.25)"></div>',
+          className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]
         });
-        L.marker(CCENTR[c],{icon:icon,interactive:false,keyboard:false}).addTo(comunaLayer);
-      });
-    }
-    ["chk-pub","chk-priv","chk-noval","chk-c1","chk-c4","chk-c8","chk-c9"].forEach(function(id){
-      var el=document.getElementById(id);
-      if(el)el.addEventListener("change",applyFilters);
+        layerObj=L.marker(ll,{icon:icon}).bindPopup(popup);
+      } else if(tipo==="linea"){
+        var pts=[ll].concat(parseExtraCoords(item.ex));
+        layerObj=L.polyline(pts,{color:invC.f,weight:3,opacity:0.85}).bindPopup(popup);
+      } else if(tipo==="zona"){
+        var zpts=[ll].concat(parseExtraCoords(item.ex));
+        layerObj=L.polygon(zpts,{color:invC.s,weight:2,fillColor:invC.f,fillOpacity:0.2}).bindPopup(popup);
+      }
+      if(!layerObj)return;
+      layerObj._mi=item;
+      layerObj._ik=invC.key;
+      layerObj._ti=tipo;
+      ALL_ITEMS.push(layerObj);
+      addToLayer(layerObj,invC.key,tipo);
     });
-  },300);
+    populateDropdowns();
+    m.invalidateSize();
+  }
+
+  // Función de filtrado (global para los checkboxes del HTML)
+  window.applyMapFiltros=function(){
+    var g=function(id){var e=eid(id);return e?e.checked:true;};
+    var shPub=g("chk-pub"),shPriv=g("chk-priv"),shMix=g("chk-mix"),shNov=g("chk-noval");
+    var shC={"1":g("chk-c1"),"4":g("chk-c4"),"8":g("chk-c8"),"9":g("chk-c9")};
+    var filEst=eid("mf-estado")?eid("mf-estado").value:"";
+    var filTem=eid("mf-tematica")?eid("mf-tematica").value:"";
+    var filBa=eid("mf-barrio")?eid("mf-barrio").value:"";
+    layerPub.clearLayers();layerPriv.clearLayers();
+    layerMix.clearLayers();layerNoVal.clearLayers();
+    shapeLayer.clearLayers();
+    ALL_ITEMS.forEach(function(l){
+      var it=l._mi,ik=l._ik,ti=l._ti;
+      var pI=(ik==="pub"&&shPub)||(ik==="priv"&&shPriv)||(ik==="mix"&&shMix)||(ik==="noval"&&shNov)||!ik;
+      var cm=String(it.cm_r||"").replace(/[^0-9]/g,"");
+      var pC=!cm||shC[cm]===true;
+      var pE=!filEst||(it.es_r===filEst);
+      var pT=!filTem||(it.te_r===filTem);
+      var pB=!filBa||(it.ba_r===filBa);
+      if(pI&&pC&&pE&&pT&&pB)addToLayer(l,ik,ti);
+    });
+    renderComunaLayer(shC);
+  };
+
+  window.resetMapFiltros=function(){
+    ["chk-pub","chk-priv","chk-mix","chk-noval","chk-c1","chk-c4","chk-c8","chk-c9"].forEach(function(id){var e=eid(id);if(e)e.checked=true;});
+    ["mf-estado","mf-tematica","mf-barrio"].forEach(function(id){var e=eid(id);if(e)e.value="";});
+    window.applyMapFiltros();
+  };
+
+  // Fetch mapa.json
+  fetch("mapa.json?t="+Date.now())
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(function(data){renderItems(data);})
+    .catch(function(e){console.warn("mapa.json:",e.message);});
 
   setTimeout(function(){m.invalidateSize();},200);
 }
-
-
 
 function loadLogros(){
   fetch("logros.json?t="+Date.now())
@@ -1545,6 +1634,8 @@ function renderLogros(){
     if(filtMes&&parts[1]&&parts[1].trim()!==filtMes)return false;
     return true;
   });
+  var countEl=eid("logros-count");
+  if(countEl)countEl.textContent=filtered.length+(filtered.length===1?" logro":" logros");
   var byYear={},years=[];
   filtered.forEach(function(l){
     var parts=(l.fecha||"").split("/");var yr=parts.length>=3?parts[2].trim():"";
@@ -1791,6 +1882,53 @@ function repGoTo(n){
   }
 }
 
+function downloadRepCardPDF(item,hc){
+  var date=REP_DATE_LABEL||new Date().toLocaleDateString("es-AR");
+  var html="<!DOCTYPE html><html><head><meta charset='utf-8'>"
+    +"<style>*{box-sizing:border-box}body{font-family:'Arial',sans-serif;margin:0;padding:32px;max-width:600px;margin:0 auto}"
+    +".header{background:"+hc.bg+";padding:18px 20px;border-radius:8px 8px 0 0;text-align:center}"
+    +".title{font-size:15px;font-weight:700;color:"+hc.text+";text-transform:uppercase;letter-spacing:.03em;line-height:1.3}"
+    +".body{padding:16px 20px;border:1px solid #dce8ef;border-top:none;border-radius:0 0 8px 8px}"
+    +".lbl{font-size:9px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.07em;margin-top:12px;margin-bottom:3px}"
+    +".val{font-size:12px;color:#374151;line-height:1.5;white-space:pre-wrap}"
+    +".alert{color:#c0392b;font-weight:600}"
+    +".sub-title{font-size:11px;font-weight:700;color:#153244;margin-top:12px;margin-bottom:4px;border-left:3px solid "+hc.bg+";padding-left:6px}"
+    +".sep{height:0.5px;background:#dce8ef;margin:10px 0}"
+    +".footer{margin-top:20px;font-size:9px;color:#6b8395;text-align:right;border-top:0.5px solid #dce8ef;padding-top:8px}"
+    +"@media print{body{padding:0}}</style>"
+    +"</head><body>"
+    +"<div class='header'><div class='title'>"+(item.n||"")+"</div></div>"
+    +"<div class='body'>";
+  function addF(label,val,isAlert){
+    if(!val)return;
+    html+="<div class='lbl'>"+label+"</div><div class='val"+(isAlert?" alert":"")+"'>"+val.replace(/</g,"&lt;")+"</div>";
+  }
+  if(item._subs&&item._subs.length){
+    addF("Status",item.s||"");
+    addF("Próximos pasos",item.pp||"");
+    if(item.ac)addF("Accionable Marce",item.ac,true);
+    html+="<div class='sep'></div>";
+    item._subs.forEach(function(sub){
+      html+="<div class='sub-title'>"+sub.sub+"</div>";
+      addF("Status",sub.s||"");
+      addF("Próximos pasos",sub.pp||"");
+      if(sub.ac)addF("Accionable",sub.ac,true);
+    });
+  } else {
+    addF("Status",item.s||item.status||"");
+    addF("Próximos pasos",item.pp||item.prox||"");
+    if(item.ac||item.accionable)addF("Accionable Marce",item.ac||item.accionable,true);
+  }
+  html+="<div class='footer'>Status al "+date+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur</div>";
+  html+="</div></body></html>";
+  var w=window.open("","_blank","width=680,height=600");
+  if(!w)return;
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(function(){w.print();},400);
+}
+
 function buildRepCard(item,color,isLarge){
   var hc=HEADER_COLORS[color]||HEADER_COLORS.azul;
   var card=document.createElement("div");
@@ -1842,6 +1980,19 @@ function buildRepCard(item,color,isLarge){
     if(item.ac||item.accionable)addField("🚨","Accionable Marce:",item.ac||item.accionable,true);
   }
   card.appendChild(body);
+
+  // Botón de descarga PDF individual
+  var footer=document.createElement("div");
+  footer.style.cssText="padding:6px 10px 8px;display:flex;justify-content:flex-end;border-top:0.5px solid rgba(0,0,0,.06)";
+  var dlBtn=document.createElement("button");
+  dlBtn.style.cssText="display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:5px;border:0.5px solid rgba(0,0,0,.1);background:rgba(255,255,255,.15);color:rgba(21,50,68,.75);cursor:pointer;font-family:'Archivo',sans-serif;transition:background .15s";
+  dlBtn.innerHTML='<i class="ti ti-download" style="font-size:12px" aria-hidden="true"></i> PDF';
+  dlBtn.onmouseover=function(){this.style.background="rgba(255,255,255,.35)";};
+  dlBtn.onmouseout=function(){this.style.background="rgba(255,255,255,.15)";};
+  dlBtn.onclick=function(e){e.stopPropagation();downloadRepCardPDF(item,hc);};
+  footer.appendChild(dlBtn);
+  card.appendChild(footer);
+
   return card;
 }
 
