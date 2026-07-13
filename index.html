@@ -146,7 +146,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .rep-fs-close{position:fixed;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:#153244;color:#FFCB00;font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center}
 .com-label{background:transparent!important;border:none!important;box-shadow:none!important;font-size:11px;font-weight:700;color:#153244;font-family:DM Sans,sans-serif;text-shadow:0 0 3px #fff,0 0 3px #fff}
 .com-label::before{display:none!important}
-.rep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:stretch}
+.rep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:start}
 .gantt-node{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0}
 .gantt-node-date{font-size:11px;font-weight:700;color:var(--text);text-align:center;margin-top:4px}
 .gantt-node-lbl{font-size:12px;color:var(--muted);text-align:center;line-height:1.3;max-width:90px}
@@ -1882,7 +1882,7 @@ function repBuildDOM(){
     slide.id="rep-slide-"+pi;
     var grid=document.createElement("div");
     grid.className="rep-grid";
-    grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:stretch;"+(page.type==="small"?"grid-template-rows:auto auto;":"");
+    grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:start;"+(page.type==="small"?"grid-auto-rows:min-content;":"");
     var prevColor="";
     page.items.forEach(function(item,i){
       var color=getRepColor(i,prevColor);prevColor=color;
@@ -1972,9 +1972,9 @@ function downloadRepCardPDF(item,hc){
 
   // Header
   var hdr=document.createElement("div");
-  hdr.style.cssText="background:"+hc.bg+";padding:18px 22px;text-align:center";
+  hdr.style.cssText="background:"+hc.bg+";padding:18px 22px;text-align:center;box-sizing:border-box;width:100%";
   var htit=document.createElement("div");
-  htit.style.cssText="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:"+hc.text+";line-height:1.4;font-family:'Archivo',sans-serif";
+  htit.style.cssText="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:"+hc.text+";line-height:1.4;font-family:'Archivo',sans-serif;word-break:break-word;overflow-wrap:break-word;max-width:100%";
   htit.textContent=item.n||"";
   hdr.appendChild(htit);
   wrap.appendChild(hdr);
@@ -1986,7 +1986,7 @@ function downloadRepCardPDF(item,hc){
   function addF(emoji,label,val,isAlert){
     if(!val||!val.trim())return;
     var lbl=document.createElement("div");
-    lbl.style.cssText="font-size:9px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.08em;margin-top:14px;margin-bottom:4px;font-family:'Archivo',sans-serif";
+    lbl.style.cssText="font-size:9px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.08em;margin-top:14px;margin-bottom:4px;font-family:'Archivo',sans-serif;word-break:break-word";
     lbl.textContent=emoji+" "+label;
     body.appendChild(lbl);
     var v=document.createElement("div");
@@ -2007,7 +2007,7 @@ function downloadRepCardPDF(item,hc){
     item._subs.forEach(function(sub){
       addSep();
       var st=document.createElement("div");
-      st.style.cssText="font-size:11px;font-weight:700;color:#153244;border-left:3px solid "+hc.bg+";padding-left:8px;margin-bottom:6px;font-family:'Archivo',sans-serif";
+      st.style.cssText="font-size:11px;font-weight:700;color:#153244;border-left:3px solid "+hc.bg+";padding-left:8px;margin-bottom:6px;font-family:'Archivo',sans-serif;word-break:break-word";
       st.textContent=sub.sub||"";
       body.appendChild(st);
       addF("📋","Status",sub.s||"");
@@ -2023,7 +2023,7 @@ function downloadRepCardPDF(item,hc){
   // Footer
   var date=typeof REP_DATE_LABEL!=="undefined"?REP_DATE_LABEL:new Date().toLocaleDateString("es-AR");
   var ft=document.createElement("div");
-  ft.style.cssText="margin-top:18px;font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;font-family:'Archivo',sans-serif;text-align:right";
+  ft.style.cssText="margin-top:18px;font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;font-family:'Archivo',sans-serif;text-align:right;word-break:break-word";
   ft.textContent="Status al "+date+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur";
   body.appendChild(ft);
 
@@ -2048,11 +2048,14 @@ function downloadRepCardPDF(item,hc){
     document.body.removeChild(outer);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-    var imgW=W;
-    var imgH=Math.round(canvas.height/2);
     var mg=30;
-    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[imgW+mg*2,imgH+mg*2]});
-    doc.addImage(imgData,"PNG",mg,mg,imgW,imgH);
+    // Crear doc temporal solo para medir la imagen tal como jsPDF la interpreta
+    var probe=new jsPDF({orientation:"portrait",unit:"px",format:"a4"});
+    var props=probe.getImageProperties(imgData);
+    var pageW=props.width+mg*2;
+    var pageH=props.height+mg*2;
+    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[pageW,pageH]});
+    doc.addImage(imgData,"PNG",mg,mg,props.width,props.height);
     var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
     doc.save(fname);
   }).catch(function(err){
@@ -2064,7 +2067,7 @@ function downloadRepCardPDF(item,hc){
 function buildRepCard(item,color,isLarge){
   var hc=HEADER_COLORS[color]||HEADER_COLORS.azul;
   var card=document.createElement("div");
-  card.style.cssText="border-radius:8px;overflow:hidden;background:white;border:0.5px solid rgba(0,0,0,.08);display:flex;flex-direction:column;font-family:'Archivo',sans-serif;min-height:"+(isLarge?"280px":"220px");
+  card.style.cssText="border-radius:8px;overflow:hidden;background:white;border:0.5px solid rgba(0,0,0,.08);display:flex;flex-direction:column;font-family:'Archivo',sans-serif;min-height:"+(isLarge?"200px":"150px")+";height:auto";
   var header=document.createElement("div");
   var nameLen=(item.n||"").length;
   var fontSize="12px";
@@ -2148,7 +2151,7 @@ function renderRepFS(){
     var page=REP_PAGES[REP_CUR];
     var grid=document.createElement("div");
     grid.className="rep-grid";
-    grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;"+(page.type==="small"?"grid-template-rows:auto auto;":"");
+    grid.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:start;"+(page.type==="small"?"grid-auto-rows:min-content;":"");
     var prevColor="";
     page.items.forEach(function(item,i){
       var color=getRepColor(i,prevColor);prevColor=color;
