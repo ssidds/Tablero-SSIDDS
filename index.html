@@ -2032,30 +2032,27 @@ function downloadRepCardPDF(item,hc){
   document.body.appendChild(outer);
 
   // Forzar reflow y medir la altura REAL del contenido antes de capturar
-  var fullHeight=wrap.scrollHeight||wrap.offsetHeight;
+  // Forzar que el navegador renderice completamente antes de capturar
+  void wrap.offsetHeight;
 
   html2canvas(wrap,{
     scale:2,
     useCORS:true,
     allowTaint:true,
     backgroundColor:"white",
-    logging:false,
-    width:W,
-    height:fullHeight,
-    windowWidth:W+100,
-    windowHeight:fullHeight+100
+    logging:false
   }).then(function(canvas){
     document.body.removeChild(outer);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-    var mg=30;
-    // Crear doc temporal solo para medir la imagen tal como jsPDF la interpreta
-    var probe=new jsPDF({orientation:"portrait",unit:"px",format:"a4"});
-    var props=probe.getImageProperties(imgData);
-    var pageW=props.width+mg*2;
-    var pageH=props.height+mg*2;
-    var doc=new jsPDF({orientation:"portrait",unit:"px",format:[pageW,pageH]});
-    doc.addImage(imgData,"PNG",mg,mg,props.width,props.height);
+    var cw=canvas.width;
+    var ch=canvas.height;
+    var mg=60; // margen en px del canvas (scale 2 → 30px visuales)
+    // La página mide EXACTAMENTE lo que mide la imagen + márgenes
+    var pageW=cw+mg*2;
+    var pageH=ch+mg*2;
+    var doc=new jsPDF({orientation:pageW>pageH?"landscape":"portrait",unit:"px",format:[pageW,pageH],hotfixes:["px_scaling"]});
+    doc.addImage(imgData,"PNG",mg,mg,cw,ch);
     var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
     doc.save(fname);
   }).catch(function(err){
