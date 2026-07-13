@@ -1966,7 +1966,7 @@ function repGoTo(n){
 function downloadRepCardPDF(item,hc){
   var W=580;
   var outer=document.createElement("div");
-  outer.style.cssText="position:fixed;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
+  outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
   var wrap=document.createElement("div");
   wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'Archivo',sans-serif;box-sizing:border-box";
 
@@ -2030,9 +2030,21 @@ function downloadRepCardPDF(item,hc){
   wrap.appendChild(body);
   outer.appendChild(wrap);
   document.body.appendChild(outer);
-  var _h=wrap.offsetHeight; // force layout reflow
 
-  html2canvas(wrap,{scale:2,useCORS:true,allowTaint:true,backgroundColor:"white",logging:false,width:W,windowWidth:W+100}).then(function(canvas){
+  // Forzar reflow y medir la altura REAL del contenido antes de capturar
+  var fullHeight=wrap.scrollHeight||wrap.offsetHeight;
+
+  html2canvas(wrap,{
+    scale:2,
+    useCORS:true,
+    allowTaint:true,
+    backgroundColor:"white",
+    logging:false,
+    width:W,
+    height:fullHeight,
+    windowWidth:W+100,
+    windowHeight:fullHeight+100
+  }).then(function(canvas){
     document.body.removeChild(outer);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
