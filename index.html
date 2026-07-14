@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>:root{--azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;--amarillo:#FFCB00;--amarillo2:#e6b800;--verde:#8DE2D6;--bg:#f2f6f9;--card:#fff;--border:#dce8ef;--text:#153244;--muted:#6b8395;--r:12px;--r2:8px}
+<style>:root{--azul:#153244;--azul2:#1e4a63;--azul3:#e8f0f5;--amarillo:#FFCB00;--amarillo2:#e6b800;--verde:#8DE2D6;--bg:#f2f6f9;--card:#fff;--border:#dce8ef;--text:#153244;--muted:#6b8395;--r:12px;--r2:8px;--ease-out:cubic-bezier(.16,1,.3,1)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
@@ -31,16 +31,16 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .sb-logo{padding:14px 14px 12px;border-bottom:0.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
 .sb-logo img{width:100px;object-fit:contain}
 .sb-sec{font-size:9px;color:rgba(255,255,255,.25);padding:10px 14px 3px;text-transform:uppercase;letter-spacing:.08em}
-.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;border-left:2px solid transparent;transition:all .15s,transform .15s}
+.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;border-left:2px solid transparent;transition:background .15s,color .15s,transform .15s}
 .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);transform:translateX(3px)}
 .sb-item.active{background:rgba(141,226,214,.12);color:var(--verde);border-left-color:var(--verde)}
 .sb-item i{font-size:15px}
 .content{flex:1;overflow-y:auto;position:relative}
 .bg-torre{position:absolute;right:0;bottom:0;height:100%;opacity:.08;pointer-events:none;z-index:0;object-fit:contain;object-position:bottom right}
 .sec{padding:20px;position:relative;z-index:1}
-.card-hover{transition:transform .2s ease,box-shadow .2s ease}
+.card-hover{transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out)}
 .card-hover:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(21,50,68,.12)}
-.sec-anim{opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease}
+.sec-anim{opacity:0;transform:translateY(20px);transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
 .sec-anim.visible{opacity:1;transform:translateY(0)}
 .s-ttl{font-size:12px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;scroll-margin-top:60px}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
@@ -75,7 +75,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .hc-p{background:#fff8e0}.hc-p .hd{color:#8a6a00}
 .hc-n{background:var(--bg)}.hc-n .hd{color:var(--azul)}
 .cdots{display:flex;justify-content:center;gap:4px;margin-top:8px}
-.cdot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .2s}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s}
 .cdot.on{background:var(--azul);width:14px;border-radius:3px}
 .cprog{height:2px;background:var(--border);border-radius:1px;margin-top:6px;overflow:hidden}
 .cpf{height:100%;background:var(--azul);border-radius:1px}
@@ -88,14 +88,14 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .fl{font-size:11px;padding:6px 28px 6px 10px;border:1px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--muted);cursor:pointer;font-family:DM Sans,sans-serif;outline:none;appearance:none}
 .fl:focus{border-color:var(--azul)}
 .pr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.pl{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-weight:500;white-space:nowrap;transition:all .15s}
+.pl{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-weight:500;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
 .pl:hover{border-color:var(--azul);color:var(--azul)}.pl.on{background:var(--azul);color:#fff;border-color:var(--azul)}
 .cl{font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px;padding:8px 12px;background:var(--card);border-radius:var(--r2);border:1px solid var(--border);display:inline-block}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);cursor:pointer;overflow:hidden;transition:border-color .15s,box-shadow .15s,transform .15s}
 .card:hover{border-color:var(--azul);box-shadow:0 4px 16px rgba(21,50,68,.08);transform:translateY(-1px)}
 .card:hover .ct{height:8px}
-.ct{height:4px;transition:height .2s ease}
+.ct{height:4px;transition:height .2s var(--ease-out)}
 .cb2{padding:12px 14px}
 .cn{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
 .bdg{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;font-weight:600;margin-bottom:6px}
@@ -106,9 +106,10 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .cst{font-size:10px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border);padding-top:6px;margin-top:4px}
 .cht{font-size:10px;color:var(--azul2);margin-top:5px;font-weight:500}
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;grid-column:1/-1}
-.ov{display:none;position:fixed;inset:0;background:rgba(21,50,68,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
-.ov.open{display:flex}
-.modal{background:var(--card);border-radius:16px;max-width:640px;width:100%;margin-top:0;position:relative;max-height:90vh;overflow-y:auto}
+.ov{display:flex;position:fixed;inset:0;background:rgba(21,50,68,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s var(--ease-out),visibility 0s linear .18s}
+.ov.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .18s var(--ease-out),visibility 0s linear 0s}
+.modal{background:var(--card);border-radius:16px;max-width:640px;width:100%;margin-top:0;position:relative;max-height:90vh;overflow-y:auto;transform-origin:center;transform:scale(.96);transition:transform .18s var(--ease-out)}
+.ov.open .modal{transform:scale(1)}
 .mh{background:var(--azul);padding:20px 24px 16px;border-radius:16px 16px 0 0;position:relative}
 .mc{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .mc:hover{background:rgba(255,255,255,.25)}
@@ -139,7 +140,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .rep-pages-inner{width:100%}
 .rep-page-slide{display:none;width:100%}
 .rep-page-slide.active{display:block}
-.rep-card-anim{opacity:0;transform:translateY(14px);transition:opacity .35s ease,transform .35s ease}
+.rep-card-anim{opacity:0;transform:translateY(14px);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out)}
 .rep-card-anim.visible{opacity:1;transform:translateY(0)}
 .rep-fs-overlay{display:none;position:fixed;inset:0;background:#f2f6f9;z-index:2000;padding:24px;overflow-y:auto}
 .rep-fs-overlay.open{display:block}
@@ -221,6 +222,17 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
   .bar-l{width:80px}
   .mg2{grid-template-columns:1fr!important}
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after{
+    animation-duration:0.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:0.01ms!important;
+    scroll-behavior:auto!important;
+  }
+  .sec-anim,.rep-card-anim{opacity:1!important;transform:none!important}
+  .card:hover,.card-hover:hover,.sb-item:hover{transform:none!important}
+}
 </style>
 </head>
 <body>
@@ -287,25 +299,25 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <!-- CLASIFICACIÓN GENERAL -->
           <div id="cls-block" style="margin-bottom:16px">
             <div id="cls-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-              <div class="card-hover" id="cls-act" onclick="selectCls('act')" style="background:#fff8e0;border:2px solid #FFCB00;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-act" onclick="selectCls('act')" style="background:#fff8e0;border:2px solid #FFCB00;border-radius:var(--r);padding:14px 16px;cursor:pointer">
                 <div style="font-size:10px;font-weight:600;color:#7a5f00;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Activos</div>
                 <div id="cls-act-n" style="font-size:32px;font-weight:700;color:#b8920a;line-height:1">0</div>
                 <div style="font-size:10px;color:#7a5f00;margin-top:6px;margin-bottom:6px">Ver desglose ↓</div>
-                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-act-bar" style="height:100%;border-radius:2px;background:#FFCB00;width:0%;transition:width .6s ease"></div></div>
+                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-act-bar" style="height:100%;border-radius:2px;background:#FFCB00;width:0%;transition:width .6s var(--ease-out)"></div></div>
                 <div id="cls-act-pct" style="font-size:10px;font-weight:600;color:#7a5f00;margin-top:4px">0%</div>
               </div>
-              <div class="card-hover" id="cls-sby" onclick="selectCls('sby')" style="background:#fff0f0;border:1.5px solid #e53935;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-sby" onclick="selectCls('sby')" style="background:#fff0f0;border:1.5px solid #e53935;border-radius:var(--r);padding:14px 16px;cursor:pointer">
                 <div style="font-size:10px;font-weight:600;color:#a32d2d;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">En stand-by</div>
                 <div id="cls-sby-n" style="font-size:32px;font-weight:700;color:#e53935;line-height:1">0</div>
                 <div style="font-size:10px;color:#a32d2d;margin-top:6px;margin-bottom:6px">Ver proyectos ↓</div>
-                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-sby-bar" style="height:100%;border-radius:2px;background:#e53935;width:0%;transition:width .6s ease"></div></div>
+                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-sby-bar" style="height:100%;border-radius:2px;background:#e53935;width:0%;transition:width .6s var(--ease-out)"></div></div>
                 <div id="cls-sby-pct" style="font-size:10px;font-weight:600;color:#a32d2d;margin-top:4px">0%</div>
               </div>
-              <div class="card-hover" id="cls-fin" onclick="selectCls('fin')" style="background:#f0fff8;border:1.5px solid #00a86b;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .15s">
+              <div class="card-hover" id="cls-fin" onclick="selectCls('fin')" style="background:#f0fff8;border:1.5px solid #00a86b;border-radius:var(--r);padding:14px 16px;cursor:pointer">
                 <div style="font-size:10px;font-weight:600;color:#0a6e4a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Finalizados</div>
                 <div id="cls-fin-n" style="font-size:32px;font-weight:700;color:#00a86b;line-height:1">0</div>
                 <div style="font-size:10px;color:#0a6e4a;margin-top:6px;margin-bottom:6px">Ver proyectos ↓</div>
-                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-fin-bar" style="height:100%;border-radius:2px;background:#00a86b;width:0%;transition:width .6s ease"></div></div>
+                <div style="height:4px;border-radius:2px;background:rgba(0,0,0,.08)"><div id="cls-fin-bar" style="height:100%;border-radius:2px;background:#00a86b;width:0%;transition:width .6s var(--ease-out)"></div></div>
                 <div id="cls-fin-pct" style="font-size:10px;font-weight:600;color:#0a6e4a;margin-top:4px">0%</div>
               </div>
             </div>
@@ -355,22 +367,22 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 
           <!-- BADGES TIPO DE INVERSION -->
           <div id="inv-badges-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px">
-            <div onclick="openInvModal('Pública')" style="background:#fffbec;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #FFCB00;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div onclick="openInvModal('Pública')" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Pública');}" style="background:#fffbec;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #FFCB00;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'" onfocus="this.style.transform='translateY(-2px)';this.style.outline='2px solid #FFCB00';this.style.outlineOffset='2px'" onblur="this.style.transform='translateY(0)';this.style.outline='none'">
               <div style="font-size:10px;font-weight:500;color:#8a6a00;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#FFCB00;display:inline-block"></span>Pública ↗</div>
               <div style="font-size:26px;font-weight:600;color:#8a6a00;line-height:1" id="bdg-pub">0</div>
               <div style="font-size:9px;color:var(--muted)">proyectos</div>
             </div>
-            <div onclick="openInvModal('Privada')" style="background:#eef5fd;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #4A90D9;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div onclick="openInvModal('Privada')" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}" style="background:#eef5fd;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #4A90D9;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'" onfocus="this.style.transform='translateY(-2px)';this.style.outline='2px solid #4A90D9';this.style.outlineOffset='2px'" onblur="this.style.transform='translateY(0)';this.style.outline='none'">
               <div style="font-size:10px;font-weight:500;color:#0c447c;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#4A90D9;display:inline-block"></span>Privada ↗</div>
               <div style="font-size:26px;font-weight:600;color:#0c447c;line-height:1" id="bdg-priv">0</div>
               <div style="font-size:9px;color:var(--muted)">proyectos</div>
             </div>
-            <div onclick="openInvModal('Mixta')" style="background:#edfaf8;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #8DE2D6;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div onclick="openInvModal('Mixta')" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}" style="background:#edfaf8;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #8DE2D6;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'" onfocus="this.style.transform='translateY(-2px)';this.style.outline='2px solid #8DE2D6';this.style.outlineOffset='2px'" onblur="this.style.transform='translateY(0)';this.style.outline='none'">
               <div style="font-size:10px;font-weight:500;color:#2a7a6a;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#8DE2D6;display:inline-block"></span>Mixta ↗</div>
               <div style="font-size:26px;font-weight:600;color:#2a7a6a;line-height:1" id="bdg-mix">0</div>
               <div style="font-size:9px;color:var(--muted)">proyectos</div>
             </div>
-            <div onclick="openInvModal('No valorizada')" style="background:#fdeef6;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #E91E8C;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div onclick="openInvModal('No valorizada')" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('No valorizada');}" style="background:#fdeef6;border-radius:var(--r2);padding:12px 14px;cursor:pointer;border-top:3px solid #E91E8C;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'" onfocus="this.style.transform='translateY(-2px)';this.style.outline='2px solid #E91E8C';this.style.outlineOffset='2px'" onblur="this.style.transform='translateY(0)';this.style.outline='none'">
               <div style="font-size:10px;font-weight:500;color:#8a1050;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#E91E8C;display:inline-block"></span>No valorizada ↗</div>
               <div style="font-size:26px;font-weight:600;color:#8a1050;line-height:1" id="bdg-noval">0</div>
               <div style="font-size:9px;color:var(--muted)">proyectos</div>
@@ -448,11 +460,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             <div style="font-size:11px;color:var(--muted)" id="emp-count"></div>
           </div>
         <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:16px">
-              <button id="emp-prev" onclick="empCarMove(-1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#153244;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.2)" onmouseover="this.style.background='#1e4a63'" onmouseout="this.style.background='#153244'">
+              <button id="emp-prev" onclick="empCarMove(-1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#153244;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;box-shadow:0 2px 6px rgba(0,0,0,.2)" onmouseover="this.style.background='#1e4a63'" onmouseout="this.style.background='#153244'">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
               <div id="emp-track" style="flex:1;display:flex;gap:10px;overflow:hidden"></div>
-              <button id="emp-next" onclick="empCarMove(1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#153244;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.2)" onmouseover="this.style.background='#1e4a63'" onmouseout="this.style.background='#153244'">
+              <button id="emp-next" onclick="empCarMove(1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#153244;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;box-shadow:0 2px 6px rgba(0,0,0,.2)" onmouseover="this.style.background='#1e4a63'" onmouseout="this.style.background='#153244'">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
             </div>
@@ -669,7 +681,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
         <div style="padding:20px 24px">
           <div style="position:relative;padding:16px 0 48px">
             <div id="gantt-tl-line" style="position:absolute;top:38px;left:0;right:0;height:2px;background:var(--border);border-radius:1px"></div>
-            <div id="gantt-tl-progress" style="position:absolute;top:38px;left:0;height:2px;background:#00c896;transition:width .6s ease;width:0%;border-radius:1px"></div>
+            <div id="gantt-tl-progress" style="position:absolute;top:38px;left:0;height:2px;background:#00c896;transition:width .6s var(--ease-out);width:0%;border-radius:1px"></div>
             <div id="gantt-tl-nodes" style="display:flex;justify-content:space-between;position:relative;z-index:2;gap:4px"></div>
           </div>
           <div id="gantt-pct-label" style="font-size:13px;color:var(--muted);margin-top:8px;font-weight:500"></div>
@@ -910,9 +922,25 @@ function parseMonto(s){
 
 function animNum(el,v,suffix){
   if(!el)return;
-  if(v<=0){el.textContent="0"+(suffix||"");return;}
-  var s=0,inc=Math.max(v/40,0.1);
-  var iv=setInterval(function(){s=Math.min(s+inc,v);el.textContent=Math.round(s)+(suffix||"");if(s>=v)clearInterval(iv);},18);
+  if(el._animRAF){cancelAnimationFrame(el._animRAF);el._animRAF=null;}
+  var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(v<=0||reduced){el.textContent=Math.round(v)+(suffix||"");return;}
+  var duration=720;
+  var start=null;
+  function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+  function tick(ts){
+    if(start===null)start=ts;
+    var elapsed=ts-start;
+    var progress=Math.min(elapsed/duration,1);
+    var eased=easeOutCubic(progress);
+    el.textContent=Math.round(eased*v)+(suffix||"");
+    if(progress<1){
+      el._animRAF=requestAnimationFrame(tick);
+    } else {
+      el._animRAF=null;
+    }
+  }
+  el._animRAF=requestAnimationFrame(tick);
 }
 function renderInversion(){
   var IC={"Pública":"#FFCB00","Privada":"#4A90D9","Mixta":"#8DE2D6","No valorizada":"#E91E8C"};
@@ -1737,7 +1765,7 @@ function renderLogros(){
     var itemsDiv=document.createElement("div");itemsDiv.style.cssText="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;margin-left:8px";
     byYear[yr].forEach(function(l){
       var card=document.createElement("div");
-      card.style.cssText="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:all .15s";
+      card.style.cssText="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:background .15s,border-color .15s";
       card.onmouseover=function(){this.style.borderColor="var(--azul)";this.style.transform="translateX(3px)";};
       card.onmouseout=function(){this.style.borderColor="var(--border)";this.style.transform="";};
       var parts=l.fecha.split("/");var dd=parts[0]||"";var mm=parseInt(parts[1]||"0");var fechaFmt=dd+" "+(MESES_N[mm]||"");
@@ -2045,14 +2073,19 @@ function downloadRepCardPDF(item,hc){
     document.body.removeChild(outer);
     var imgData=canvas.toDataURL("image/png");
     var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
-    var cw=canvas.width;
-    var ch=canvas.height;
-    var mg=60; // margen en px del canvas (scale 2 → 30px visuales)
-    // La página mide EXACTAMENTE lo que mide la imagen + márgenes
-    var pageW=cw+mg*2;
-    var pageH=ch+mg*2;
-    var doc=new jsPDF({orientation:pageW>pageH?"landscape":"portrait",unit:"px",format:[pageW,pageH],hotfixes:["px_scaling"]});
-    doc.addImage(imgData,"PNG",mg,mg,cw,ch);
+    var SCALE=2;
+    var PX_TO_PT=0.75; // 96 CSS px/in ÷ 72 pt/in
+    // Dimensiones reales en CSS px (revertir el scale del canvas)
+    var realWpx=canvas.width/SCALE;
+    var realHpx=canvas.height/SCALE;
+    // Convertir a puntos — unidad nativa y sin ambigüedad de jsPDF
+    var imgWpt=realWpx*PX_TO_PT;
+    var imgHpt=realHpx*PX_TO_PT;
+    var mgPt=30*PX_TO_PT;
+    var pageWpt=imgWpt+mgPt*2;
+    var pageHpt=imgHpt+mgPt*2;
+    var doc=new jsPDF({orientation:pageWpt>pageHpt?"landscape":"portrait",unit:"pt",format:[pageWpt,pageHpt]});
+    doc.addImage(imgData,"PNG",mgPt,mgPt,imgWpt,imgHpt);
     var fname=(item.n||"reporte").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
     doc.save(fname);
   }).catch(function(err){
