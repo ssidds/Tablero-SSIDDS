@@ -1649,10 +1649,12 @@ function initMap(){
         });
         layerObj=L.marker(ll,{icon:icon}).bindPopup(popup);
       } else if(tipo==="linea"){
-        var pts=[ll].concat(parseExtraCoords(item.ex));
+        var pts=parseExtraCoords(item.ex);
+        if(pts.length<2)pts=[ll].concat(pts); // fallback si col E está vacía/incompleta
         layerObj=L.polyline(pts,{color:invC.f,weight:3,opacity:0.85}).bindPopup(popup);
       } else if(tipo==="zona"){
-        var zpts=[ll].concat(parseExtraCoords(item.ex));
+        var zpts=parseExtraCoords(item.ex);
+        if(zpts.length<3)zpts=[ll].concat(zpts); // fallback si col E está vacía/incompleta
         layerObj=L.polygon(zpts,{color:invC.s,weight:2,fillColor:invC.f,fillOpacity:0.2}).bindPopup(popup);
       }
       if(!layerObj)return;
