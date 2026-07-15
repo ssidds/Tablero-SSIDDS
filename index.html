@@ -607,6 +607,10 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <select id="rep-week-sel" style="font-family:'Archivo',sans-serif;font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer" onchange="loadReportSnapshot(this.value)">
             <option value="current">Cargando...</option>
           </select>
+          <div style="position:relative;width:190px">
+            <input type="text" id="rep-search" placeholder="Buscar proyecto..." oninput="applyRepSearch()" style="width:100%;box-sizing:border-box;font-family:'Archivo',sans-serif;font-size:12px;padding:5px 10px 5px 26px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)">
+            <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);pointer-events:none">🔍</span>
+          </div>
           <div style="position:absolute;right:0;display:flex;gap:6px">
             <div style="position:relative;display:inline-block" id="jpg-menu-wrap">
               <button onclick="toggleRepMenu('jpg')" style="font-size:11px;padding:5px 11px;border:1px solid #FFCB00;border-radius:6px;background:#fff8e0;color:#7a5f00;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600">⬇ JPG ▾</button>
@@ -1789,6 +1793,7 @@ function renderLogros(){
 var REP_DATA=[];
 var REP_CUR=0;
 var REP_PAGES=[];
+var REP_GROUPED=[];
 var REP_COLORS=["azul","verde","amarillo"];
 var REP_DATE_LABEL="";
 var HEADER_COLORS={
@@ -1862,9 +1867,10 @@ function loadReportSnapshot(url){
 }
 
 function buildRepPages(data){
-  REP_PAGES=[];
   if(!data||data.length===0){
+    REP_GROUPED=[];
     eid("rep-page-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted)'>Sin datos de reporte</div>";
+    REP_PAGES=[];
     repUpdateNav();
     return;
   }
@@ -1889,8 +1895,47 @@ function buildRepPages(data){
       grouped[seen[key]]._subs.push({sub:item.sub,s:item.s,pp:item.pp,ac:item.ac});
     }
   });
-  var main=grouped.slice(0,8);
-  var rest=grouped.slice(8);
+  REP_GROUPED=grouped;
+  var srch=eid("rep-search");
+  if(srch)srch.value="";
+  paginateRepGroups(REP_GROUPED);
+}
+
+function normRepSearch(s){
+  return (s||"").toString().toLowerCase().trim()
+    .replace(/[áàäâã]/g,"a").replace(/[éèëê]/g,"e")
+    .replace(/[íìïî]/g,"i").replace(/[óòöôõ]/g,"o")
+    .replace(/[úùüû]/g,"u").replace(/ñ/g,"n");
+}
+
+function applyRepSearch(){
+  var input=eid("rep-search");
+  var q=normRepSearch(input?input.value:"");
+  var list=REP_GROUPED;
+  if(q){
+    list=REP_GROUPED.filter(function(g){return normRepSearch(g.n).indexOf(q)!==-1;});
+  }
+  if(list.length===0){
+    REP_PAGES=[];
+    eid("rep-page-container").innerHTML="";
+    var inner=eid("rep-pages-inner");
+    if(inner){
+      inner.innerHTML="<div style='text-align:center;padding:50px 20px;color:var(--muted)'>"
+        +"<div style='font-size:24px;margin-bottom:10px'>🔍</div>"
+        +"<div style='font-weight:600;font-size:13px;color:var(--text)'>Sin resultados</div>"
+        +"<div style='font-size:11px;margin-top:4px'>No hay proyectos que coincidan con \""+(input?input.value:"")+"\"</div>"
+        +"</div>";
+    }
+    repUpdateNav();
+    return;
+  }
+  paginateRepGroups(list);
+}
+
+function paginateRepGroups(list){
+  REP_PAGES=[];
+  var main=list.slice(0,8);
+  var rest=list.slice(8);
   if(main.length>0)REP_PAGES.push({items:main.slice(0,4),type:"large"});
   if(main.length>4)REP_PAGES.push({items:main.slice(4,8),type:"large"});
   for(var i=0;i<rest.length;i+=8){
