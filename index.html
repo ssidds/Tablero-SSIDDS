@@ -212,6 +212,12 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
   #inv-text-panel{flex-direction:row!important;flex-wrap:wrap;padding-left:0!important;padding-top:8px;gap:8px!important}
   #inv-text-panel>div{flex:1;min-width:80px}
   #inv-text-panel>.inv-sep{display:none!important}
+  #rep-hdr-row{flex-wrap:wrap;row-gap:8px}
+  #rep-hdr-title{font-size:14px;order:1}
+  #rep-hdr-row>div:first-child{order:0}
+  #rep-week-sel{order:2;flex:1;min-width:100px}
+  #rep-search-wrap{order:3;width:auto!important;flex:1;min-width:110px}
+  #rep-hdr-actions{position:static!important;order:4;width:100%;justify-content:flex-end;flex-wrap:wrap;margin-top:2px}
 }
 @media(max-width:480px){
   .kpi-n{font-size:26px}
@@ -601,21 +607,21 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <!-- REPORTES -->
     <div id="srep" style="display:none">
       <div class="sec">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;position:relative">
+        <div id="rep-hdr-row" style="display:flex;align-items:center;gap:12px;margin-bottom:4px;position:relative">
           <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
             <button id="rep-prev" onclick="repNav(-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center" disabled>‹</button>
             <span id="rep-plbl" style="font-size:11px;color:var(--muted);font-family:'Archivo',sans-serif;min-width:42px;text-align:center"></span>
             <button id="rep-next" onclick="repNav(1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--azul);background:var(--card);color:var(--azul);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
           </div>
-          <div style="font-size:18px;font-weight:700;color:var(--azul);font-family:'Archivo',sans-serif;letter-spacing:.04em;text-transform:uppercase">Status Proyectos</div>
+          <div id="rep-hdr-title" style="font-size:18px;font-weight:700;color:var(--azul);font-family:'Archivo',sans-serif;letter-spacing:.04em;text-transform:uppercase">Status Proyectos</div>
           <select id="rep-week-sel" style="font-family:'Archivo',sans-serif;font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer" onchange="loadReportSnapshot(this.value)">
             <option value="current">Cargando...</option>
           </select>
-          <div style="position:relative;width:190px">
+          <div id="rep-search-wrap" style="position:relative;width:190px">
             <input type="text" id="rep-search" placeholder="Buscar proyecto..." oninput="applyRepSearch()" style="width:100%;box-sizing:border-box;font-family:'Archivo',sans-serif;font-size:12px;padding:5px 10px 5px 26px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)">
             <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);pointer-events:none">🔍</span>
           </div>
-          <div style="position:absolute;right:0;display:flex;gap:6px">
+          <div id="rep-hdr-actions" style="position:absolute;right:0;display:flex;gap:6px">
             <div style="position:relative;display:inline-block" id="jpg-menu-wrap">
               <button onclick="toggleRepMenu('jpg')" style="font-size:11px;padding:5px 11px;border:1px solid #FFCB00;border-radius:6px;background:#fff8e0;color:#7a5f00;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600">⬇ JPG ▾</button>
               <div id="jpg-menu" style="display:none;position:absolute;right:0;top:110%;background:white;border:0.5px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.12);min-width:150px;z-index:100;overflow:hidden">
