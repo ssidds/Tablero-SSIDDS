@@ -524,6 +524,10 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <div id="mf-est-wrap" style="position:relative"></div>
           <div id="mf-tem-wrap" style="position:relative"></div>
           <div id="mf-bar-wrap" style="position:relative"></div>
+          <div style="position:relative;width:170px">
+            <input type="text" id="mapa-search" placeholder="Buscar proyecto..." oninput="applyMapFiltros()" style="width:100%;box-sizing:border-box;font-family:DM Sans,sans-serif;font-size:10px;padding:4px 8px 4px 24px;border:0.5px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)">
+            <span style="position:absolute;left:7px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none">🔍</span>
+          </div>
           <button onclick="resetMapFiltros()" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--border);border-radius:6px;background:var(--azul3);color:var(--azul);cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap">Limpiar</button>
         </div>
         <!-- Mapa -->
@@ -1678,6 +1682,9 @@ function initMap(){
     layerPub.clearLayers();layerPriv.clearLayers();
     layerMix.clearLayers();layerNoVal.clearLayers();
     shapeLayer.clearLayers();
+    var srchEl=eid("mapa-search");
+    var q=srchEl?normN(srchEl.value||""):"";
+    var matched=[];
     ALL_ITEMS.forEach(function(l){
       var it=l._mi,ik=l._ik,ti=l._ti;
       var pI=MAP_FILT.inv.size===0||MAP_FILT.inv.has(invNM[ik]||"");
@@ -1686,16 +1693,31 @@ function initMap(){
       var pE=mapMatchMulti(it.es_r,MAP_FILT.est);
       var pT=mapMatchMulti(it.te_r,MAP_FILT.tem);
       var pB=mapMatchMulti(it.ba_r,MAP_FILT.bar);
-      if(pI&&pC&&pE&&pT&&pB)addToLayer(l,ik,ti);
+      var pS=!q||normN(it.pr||"").indexOf(q)!==-1;
+      if(pI&&pC&&pE&&pT&&pB&&pS){addToLayer(l,ik,ti);matched.push(l);}
     });
     var cv={};
     if(MAP_FILT.com.size===0){["1","4","8","9"].forEach(function(c){cv[c]=true;});}
     else{MAP_FILT.com.forEach(function(c){cv[c]=true;});}
     renderComunaLayer(cv);
+    // Si la búsqueda de texto deja un solo resultado, zoom + popup automático
+    if(q&&matched.length===1){
+      var single=matched[0];
+      var target=single.getBounds?single.getBounds():(single.getLatLng?L.latLngBounds([single.getLatLng()]):null);
+      if(target){
+        m.flyToBounds(target,{maxZoom:16,duration:0.6});
+        setTimeout(function(){single.openPopup();},650);
+      }
+    } else if(q&&matched.length>1){
+      var group=L.featureGroup(matched);
+      m.flyToBounds(group.getBounds(),{maxZoom:15,padding:[40,40],duration:0.6});
+    }
   };
 
   window.resetMapFiltros=function(){
     Object.keys(MAP_FILT).forEach(function(k){MAP_FILT[k].clear();updateMapDD(k);});
+    var srchEl=eid("mapa-search");
+    if(srchEl)srchEl.value="";
     window.applyMapFiltros();
   };
 
