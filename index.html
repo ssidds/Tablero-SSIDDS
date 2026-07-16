@@ -1652,7 +1652,7 @@ function initMap(){
       item.cm_r=smB?(item.cm||""):(projData?String(projData.co||"").replace(/[^0-9]/g,""):"");
       item.sm_b=smB;
       var invC=getInvColor(item.iv_r);
-      var tipo=(item.ti||"").toLowerCase().trim()||"punto";
+      var tipo=normN(item.ti||"")||"punto";
       var sz=TAMANIOS[(item.sz||"").toLowerCase().trim()]||12;
       var popup=L.popup({maxWidth:260}).setContent(buildMapPopup(item,projIdx));
       var layerObj=null;
