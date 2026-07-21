@@ -2856,68 +2856,122 @@ function ganttVerProyecto(){
 function downloadGanttPDF(){
   var p=_ganttCurrentProject;
   if(!p)return;
-  var W=580;
-  var outer=document.createElement("div");
-  outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
-  var wrap=document.createElement("div");
-  wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'DM Sans',sans-serif;box-sizing:border-box";
-
-  // Header
-  var hdr=document.createElement("div");
-  hdr.style.cssText="background:#153244;padding:18px 22px;box-sizing:border-box;width:100%";
-  var htit=document.createElement("div");
-  htit.style.cssText="font-size:15px;font-weight:700;color:#FFCB00;font-family:'DM Sans',sans-serif;word-break:break-word;overflow-wrap:break-word;max-width:100%";
-  htit.textContent=p.n||"";
-  hdr.appendChild(htit);
-
-  var projData=DATA.find(function(d){return d.n&&d.n.toUpperCase().trim()===p.n.toUpperCase().trim();});
-  var subLine=projData?(projData.co||"")+(projData.te?" · "+projData.te:""):"";
-  var done=p.hitos.filter(function(h){return h.estado.toLowerCase()==="cumplido";}).length;
-  var pct=p.hitos.length?Math.round(done/p.hitos.length*100):0;
-  var hsub=document.createElement("div");
-  hsub.style.cssText="font-size:11px;color:rgba(255,255,255,.75);margin-top:4px;font-family:'DM Sans',sans-serif;word-break:break-word";
-  hsub.textContent=(subLine?subLine+" · ":"")+pct+"% completado ("+done+"/"+p.hitos.length+" hitos)";
-  hdr.appendChild(hsub);
-  wrap.appendChild(hdr);
-
-  // Body — lista vertical de hitos (más legible en PDF que la línea de tiempo horizontal)
-  var body=document.createElement("div");
-  body.style.cssText="padding:16px 22px 20px;box-sizing:border-box;width:100%";
 
   var hitosConFecha=p.hitos.filter(function(h){return !(!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0);});
   var hitosAD=p.hitos.filter(function(h){return !parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;});
   var hitosOrdenados=hitosConFecha.concat(hitosAD);
 
-  hitosOrdenados.forEach(function(h,i){
-    var est=(h.estado||"").toLowerCase();
-    var esAD=!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
-    var bgC=est==="cumplido"?"#00c896":est==="en curso"?"#FFCB00":"#e8f0f5";
-    var borderC=est==="cumplido"?"#00c896":est==="en curso"?"#153244":"#dce8ef";
-    var row=document.createElement("div");
-    row.style.cssText="display:flex;align-items:flex-start;gap:12px;padding:10px 0"+(i<hitosOrdenados.length-1?";border-bottom:0.5px solid #dce8ef":"");
-    var circle=document.createElement("div");
-    circle.style.cssText="width:26px;height:26px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244");
-    circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
-    var txt=document.createElement("div");
-    txt.style.cssText="flex:1;min-width:0";
-    var lbl=document.createElement("div");
-    lbl.style.cssText="font-size:12px;font-weight:600;color:#153244;word-break:break-word;overflow-wrap:break-word";
-    lbl.textContent=h.hito||"";
-    var date=document.createElement("div");
-    date.style.cssText="font-size:10px;color:#6b8395;margin-top:2px;font-weight:600;word-break:break-word";
-    date.textContent=esAD?"A definir":h.fecha;
-    txt.appendChild(lbl);
-    txt.appendChild(date);
-    row.appendChild(circle);
-    row.appendChild(txt);
-    body.appendChild(row);
-  });
-
-  // Footer
+  var projData=DATA.find(function(d){return d.n&&d.n.toUpperCase().trim()===p.n.toUpperCase().trim();});
+  var subLine=projData?(projData.co||"")+(projData.te?" · "+projData.te:""):"";
+  var done=p.hitos.filter(function(h){return h.estado.toLowerCase()==="cumplido";}).length;
+  var pct=p.hitos.length?Math.round(done/p.hitos.length*100):0;
   var now=new Date();
   var dateLbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
+
+  var esDesktop=window.innerWidth>768;
+  var W=esDesktop?Math.max(760,hitosOrdenados.length*130):580;
+
+  var outer=document.createElement("div");
+  outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
+  var wrap=document.createElement("div");
+  wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'DM Sans',sans-serif;box-sizing:border-box";
+
+  // Header (común a ambos formatos)
+  var hdr=document.createElement("div");
+  hdr.style.cssText="background:#153244;padding:"+(esDesktop?"20px 26px":"18px 22px")+";box-sizing:border-box;width:100%";
+  var htit=document.createElement("div");
+  htit.style.cssText="font-size:"+(esDesktop?"17px":"15px")+";font-weight:700;color:#FFCB00;font-family:'DM Sans',sans-serif;word-break:break-word;overflow-wrap:break-word;max-width:100%";
+  htit.textContent=p.n||"";
+  hdr.appendChild(htit);
+  var hsub=document.createElement("div");
+  hsub.style.cssText="font-size:"+(esDesktop?"12px":"11px")+";color:rgba(255,255,255,.75);margin-top:5px;font-family:'DM Sans',sans-serif;word-break:break-word";
+  hsub.textContent=(subLine?subLine+" · ":"")+pct+"% completado ("+done+"/"+p.hitos.length+" hitos)";
+  hdr.appendChild(hsub);
+  wrap.appendChild(hdr);
+
+  var body=document.createElement("div");
+
+  if(esDesktop){
+    // ── Formato horizontal — replica la línea de tiempo tal como se ve en pantalla ──
+    body.style.cssText="padding:30px 30px 26px;box-sizing:border-box;width:100%";
+
+    var tlWrap=document.createElement("div");
+    tlWrap.style.cssText="position:relative;padding:16px 0 8px";
+
+    var line=document.createElement("div");
+    line.style.cssText="position:absolute;top:34px;left:0;right:0;height:2px;background:#dce8ef;border-radius:1px";
+    tlWrap.appendChild(line);
+
+    var progress=document.createElement("div");
+    progress.style.cssText="position:absolute;top:34px;left:0;height:2px;background:#00c896;border-radius:1px;width:"+pct+"%";
+    tlWrap.appendChild(progress);
+
+    var nodesRow=document.createElement("div");
+    nodesRow.style.cssText="display:flex;justify-content:space-between;position:relative;z-index:2;gap:6px";
+
+    hitosOrdenados.forEach(function(h){
+      var est=(h.estado||"").toLowerCase();
+      var esAD=!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
+      var bgC=est==="cumplido"?"#00c896":est==="en curso"?"#FFCB00":"#e8f0f5";
+      var borderC=est==="cumplido"?"#00c896":est==="en curso"?"#153244":"#dce8ef";
+      var node=document.createElement("div");
+      node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0";
+      var circle=document.createElement("div");
+      circle.style.cssText="width:32px;height:32px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244")+";flex-shrink:0";
+      circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+      var date=document.createElement("div");
+      date.style.cssText="font-size:10px;font-weight:700;color:#153244;text-align:center;margin-top:2px;white-space:nowrap";
+      date.textContent=esAD?"A definir":h.fecha;
+      var lbl=document.createElement("div");
+      lbl.style.cssText="font-size:10px;color:#6b8395;text-align:center;line-height:1.35;max-width:108px;word-break:break-word";
+      lbl.textContent=h.hito||"";
+      node.appendChild(circle);
+      node.appendChild(date);
+      node.appendChild(lbl);
+      nodesRow.appendChild(node);
+    });
+
+    tlWrap.appendChild(nodesRow);
+    body.appendChild(tlWrap);
+
+    var pctLbl=document.createElement("div");
+    pctLbl.style.cssText="font-size:11px;color:#6b8395;margin-top:14px;font-weight:600";
+    pctLbl.textContent=done+" de "+p.hitos.length+" hitos completados · "+pct+"% avance";
+    body.appendChild(pctLbl);
+
+  } else {
+    // ── Formato vertical — más legible en pantallas angostas ──
+    body.style.cssText="padding:16px 22px 20px;box-sizing:border-box;width:100%";
+
+    hitosOrdenados.forEach(function(h,i){
+      var est=(h.estado||"").toLowerCase();
+      var esAD=!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
+      var bgC=est==="cumplido"?"#00c896":est==="en curso"?"#FFCB00":"#e8f0f5";
+      var borderC=est==="cumplido"?"#00c896":est==="en curso"?"#153244":"#dce8ef";
+      var row=document.createElement("div");
+      row.style.cssText="display:flex;align-items:flex-start;gap:12px;padding:10px 0"+(i<hitosOrdenados.length-1?";border-bottom:0.5px solid #dce8ef":"");
+      var circle=document.createElement("div");
+      circle.style.cssText="width:26px;height:26px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244");
+      circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+      var txt=document.createElement("div");
+      txt.style.cssText="flex:1;min-width:0";
+      var lbl=document.createElement("div");
+      lbl.style.cssText="font-size:12px;font-weight:600;color:#153244;word-break:break-word;overflow-wrap:break-word";
+      lbl.textContent=h.hito||"";
+      var date=document.createElement("div");
+      date.style.cssText="font-size:10px;color:#6b8395;margin-top:2px;font-weight:600;word-break:break-word";
+      date.textContent=esAD?"A definir":h.fecha;
+      txt.appendChild(lbl);
+      txt.appendChild(date);
+      row.appendChild(circle);
+      row.appendChild(txt);
+      body.appendChild(row);
+    });
+  }
+
+  // Footer (común)
   var ft=document.createElement("div");
-  ft.style.cssText="margin-top:16px;font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;word-break:break-word";
+  ft.style.cssText="margin-top:"+(esDesktop?"18px":"16px")+";font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;word-break:break-word";
   ft.textContent="Gantt al "+dateLbl+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur";
   body.appendChild(ft);
 
