@@ -92,11 +92,29 @@ jobs:
           with open("mapa.json", "w", encoding="utf-8") as f:
               json.dump(mapa, f, ensure_ascii=False)
           print(f"mapa.json: {len(mapa)} puntos")
+          # ---- HOJA EQUIPO (gid=815773194) ----
+          # A=Nombre, B=Rol/Cargo, C=Oficio, D=Área, E=Foto (link), F=Proyectos (separados por coma)
+          rows5 = fetch_csv(CSV_BASE + "?gid=815773194&single=true&output=csv")
+          equipo = []
+          for row in rows5[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(0): continue
+              equipo.append({
+                  "nombre":    c(0),
+                  "rol":       c(1),
+                  "oficio":    c(2),
+                  "area":      c(3),
+                  "foto":      c(4),
+                  "proyectos": c(5),
+              })
+          with open("equipo.json", "w", encoding="utf-8") as f:
+              json.dump(equipo, f, ensure_ascii=False)
+          print(f"equipo.json: {len(equipo)} personas")
           PYEOF
       - name: Commit y push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add datos.json logros.json reporte.json mapa.json
+          git add datos.json logros.json reporte.json mapa.json equipo.json
           git diff --cached --quiet || git commit -m "Actualizar datos $(date '+%d/%m/%Y %H:%M')"
           git push
