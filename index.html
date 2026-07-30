@@ -244,7 +244,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;align-items:start}
 .eq-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:14px;overflow:hidden}
 .eq-card-top{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-.eq-avatar{width:44px;height:44px;border-radius:50%;background:var(--azul3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--azul);flex-shrink:0;overflow:hidden}
+.eq-avatar{width:60px;height:60px;border-radius:50%;background:var(--azul3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--azul);flex-shrink:0;overflow:hidden}
 .eq-avatar img{width:100%;height:100%;object-fit:cover}
 .eq-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
 .eq-role{font-size:10px;color:var(--muted);margin-top:1px}
@@ -786,16 +786,16 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <!-- MODAL PROYECTOS -->
     <div class="ov" id="mov" onclick="closeM(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
-        <div class="mh">
+        <div class="mh" id="m-header-block">
           <button class="mc" onclick="closeModalBtn()">x</button>
-          <button onclick="downloadProjectCardPDF()" title="Descargar resumen" style="position:absolute;top:12px;right:50px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center"><i class="ti ti-download" aria-hidden="true"></i></button>
+          <button onclick="downloadProjectCardPDF()" title="Descargar resumen" style="position:absolute;top:12px;right:50px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ti ti-download" style="font-size:15px" aria-hidden="true"></i></button>
           <div class="mt2" id="mtit"></div>
           <span class="bdg" id="mbdg"></span>
         </div>
         <div class="mb" style="padding:0">
 
           <!-- SECCION 1: El proyecto -->
-          <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
+          <div id="m-proyecto-block" style="padding:20px 24px;border-bottom:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">El proyecto</div>
             <div style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:14px" id="m-desc"></div>
             <div class="mcd" style="margin-bottom:14px">
@@ -1307,86 +1307,39 @@ function downloadProjectCardPDF(){
   var p=_modalCurrentP;
   if(!p)return;
 
-  var BDG_COLORS={
-    bej:{bg:"#e0f7f0",text:"#006b4f"},blic:{bg:"#fff8e0",text:"#8a6a00"},
-    bsb:{bg:"#f0edf8",text:"#4a3d78"},bfin:{bg:"#e8f4de",text:"#2d5a10"},
-    barm:{bg:"#e8ecf4",text:"#1a3a7a"},baj:{bg:"#edf0f8",text:"#2a3f8a"},
-    btra:{bg:"#fde8d8",text:"#7a3010"}
-  };
-  var b=BDG[p.e]||["baj",p.e];
-  var barColor=COL[p.e]||"#153244";
-  var bdgC=BDG_COLORS[b[0]]||{bg:"#edf0f8",text:"#153244"};
-
   var W=580;
   var outer=document.createElement("div");
   outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
   var wrap=document.createElement("div");
-  wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'DM Sans',sans-serif;box-sizing:border-box";
+  wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;box-sizing:border-box";
 
-  var topBar=document.createElement("div");
-  topBar.style.cssText="height:6px;background:"+barColor+";width:100%";
-  wrap.appendChild(topBar);
+  // Clonar el header real del modal — mismo diseño exacto (colores, forma, tipografía)
+  var headerSrc=eid("m-header-block");
+  var headerClone=headerSrc.cloneNode(true);
+  headerClone.querySelectorAll("button").forEach(function(b){b.remove();});
+  var htit=headerClone.querySelector("#mtit");
+  if(htit){htit.removeAttribute("id");htit.style.wordBreak="break-word";htit.style.overflowWrap="break-word";htit.style.paddingRight="0";}
+  var hbdg=headerClone.querySelector("#mbdg");
+  if(hbdg)hbdg.removeAttribute("id");
+  headerClone.style.position="static";
+  wrap.appendChild(headerClone);
 
-  var body=document.createElement("div");
-  body.style.cssText="padding:20px 22px;box-sizing:border-box;width:100%";
+  // Clonar la sección "El proyecto" real — misma grilla, mismos colores
+  var bodySrc=eid("m-proyecto-block");
+  var bodyClone=bodySrc.cloneNode(true);
+  bodyClone.style.borderBottom="none";
+  bodyClone.querySelectorAll("[id]").forEach(function(el){el.removeAttribute("id");});
+  bodyClone.querySelectorAll("div").forEach(function(el){el.style.wordBreak="break-word";el.style.overflowWrap="break-word";});
+  wrap.appendChild(bodyClone);
 
-  var tit=document.createElement("div");
-  tit.style.cssText="font-size:16px;font-weight:700;color:#153244;line-height:1.35;word-break:break-word;overflow-wrap:break-word;margin-bottom:8px";
-  tit.textContent=p.n||"";
-  body.appendChild(tit);
-
-  var badge=document.createElement("span");
-  badge.style.cssText="display:inline-block;font-size:11px;font-weight:600;padding:3px 11px;border-radius:14px;background:"+bdgC.bg+";color:"+bdgC.text;
-  badge.textContent=b[1];
-  body.appendChild(badge);
-
-  function addF(emoji,label,val){
-    if(!val||!val.trim()||val==="--")return;
-    var lbl=document.createElement("div");
-    lbl.style.cssText="font-size:9.5px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.07em;margin-top:14px;margin-bottom:4px";
-    lbl.textContent=emoji+" "+label;
-    body.appendChild(lbl);
-    var v=document.createElement("div");
-    v.style.cssText="font-size:12px;line-height:1.6;color:#374151;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word";
-    v.textContent=val;
-    body.appendChild(v);
-  }
-
-  if(p.desc&&p.desc.trim()){
-    addF("📝","Descripción del proyecto",p.desc);
-  }
-  if(p.obj&&p.obj.trim()){
-    addF("🎯","Objetivo",p.obj);
-  }
-
-  var metaRow=document.createElement("div");
-  metaRow.style.cssText="display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;padding-top:14px;border-top:0.5px solid #dce8ef";
-  function addMeta(label,val){
-    if(!val||val==="--")return;
-    var col=document.createElement("div");
-    col.style.cssText="min-width:110px";
-    var l=document.createElement("div");
-    l.style.cssText="font-size:9px;font-weight:700;color:#6b8395;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px";
-    l.textContent=label;
-    var v=document.createElement("div");
-    v.style.cssText="font-size:12px;font-weight:600;color:#153244;word-break:break-word";
-    v.textContent=val;
-    col.appendChild(l);col.appendChild(v);
-    metaRow.appendChild(col);
-  }
-  addMeta("Monto de inversión",p.mo);
-  addMeta("Temática",p.te);
-  addMeta("Tipo de inversión",p.inv);
-  if(metaRow.children.length>0)body.appendChild(metaRow);
-
+  // Footer
   var now=new Date();
   var dateLbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
   var ft=document.createElement("div");
-  ft.style.cssText="margin-top:16px;font-size:9px;color:#6b8395;border-top:0.5px solid #dce8ef;padding-top:8px;font-style:italic;word-break:break-word";
+  ft.style.cssText="padding:0 24px 16px;font-size:9px;color:#6b8395;font-style:italic;word-break:break-word;font-family:'DM Sans',sans-serif";
   ft.textContent="Actualizado al "+dateLbl+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur";
-  body.appendChild(ft);
+  wrap.appendChild(ft);
 
-  wrap.appendChild(body);
   outer.appendChild(wrap);
   document.body.appendChild(outer);
 
@@ -3197,7 +3150,7 @@ function convertDriveLink(url){
   if(!url)return url;
   var m=url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)||url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if(m&&m[1]){
-    return "https://lh3.googleusercontent.com/d/"+m[1];
+    return "https://drive.google.com/thumbnail?id="+m[1]+"&sz=w320";
   }
   return url;
 }
