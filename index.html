@@ -242,7 +242,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .eq-area{margin-bottom:26px}
 .eq-area-tit{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
 .eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;align-items:start}
-.eq-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:14px}
+.eq-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:14px;overflow:hidden}
 .eq-card-top{display:flex;gap:10px;align-items:center;margin-bottom:10px}
 .eq-avatar{width:44px;height:44px;border-radius:50%;background:var(--azul3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--azul);flex-shrink:0;overflow:hidden}
 .eq-avatar img{width:100%;height:100%;object-fit:cover}
@@ -788,6 +788,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
         <div class="mh">
           <button class="mc" onclick="closeModalBtn()">x</button>
+          <button onclick="downloadProjectCardPDF()" title="Descargar resumen" style="position:absolute;top:12px;right:50px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center"><i class="ti ti-download" aria-hidden="true"></i></button>
           <div class="mt2" id="mtit"></div>
           <span class="bdg" id="mbdg"></span>
         </div>
@@ -1240,7 +1241,7 @@ function renderCards(){
     var st=nl(p.s).substring(0,85),ht=nl(p.h).substring(0,50);
     var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><button onclick='event.stopPropagation();downloadProjectCardPDF(\""+did+"\")' title='Descargar resumen' style='position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(255,255,255,.9);box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;padding:0'><i class=\"ti ti-download\" style=\"font-size:12px;color:#153244\" aria-hidden=\"true\"></i></button><div class='cb2'><div class='cn'>"+nm+"</div><span class='bdg "+b[0]+"'>"+b[1]+"</span>"+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
+    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div><span class='bdg "+b[0]+"'>"+b[1]+"</span>"+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
   }).join("");
 }
 function setF(e){FILTRO=e;renderCards();}
@@ -1284,6 +1285,7 @@ function openM(did){
     p=DATA.find(function(x){return x.n.replace(/['"\\]/g,"_")===did;});
   }
   if(!p)return;
+  _modalCurrentP=p;
   var b=BDG[p.e]||["baj",p.e];
   eid("mtit").textContent=p.n;
   var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
@@ -1301,13 +1303,8 @@ function openM(did){
 function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
 function closeModalBtn(){eid("mov").classList.remove("open");}
 
-function downloadProjectCardPDF(did){
-  var p;
-  if(!isNaN(did)&&Number(did)>=0&&Number(did)<DATA.length){
-    p=DATA[Number(did)];
-  }else{
-    p=DATA.find(function(x){return x.n.replace(/['"\\]/g,"_")===did;});
-  }
+function downloadProjectCardPDF(){
+  var p=_modalCurrentP;
   if(!p)return;
 
   var BDG_COLORS={
@@ -1343,21 +1340,24 @@ function downloadProjectCardPDF(did){
   badge.textContent=b[1];
   body.appendChild(badge);
 
-  function addF(emoji,label,val,isAlert){
+  function addF(emoji,label,val){
     if(!val||!val.trim()||val==="--")return;
     var lbl=document.createElement("div");
     lbl.style.cssText="font-size:9.5px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.07em;margin-top:14px;margin-bottom:4px";
     lbl.textContent=emoji+" "+label;
     body.appendChild(lbl);
     var v=document.createElement("div");
-    v.style.cssText="font-size:12px;line-height:1.6;color:"+(isAlert?"#c0392b":"#374151")+(isAlert?";font-weight:600":"")+";white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word";
+    v.style.cssText="font-size:12px;line-height:1.6;color:#374151;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word";
     v.textContent=val;
     body.appendChild(v);
   }
 
-  addF("📋","Status",nl(p.s));
-  addF("🔜","Próximo hito",nl(p.h));
-  if(p.ac)addF("🚨","Accionable",nl(p.ac),true);
+  if(p.desc&&p.desc.trim()){
+    addF("📝","Descripción del proyecto",p.desc);
+  }
+  if(p.obj&&p.obj.trim()){
+    addF("🎯","Objetivo",p.obj);
+  }
 
   var metaRow=document.createElement("div");
   metaRow.style.cssText="display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;padding-top:14px;border-top:0.5px solid #dce8ef";
@@ -1374,52 +1374,10 @@ function downloadProjectCardPDF(did){
     col.appendChild(l);col.appendChild(v);
     metaRow.appendChild(col);
   }
-  addMeta("Monto",p.mo);
-  addMeta("Tipo de inversión",p.inv);
+  addMeta("Monto de inversión",p.mo);
   addMeta("Temática",p.te);
-  addMeta("Comuna",p.co);
-  addMeta("Barrio",p.ba);
+  addMeta("Tipo de inversión",p.inv);
   if(metaRow.children.length>0)body.appendChild(metaRow);
-
-  if(p.desc&&p.desc.trim()){
-    addF("📝","Descripción",p.desc);
-  }
-  if(p.obj&&p.obj.trim()){
-    addF("🎯","Objetivo",p.obj);
-  }
-
-  if(p.a&&p.a.trim()){
-    var parsed=parseActores(p.a);
-    var hasActores=parsed.solos.length>0||parsed.order.length>0;
-    if(hasActores){
-      var actLbl=document.createElement("div");
-      actLbl.style.cssText="font-size:9.5px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.07em;margin-top:14px;margin-bottom:6px";
-      actLbl.textContent="👥 Actores involucrados";
-      body.appendChild(actLbl);
-
-      parsed.solos.forEach(function(s){
-        var row=document.createElement("div");
-        row.style.cssText="font-size:11px;color:#153244;font-weight:600;margin-bottom:4px;word-break:break-word";
-        row.textContent="• "+s;
-        body.appendChild(row);
-      });
-      parsed.order.forEach(function(min){
-        var grpTit=document.createElement("div");
-        grpTit.style.cssText="font-size:11px;font-weight:700;color:#153244;margin-top:6px;margin-bottom:3px;word-break:break-word";
-        grpTit.textContent=min;
-        body.appendChild(grpTit);
-        var chipsWrap=document.createElement("div");
-        chipsWrap.style.cssText="display:flex;flex-wrap:wrap;gap:5px;padding-left:10px";
-        parsed.groups[min].forEach(function(sub){
-          var chip=document.createElement("span");
-          chip.style.cssText="font-size:9.5px;color:#153244;background:#e8f0f5;padding:2px 9px;border-radius:14px;font-weight:500;word-break:break-word";
-          chip.textContent=sub;
-          chipsWrap.appendChild(chip);
-        });
-        body.appendChild(chipsWrap);
-      });
-    }
-  }
 
   var now=new Date();
   var dateLbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
@@ -2016,12 +1974,13 @@ var REP_DATA=[];
 var REP_CUR=0;
 var REP_PAGES=[];
 var REP_GROUPED=[];
-var REP_COLORS=["azul","verde","amarillo"];
+var REP_COLORS=["c1","c2","c3","c4"];
 var REP_DATE_LABEL="";
 var HEADER_COLORS={
-  azul:{bg:"#153244",text:"#ffffff"},
-  verde:{bg:"#8DE2D6",text:"#153244"},
-  amarillo:{bg:"#FFCB00",text:"#153244"}
+  c1:{bg:"#1d3343",text:"#ffffff"},
+  c2:{bg:"#035c80",text:"#ffffff"},
+  c3:{bg:"#f4991a",text:"#153244"},
+  c4:{bg:"#ffcd02",text:"#153244"}
 };
 
 function getRepColor(idx,prev){
@@ -2409,7 +2368,7 @@ function downloadRepCardPDF(item,hc){
 }
 
 function buildRepCard(item,color,isLarge){
-  var hc=HEADER_COLORS[color]||HEADER_COLORS.azul;
+  var hc=HEADER_COLORS[color]||HEADER_COLORS.c1;
   var card=document.createElement("div");
   card.style.cssText="border-radius:8px;overflow:hidden;background:white;border:0.5px solid rgba(0,0,0,.08);display:flex;flex-direction:column;font-family:'Archivo',sans-serif;min-height:"+(isLarge?"200px":"150px")+";height:auto";
   var header=document.createElement("div");
@@ -2445,7 +2404,7 @@ function buildRepCard(item,color,isLarge){
     }
     item._subs.forEach(function(sub){
       var subTitle=document.createElement("div");
-      var cardBorderColor=hc.bg==="#153244"?"#153244":hc.bg==="#8DE2D6"?"#8DE2D6":"#FFCB00";
+      var cardBorderColor=hc.bg;
       subTitle.style.cssText="font-size:"+(isLarge?"11px":"10px")+";font-weight:700;color:#153244;margin-top:6px;margin-bottom:2px;border-left:3px solid "+cardBorderColor+";padding-left:6px";
       subTitle.textContent=sub.sub;
       body.appendChild(subTitle);
@@ -2776,6 +2735,7 @@ function onEstadoChange(){
   renderCards();
 }
 var _ganttCurrentProject=null;
+var _modalCurrentP=null;
 
 function loadGantt(){
   var CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=1784065815&single=true&output=csv";
@@ -3231,32 +3191,53 @@ function escEq(s){
   return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
+var EQUIPO_AREA_COLORS=["#1d3343","#035c80","#ffcd02","#94a5ba","#f4991a"];
+
+function convertDriveLink(url){
+  if(!url)return url;
+  var m=url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)||url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if(m&&m[1]){
+    return "https://lh3.googleusercontent.com/d/"+m[1];
+  }
+  return url;
+}
+
 function renderEquipo(data){
   var container=eid("equipo-container");
   if(!data||!data.length){
     container.innerHTML="<div style='text-align:center;padding:40px;color:var(--muted)'>Sin datos de equipo</div>";
     return;
   }
+  var sinArea=[];
   var areas={};
   var order=[];
   data.forEach(function(person){
-    var area=person.area||"Sin área";
+    var area=(person.area||"").trim();
+    if(!area){sinArea.push(person);return;}
     if(!areas[area]){areas[area]=[];order.push(area);}
     areas[area].push(person);
   });
 
   var html="";
-  order.forEach(function(area){
+  if(sinArea.length>0){
+    html+="<div class='eq-area'><div class='eq-grid'>";
+    sinArea.forEach(function(person,pi){
+      html+=buildEquipoCard(person,"sinarea-"+pi,null);
+    });
+    html+="</div></div>";
+  }
+  order.forEach(function(area,ai){
+    var areaColor=EQUIPO_AREA_COLORS[ai%EQUIPO_AREA_COLORS.length];
     html+="<div class='eq-area'><div class='eq-area-tit'>"+escEq(area)+"</div><div class='eq-grid'>";
     areas[area].forEach(function(person,pi){
-      html+=buildEquipoCard(person,area.replace(/[^a-zA-Z0-9]/g,"")+"-"+pi);
+      html+=buildEquipoCard(person,area.replace(/[^a-zA-Z0-9]/g,"")+"-"+pi,areaColor);
     });
     html+="</div></div>";
   });
   container.innerHTML=html;
 }
 
-function buildEquipoCard(person,cardId){
+function buildEquipoCard(person,cardId,areaColor){
   var projNames=(person.proyectos||"").split(",").map(function(s){return s.trim();}).filter(Boolean);
   var projItems=projNames.map(function(name){
     var proj=DATA.find(function(d){return d.n&&normEq(d.n)===normEq(name);});
@@ -3271,15 +3252,17 @@ function buildEquipoCard(person,cardId){
   var hidden=projItems.slice(visibleCount).join("");
   var moreCount=projItems.length-visibleCount;
 
+  var initials=escEq((person.nombre||"").split(" ").map(function(w){return w[0]||"";}).slice(0,2).join("").toUpperCase());
   var avatarContent=person.foto
-    ? "<img src='"+escEq(person.foto)+"' alt=''>"
-    : escEq((person.nombre||"").split(" ").map(function(w){return w[0]||"";}).slice(0,2).join("").toUpperCase());
+    ? "<img src='"+escEq(convertDriveLink(person.foto))+"' alt='' onerror=\"this.parentElement.textContent='"+initials+"'\">"
+    : initials;
 
   var html="<div class='eq-card'>";
+  if(areaColor)html+="<div style='height:4px;background:"+areaColor+";border-radius:12px 12px 0 0;margin:-14px -14px 12px'></div>";
   html+="<div class='eq-card-top'><div class='eq-avatar'>"+avatarContent+"</div><div>";
   html+="<div class='eq-name'>"+escEq(person.nombre)+"</div>";
   if(person.rol)html+="<div class='eq-role'>"+escEq(person.rol)+"</div>";
-  if(person.oficio)html+="<div class='eq-oficio'>"+escEq(person.oficio)+"</div>";
+  html+="<div class='eq-oficio'"+(person.oficio?"":" style='visibility:hidden'")+">"+(person.oficio?escEq(person.oficio):"&nbsp;")+"</div>";
   html+="</div></div>";
   if(projItems.length>0){
     html+="<div class='eq-plist'>"+visible;
