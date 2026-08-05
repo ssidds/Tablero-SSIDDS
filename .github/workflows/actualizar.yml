@@ -93,7 +93,7 @@ jobs:
               json.dump(mapa, f, ensure_ascii=False)
           print(f"mapa.json: {len(mapa)} puntos")
           # ---- HOJA EQUIPO (gid=815773194) ----
-          # A=Nombre, B=Rol/Cargo, C=Oficio, D=Área, E=Foto (link), F=Proyectos (separados por coma)
+          # A=Nombre, B=Rol/Cargo, C=Oficio, D=Área, E=Foto (link), F=Proyectos (separados por coma), G=Temas (separados por coma)
           rows5 = fetch_csv(CSV_BASE + "?gid=815773194&single=true&output=csv")
           equipo = []
           for row in rows5[1:]:
@@ -106,6 +106,7 @@ jobs:
                   "area":      c(3),
                   "foto":      c(4),
                   "proyectos": c(5),
+                  "temas":     c(6),
               })
           with open("equipo.json", "w", encoding="utf-8") as f:
               json.dump(equipo, f, ensure_ascii=False)
