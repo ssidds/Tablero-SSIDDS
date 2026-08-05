@@ -258,24 +258,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .eq-more::after{content:" ▾"}
 .eq-more.eq-open::after{content:" ▴"}
 .tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;align-items:start}
-.tm-card{background:var(--card);border-radius:12px;padding:16px;border:2px solid #035c80;font-family:'Archivo',sans-serif;height:300px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;display:flex;flex-direction:column}
+.tm-card{background:var(--card);border-radius:12px;padding:16px;border:2px solid #035c80;font-family:'Archivo',sans-serif;cursor:pointer;transition:box-shadow .15s}
 .tm-card:hover{box-shadow:0 2px 10px rgba(21,50,68,.1)}
-.tm-card.tm-open{height:auto;overflow:visible}
-.tm-card.tm-dim{opacity:.55;cursor:default;height:180px}
+.tm-card.tm-dim{opacity:.55}
 .tm-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
 .tm-tit{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tm-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0}
-.tm-meta{margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tm-meta{margin-bottom:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .tm-resp{font-size:11.5px;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:4px}
 .tm-ultima{font-size:12px;font-weight:700;color:#fff;background:#035c80;padding:4px 10px;border-radius:8px;word-break:break-word;line-height:1.4;min-width:0;max-width:100%}
 .tm-next{background:#c2d5e1;border-radius:8px;padding:10px 12px;margin-bottom:10px}
 .tm-next-lbl{font-size:9px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
 .tm-next-val{font-size:11.5px;color:var(--azul);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.tm-check-toggle{font-size:10px;color:var(--azul);font-weight:600;margin-bottom:8px}
-.tm-check-toggle::after{content:" ▾"}
-.tm-card.tm-open .tm-check-toggle::after{content:" ▴"}
-.tm-check{display:none;flex-direction:column;gap:5px;margin-bottom:10px}
-.tm-card.tm-open .tm-check{display:flex}
+.tm-check{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
 .tm-check-row{display:flex;align-items:flex-start;gap:6px;font-size:10.5px;color:#374151;line-height:1.4}
 .tm-check-icon{color:#00c896;font-size:11px;flex-shrink:0;margin-top:1px;font-weight:700}
 .tm-goal{font-size:11px;font-weight:400;color:#1d3343;line-height:1.5;background:#f4991a;border-radius:8px;padding:8px 12px}
@@ -825,6 +820,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       </div>
     </div>
 
+    <!-- MODAL TEMAS -->
+    <div class="ov" id="tm-ov" onclick="closeTemaModal(event)">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:600px">
+        <div class="mh" id="tm-modal-header-block">
+          <button class="mc" onclick="closeTemaModalBtn()">x</button>
+          <button onclick="downloadTemaPDF()" title="Descargar resumen" style="position:absolute;top:12px;right:50px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg></button>
+          <div class="mt2" id="tm-modal-tit"></div>
+          <span class="bdg" id="tm-modal-badge"></span>
+        </div>
+        <div class="mb" id="tm-modal-body" style="font-family:'Archivo',sans-serif"></div>
+      </div>
+    </div>
+
     <!-- MODAL PROYECTOS -->
     <div class="ov" id="mov" onclick="closeM(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
@@ -897,6 +905,8 @@ var _equipoLoaded=false;
 var EQUIPO_DATA=[];
 var _temasLoaded=false;
 var TEMAS_DATA=[];
+var TEMAS_RENDERED=[];
+var _temaCurrentT=null;
 var GANTT_DATA=[];
 var _empLoaded=false;
 var EMP_DATA=[];
@@ -1423,7 +1433,7 @@ function downloadProjectCardPDF(){
 }
 
 function closeAllModals(){
-  ["mov","inv-ov","com-ov","kpi-ov"].forEach(function(id){
+  ["mov","inv-ov","com-ov","kpi-ov","tm-ov"].forEach(function(id){
     var el=eid(id);if(el)el.classList.remove("open");
   });
 }
@@ -3244,20 +3254,26 @@ function renderEquipo(data){
 
 function buildEquipoCard(person,cardId,areaColor){
   var projNames=(person.proyectos||"").split(",").map(function(s){return s.trim();}).filter(Boolean);
-  var projItems=projNames.map(function(name){
+  var ESTADO_ORDER={activo:0,standby:1,final:2};
+  var projObjs=projNames.map(function(name){
     var proj=DATA.find(function(d){return d.n&&normEq(d.n)===normEq(name);});
-    var color=proj?(COL[proj.e]||"#ccc"):"#ccc";
     var idx=proj?DATA.indexOf(proj):-1;
-    var clickAttr=idx>=0?" onclick='event.stopPropagation();openM("+idx+")'":"";
-    return "<div class='eq-proj'"+clickAttr+"><span class='eq-dot' style='background:"+color+"'></span>"+escEq(name)+"</div>";
+    var cat=proj?estadoCategoria(proj.est):null;
+    return {name:name,idx:idx,cat:cat,order:cat!==null?ESTADO_ORDER[cat]:3};
+  });
+  projObjs.sort(function(a,b){return a.order-b.order;});
+  var projItems=projObjs.map(function(po){
+    var color=po.cat?ESTADO_DOT_COLORS[po.cat]:"#ccc";
+    var clickAttr=po.idx>=0?" onclick='event.stopPropagation();openM("+po.idx+")'":"";
+    return "<div class='eq-proj'"+clickAttr+"><span class='eq-dot' style='background:"+color+"'></span>"+escEq(po.name)+"</div>";
   });
 
-  var temaItems=(typeof TEMAS_DATA!=="undefined"?TEMAS_DATA:[]).filter(function(t){
-    var resp=(t.responsable||"").split(",").map(function(n){return normEq(n);});
-    return resp.indexOf(normEq(person.nombre))>=0;
-  }).map(function(t){
-    var dotColor=TM_DOT_COLORS[normTm(t.status)]||"#ccc";
-    return "<div class='eq-proj' data-tema='"+escEq(t.tema)+"' onclick='event.stopPropagation();goToTema(this.dataset.tema)'><span class='eq-dot' style='background:"+dotColor+"'></span>"+escEq(t.tema)+"</div>";
+  var temaNames=(person.temas||"").split(",").map(function(s){return s.trim();}).filter(Boolean);
+  var temaItems=temaNames.map(function(name){
+    var tema=(typeof TEMAS_DATA!=="undefined"?TEMAS_DATA:[]).find(function(t){return t.tema&&normEq(t.tema)===normEq(name);});
+    var cat=tema?estadoCategoria(tema.status):null;
+    var dotColor=cat?ESTADO_DOT_COLORS[cat]:"#ccc";
+    return "<div class='eq-proj' data-tema='"+escEq(name)+"' onclick='event.stopPropagation();goToTema(this.dataset.tema)'><span class='eq-dot' style='background:"+dotColor+"'></span>"+escEq(name)+"</div>";
   });
 
   var visibleCount=4;
@@ -3308,13 +3324,20 @@ function toggleEquipoCard(id){
   }
 }
 
+function estadoCategoria(s){
+  var n=normTm(s||"");
+  if(n.indexOf("stand")>=0)return "standby";
+  if(n.indexOf("final")>=0)return "final";
+  if(n.indexOf("activ")>=0)return "activo";
+  return null;
+}
+var ESTADO_DOT_COLORS={activo:"#00c896",standby:"#a89dc8",final:"#8DE2D6"};
 var TM_STATUS_COLORS={
-  "activo":{bg:"#e0f7f0",text:"#006b4f"},
-  "en stand by":{bg:"#f0edf8",text:"#4a3d78"},
-  "finalizado":{bg:"#e8f4de",text:"#2d5a10"}
+  activo:{bg:"#e0f7f0",text:"#006b4f"},
+  standby:{bg:"#f0edf8",text:"#4a3d78"},
+  final:{bg:"#e8f4de",text:"#2d5a10"}
 };
 var TM_STATUS_DEFAULT={bg:"#edf0f8",text:"#2a3f8a"};
-var TM_DOT_COLORS={"activo":"#00c896","en stand by":"#a89dc8","finalizado":"#8DE2D6"};
 
 function goToTema(nombre){
   var navEl=document.querySelector(".sb-item[onclick*=\"nav('temas'\"]");
@@ -3364,7 +3387,7 @@ function filterTemas(q){
 
 function isTemaBajaPrioridad(t){
   var sinNovedades=!(t.ultima&&t.ultima.trim())&&!(t.proximo&&t.proximo.trim());
-  var standBy=normTm(t.status)==="en stand by";
+  var standBy=estadoCategoria(t.status)==="standby";
   return sinNovedades||standBy;
 }
 
@@ -3372,11 +3395,13 @@ function renderTemas(data){
   var container=eid("temas-container");
   if(!data||!data.length){
     container.innerHTML="<div style='text-align:center;padding:40px;color:var(--muted)'>Sin temas para mostrar</div>";
+    TEMAS_RENDERED=[];
     return;
   }
   var sorted=data.slice().sort(function(a,b){
     return (isTemaBajaPrioridad(a)?1:0)-(isTemaBajaPrioridad(b)?1:0);
   });
+  TEMAS_RENDERED=sorted;
   var html="<div class='tm-grid'>";
   sorted.forEach(function(t,idx){html+=buildTemaCard(t,idx);});
   html+="</div>";
@@ -3384,14 +3409,10 @@ function renderTemas(data){
 }
 
 function buildTemaCard(t,idx){
-  var sc=TM_STATUS_COLORS[normTm(t.status)]||TM_STATUS_DEFAULT;
+  var sc=TM_STATUS_COLORS[estadoCategoria(t.status)]||TM_STATUS_DEFAULT;
   var sinNovedades=!(t.ultima&&t.ultima.trim())&&!(t.proximo&&t.proximo.trim());
-  var cardId="tm-"+idx;
 
-  var pasos=(t.pasos||"").split(/\r?\n/).map(function(l){return l.replace(/^[\s✓]+/,"").trim();}).filter(Boolean);
-  var clickAttr=(!sinNovedades&&pasos.length>0)?" onclick=\"toggleTemaCard('"+cardId+"')\"":"";
-
-  var html="<div class='tm-card"+(sinNovedades?" tm-dim":"")+"' id='tm-card-"+cardId+"'"+clickAttr+">";
+  var html="<div class='tm-card"+(sinNovedades?" tm-dim":"")+"' onclick='openTemaModal("+idx+")'>";
   html+="<div class='tm-top'><div class='tm-tit'>"+escTm(t.tema)+"</div>";
   if(t.status&&t.status.trim())html+="<span class='tm-badge' style='background:"+sc.bg+";color:"+sc.text+"'>"+escTm(t.status)+"</span>";
   html+="</div>";
@@ -3403,18 +3424,8 @@ function buildTemaCard(t,idx){
 
   if(sinNovedades){
     html+="<div class='tm-sinnov'>Sin novedades</div>";
-  } else {
-    if(t.proximo&&t.proximo.trim()){
-      html+="<div class='tm-next'><div class='tm-next-lbl'>Próximo paso</div><div class='tm-next-val'>"+escTm(t.proximo)+"</div></div>";
-    }
-    if(pasos.length>0){
-      html+="<div class='tm-check-toggle'>Ver pasos cumplidos ("+pasos.length+")</div>";
-      html+="<div class='tm-check'>";
-      pasos.forEach(function(p){
-        html+="<div class='tm-check-row'><span class='tm-check-icon'>✓</span>"+escTm(p)+"</div>";
-      });
-      html+="</div>";
-    }
+  } else if(t.proximo&&t.proximo.trim()){
+    html+="<div class='tm-next'><div class='tm-next-lbl'>Próximo paso</div><div class='tm-next-val'>"+escTm(t.proximo)+"</div></div>";
   }
 
   if(t.meta&&t.meta.trim()){
@@ -3425,9 +3436,126 @@ function buildTemaCard(t,idx){
   return html;
 }
 
-function toggleTemaCard(id){
-  var card=eid("tm-card-"+id);
-  if(card)card.classList.toggle("tm-open");
+function openTemaModal(idx){
+  var t=TEMAS_RENDERED[idx];
+  if(!t)return;
+  _temaCurrentT=t;
+  var sc=TM_STATUS_COLORS[estadoCategoria(t.status)]||TM_STATUS_DEFAULT;
+
+  eid("tm-modal-tit").textContent=t.tema||"";
+  var badge=eid("tm-modal-badge");
+  if(t.status&&t.status.trim()){
+    badge.style.display="inline-block";
+    badge.textContent=t.status;
+    badge.style.background=sc.bg;
+    badge.style.color=sc.text;
+  } else {
+    badge.style.display="none";
+  }
+
+  var pasos=(t.pasos||"").split(/\r?\n/).map(function(l){return l.replace(/^[\s✓]+/,"").trim();}).filter(Boolean);
+
+  var body="<div class='tm-meta' style='margin-bottom:14px'>";
+  if(t.responsable)body+="<span class='tm-resp'><i class=\"ti ti-user\" aria-hidden=\"true\"></i>"+escTm(t.responsable)+"</span>";
+  if(t.ultima)body+="<span class='tm-ultima'>"+escTm(t.ultima)+"</span>";
+  body+="</div>";
+
+  if(t.proximo&&t.proximo.trim()){
+    body+="<div class='tm-next'><div class='tm-next-lbl'>Próximo paso</div><div class='tm-next-val' style='-webkit-line-clamp:unset;display:block'>"+escTm(t.proximo)+"</div></div>";
+  }
+
+  if(pasos.length>0){
+    body+="<div style='font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:14px;margin-bottom:6px'>Pasos cumplidos</div>";
+    body+="<div class='tm-check'>";
+    pasos.forEach(function(p){
+      body+="<div class='tm-check-row'><span class='tm-check-icon'>✓</span>"+escTm(p)+"</div>";
+    });
+    body+="</div>";
+  }
+
+  if(t.meta&&t.meta.trim()){
+    body+="<div class='tm-goal' style='margin-top:14px'><b>Meta:</b> "+escTm(t.meta)+"</div>";
+  }
+
+  if(!(t.proximo&&t.proximo.trim())&&pasos.length===0&&!(t.meta&&t.meta.trim())){
+    body+="<div class='tm-sinnov'>Sin novedades</div>";
+  }
+
+  eid("tm-modal-body").innerHTML=body;
+  eid("tm-ov").classList.add("open");
+}
+
+function closeTemaModal(e){if(e.target===eid("tm-ov"))closeTemaModalBtn();}
+function closeTemaModalBtn(){eid("tm-ov").classList.remove("open");}
+
+function downloadTemaPDF(){
+  var t=_temaCurrentT;
+  if(!t)return;
+  var W=580;
+  var outer=document.createElement("div");
+  outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
+  var wrap=document.createElement("div");
+  wrap.style.cssText="width:"+W+"px;background:white;border:1pt solid black;border-radius:8px;overflow:hidden;font-family:'Archivo',sans-serif;box-sizing:border-box";
+
+  var headerSrc=eid("tm-modal-header-block");
+  var headerClone=headerSrc.cloneNode(true);
+  headerClone.querySelectorAll("button").forEach(function(b){b.remove();});
+  headerClone.style.position="static";
+  var htit=headerClone.querySelector("#tm-modal-tit");
+  if(htit){htit.removeAttribute("id");htit.style.wordBreak="break-word";htit.style.overflowWrap="break-word";htit.style.paddingRight="0";}
+  var hbdg=headerClone.querySelector("#tm-modal-badge");
+  if(hbdg)hbdg.removeAttribute("id");
+  wrap.appendChild(headerClone);
+
+  var bodySrc=eid("tm-modal-body");
+  var bodyClone=bodySrc.cloneNode(true);
+  bodyClone.removeAttribute("id");
+  bodyClone.style.padding="20px 24px";
+  bodyClone.querySelectorAll("div").forEach(function(el){el.style.wordBreak="break-word";el.style.overflowWrap="break-word";});
+  wrap.appendChild(bodyClone);
+
+  var now=new Date();
+  var dateLbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
+  var ft=document.createElement("div");
+  ft.style.cssText="padding:0 24px 16px;font-size:9px;color:#6b8395;font-style:italic;word-break:break-word;font-family:'Archivo',sans-serif";
+  ft.textContent="Actualizado al "+dateLbl+" — Tablero SSIDDS | Subsecretaría de Integración y Desarrollo del Sur";
+  wrap.appendChild(ft);
+
+  outer.appendChild(wrap);
+  document.body.appendChild(outer);
+  var fullHeight=wrap.scrollHeight||wrap.offsetHeight;
+
+  html2canvas(wrap,{
+    scale:2,
+    useCORS:true,
+    allowTaint:true,
+    backgroundColor:"white",
+    logging:false,
+    width:W,
+    height:fullHeight,
+    windowWidth:W+100,
+    windowHeight:fullHeight+100
+  }).then(function(canvas){
+    document.body.removeChild(outer);
+    var imgData=canvas.toDataURL("image/png");
+    var jsPDF=window.jspdf?window.jspdf.jsPDF:window.jsPDF;
+    var SCALE=2;
+    var PX_TO_PT=0.75;
+    var realWpx=canvas.width/SCALE;
+    var realHpx=canvas.height/SCALE;
+    var imgWpt=realWpx*PX_TO_PT;
+    var imgHpt=realHpx*PX_TO_PT;
+    var mgPt=30*PX_TO_PT;
+    var pageWpt=imgWpt+mgPt*2;
+    var pageHpt=imgHpt+mgPt*2;
+    var doc=new jsPDF({orientation:pageWpt>pageHpt?"landscape":"portrait",unit:"pt",format:[pageWpt,pageHpt]});
+    doc.addImage(imgData,"PNG",mgPt,mgPt,imgWpt,imgHpt);
+    var fname=(t.tema||"tema").replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,"").trim().substring(0,50)+".pdf";
+    doc.save(fname);
+  }).catch(function(err){
+    document.body.removeChild(outer);
+    console.error("Error generando PDF del tema:",err);
+  });
 }
 
 function downloadRepAllPDF(){
