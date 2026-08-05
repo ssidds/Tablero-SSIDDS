@@ -110,11 +110,33 @@ jobs:
           with open("equipo.json", "w", encoding="utf-8") as f:
               json.dump(equipo, f, ensure_ascii=False)
           print(f"equipo.json: {len(equipo)} personas")
+          # ---- HOJA TEMAS (gid=881345739) ----
+          # A=Tema, B=Fecha de carga, C=Status, D=Última actualización,
+          # E=Próximo paso, F=Pasos Cumplidos (bitácora multilínea),
+          # G=Responsable, H=Meta, I=Actores involucrados (no se usa en el tablero)
+          rows6 = fetch_csv(CSV_BASE + "?gid=881345739&single=true&output=csv")
+          temas = []
+          for row in rows6[1:]:
+              def c(i): return row[i].strip() if i < len(row) else ""
+              if not c(0): continue
+              temas.append({
+                  "tema":        c(0),
+                  "fecha":       c(1),
+                  "status":      c(2),
+                  "ultima":      c(3),
+                  "proximo":     c(4),
+                  "pasos":       c(5),
+                  "responsable": c(6),
+                  "meta":        c(7),
+              })
+          with open("temas.json", "w", encoding="utf-8") as f:
+              json.dump(temas, f, ensure_ascii=False)
+          print(f"temas.json: {len(temas)} temas")
           PYEOF
       - name: Commit y push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add datos.json logros.json reporte.json mapa.json equipo.json
+          git add datos.json logros.json reporte.json mapa.json equipo.json temas.json
           git diff --cached --quiet || git commit -m "Actualizar datos $(date '+%d/%m/%Y %H:%M')"
           git push
