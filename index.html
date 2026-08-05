@@ -258,20 +258,27 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .eq-more::after{content:" ▾"}
 .eq-more.eq-open::after{content:" ▴"}
 .tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;align-items:start}
-.tm-card{background:var(--card);border-radius:12px;padding:16px;border:2px solid var(--border)}
-.tm-card.tm-dim{opacity:.55}
+.tm-card{background:var(--card);border-radius:12px;padding:16px;border:2px solid #035c80;font-family:'Archivo',sans-serif;height:300px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;display:flex;flex-direction:column}
+.tm-card:hover{box-shadow:0 2px 10px rgba(21,50,68,.1)}
+.tm-card.tm-open{height:auto;overflow:visible}
+.tm-card.tm-dim{opacity:.55;cursor:default;height:180px}
 .tm-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
-.tm-tit{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.tm-tit{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tm-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0}
-.tm-meta{font-size:10px;color:var(--muted);margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.tm-next{background:var(--azul3);border-radius:8px;padding:10px 12px;margin-bottom:12px}
+.tm-meta{margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tm-resp{font-size:11.5px;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:4px}
+.tm-ultima{font-size:12px;font-weight:700;color:#fff;background:#035c80;padding:3px 10px;border-radius:12px;white-space:nowrap}
+.tm-next{background:#c2d5e1;border-radius:8px;padding:10px 12px;margin-bottom:10px}
 .tm-next-lbl{font-size:9px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.tm-next-val{font-size:11.5px;color:var(--azul);line-height:1.5}
-.tm-check{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.tm-check-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.tm-next-val{font-size:11.5px;color:var(--azul);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tm-check-toggle{font-size:10px;color:var(--azul);font-weight:600;margin-bottom:8px}
+.tm-check-toggle::after{content:" ▾"}
+.tm-card.tm-open .tm-check-toggle::after{content:" ▴"}
+.tm-check{display:none;flex-direction:column;gap:5px;margin-bottom:10px}
+.tm-card.tm-open .tm-check{display:flex}
 .tm-check-row{display:flex;align-items:flex-start;gap:6px;font-size:10.5px;color:#374151;line-height:1.4}
 .tm-check-icon{color:#00c896;font-size:11px;flex-shrink:0;margin-top:1px;font-weight:700}
-.tm-sec{font-size:9.5px;color:var(--muted);line-height:1.5;border-top:0.5px solid var(--border);padding-top:8px;margin-top:2px}
+.tm-goal{font-size:11px;font-weight:700;color:#1d3343;line-height:1.5;background:#f4991a;border-radius:8px;padding:8px 12px;margin-top:auto}
 .tm-sinnov{font-size:11px;color:var(--muted);font-style:italic;padding:10px 0}
 .eq-more:hover{text-decoration:underline}
 </style>
@@ -728,12 +735,12 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
     <div id="stemas" style="display:none">
       <div class="sec">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div class="s-ttl" style="margin:0">Temas</div>
-          <div style="position:relative;flex:1;max-width:280px;margin-left:auto">
+          <div style="position:relative;width:280px">
             <i class="ti ti-search" aria-hidden="true" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px"></i>
             <input id="temas-search" type="text" placeholder="Buscar tema..." oninput="filterTemas(this.value)"
-              style="width:100%;padding:7px 10px 7px 32px;border:0.5px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-size:13px;font-family:DM Sans,sans-serif">
+              style="width:100%;box-sizing:border-box;padding:7px 10px 7px 32px;border:0.5px solid var(--border);border-radius:var(--r2);background:var(--card);color:var(--text);font-size:13px;font-family:DM Sans,sans-serif">
           </div>
+          <div class="s-ttl" style="margin:0">Temas</div>
         </div>
         <div id="temas-container"></div>
       </div>
@@ -3284,7 +3291,6 @@ function toggleEquipoCard(id){
   }
 }
 
-var TM_BORDER_COLORS=["#1d3343","#035c80","#ffcd02","#94a5ba","#f4991a"];
 var TM_STATUS_COLORS={
   "activo":{bg:"#e0f7f0",text:"#006b4f"},
   "en stand by":{bg:"#f0edf8",text:"#4a3d78"},
@@ -3335,18 +3341,21 @@ function renderTemas(data){
 }
 
 function buildTemaCard(t,idx){
-  var borderColor=TM_BORDER_COLORS[idx%TM_BORDER_COLORS.length];
   var sc=TM_STATUS_COLORS[normTm(t.status)]||TM_STATUS_DEFAULT;
   var sinNovedades=!(t.ultima&&t.ultima.trim())&&!(t.proximo&&t.proximo.trim());
+  var cardId="tm-"+idx;
 
-  var html="<div class='tm-card"+(sinNovedades?" tm-dim":"")+"' style='border-color:"+borderColor+"'>";
+  var pasos=(t.pasos||"").split(/\r?\n/).map(function(l){return l.replace(/^[\s✓]+/,"").trim();}).filter(Boolean);
+  var clickAttr=(!sinNovedades&&pasos.length>0)?" onclick=\"toggleTemaCard('"+cardId+"')\"":"";
+
+  var html="<div class='tm-card"+(sinNovedades?" tm-dim":"")+"' id='tm-card-"+cardId+"'"+clickAttr+">";
   html+="<div class='tm-top'><div class='tm-tit'>"+escTm(t.tema)+"</div>";
   if(t.status&&t.status.trim())html+="<span class='tm-badge' style='background:"+sc.bg+";color:"+sc.text+"'>"+escTm(t.status)+"</span>";
   html+="</div>";
 
   html+="<div class='tm-meta'>";
-  if(t.responsable)html+="<span><i class=\"ti ti-user\" aria-hidden=\"true\"></i> "+escTm(t.responsable)+"</span>";
-  if(t.ultima)html+="<span><i class=\"ti ti-clock\" aria-hidden=\"true\"></i> Act. "+escTm(t.ultima)+"</span>";
+  if(t.responsable)html+="<span class='tm-resp'><i class=\"ti ti-user\" aria-hidden=\"true\"></i>"+escTm(t.responsable)+"</span>";
+  if(t.ultima)html+="<span class='tm-ultima'>Act. "+escTm(t.ultima)+"</span>";
   html+="</div>";
 
   if(sinNovedades){
@@ -3355,9 +3364,9 @@ function buildTemaCard(t,idx){
     if(t.proximo&&t.proximo.trim()){
       html+="<div class='tm-next'><div class='tm-next-lbl'>Próximo paso</div><div class='tm-next-val'>"+escTm(t.proximo)+"</div></div>";
     }
-    var pasos=(t.pasos||"").split(/\r?\n/).map(function(l){return l.replace(/^[\s✓]+/,"").trim();}).filter(Boolean);
     if(pasos.length>0){
-      html+="<div class='tm-check'><div class='tm-check-lbl'>Pasos cumplidos</div>";
+      html+="<div class='tm-check-toggle'>Ver pasos cumplidos ("+pasos.length+")</div>";
+      html+="<div class='tm-check'>";
       pasos.forEach(function(p){
         html+="<div class='tm-check-row'><span class='tm-check-icon'>✓</span>"+escTm(p)+"</div>";
       });
@@ -3366,11 +3375,16 @@ function buildTemaCard(t,idx){
   }
 
   if(t.meta&&t.meta.trim()){
-    html+="<div class='tm-sec'>Meta: "+escTm(t.meta)+"</div>";
+    html+="<div class='tm-goal'>Meta: "+escTm(t.meta)+"</div>";
   }
 
   html+="</div>";
   return html;
+}
+
+function toggleTemaCard(id){
+  var card=eid("tm-card-"+id);
+  if(card)card.classList.toggle("tm-open");
 }
 
 function downloadRepAllPDF(){
