@@ -277,6 +277,47 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .tm-goal b{font-weight:700}
 .tm-sinnov{font-size:11px;color:var(--muted);font-style:italic;padding:10px 0}
 .eq-more:hover{text-decoration:underline}
+
+/* ── DOCUMENTOS DE REUNIÓN (Temario/Minuta/Compromisos) ── */
+.doc-actions-row{padding:14px 24px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+.doc-action-btn{font-size:12px;font-weight:600;padding:9px 14px;border-radius:var(--r2);border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;transition:border-color .15s,background .15s}
+.doc-action-btn:hover{border-color:var(--azul);background:var(--azul3)}
+.doc-action-cnt{font-size:10px;color:var(--muted);font-weight:500}
+.doc-hist-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.doc-cnt-label{font-size:12px;color:var(--muted)}
+.doc-hist-list{display:flex;flex-direction:column;gap:8px}
+.doc-hist-item{border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg);transition:border-color .15s}
+.doc-hist-item:hover{border-color:var(--azul)}
+.doc-hist-title{font-weight:600;font-size:13px;color:var(--text)}
+.doc-hist-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+.doc-empty{border:1.5px dashed var(--border);border-radius:var(--r2);padding:22px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
+.doc-field{margin-bottom:14px}
+.doc-label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px}
+.doc-input,.doc-textarea{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:var(--r2);padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--card)}
+.doc-textarea{resize:vertical;min-height:60px;font-family:'DM Sans',sans-serif}
+.doc-input:focus,.doc-textarea:focus{outline:2px solid #FFCB00;outline-offset:1px;border-color:var(--azul)}
+.doc-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.doc-row3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px}
+.doc-block{border:1px solid var(--border);border-radius:var(--r2);padding:16px 16px 6px;margin-bottom:16px;background:var(--bg);position:relative}
+.doc-block-num{position:absolute;top:-11px;left:14px;background:var(--azul);color:#FFCB00;font-family:'DM Mono',monospace;font-size:10px;padding:2px 9px;border-radius:20px;font-weight:700}
+.doc-block-remove{position:absolute;top:10px;right:12px;background:none;border:none;color:#c0392b;font-size:11px;font-weight:600;cursor:pointer;padding:4px 6px}
+.doc-section-title{font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.doc-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.doc-add-row{border:1.5px dashed var(--border);background:none;color:var(--muted);font-weight:600;font-size:12px;padding:9px;border-radius:var(--r2);width:100%;cursor:pointer;margin-bottom:8px;font-family:'DM Sans',sans-serif}
+.doc-add-row:hover{border-color:#FFCB00;color:var(--azul)}
+.doc-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);flex-wrap:wrap}
+.doc-save-status{font-size:11px;font-weight:600;opacity:0;transition:opacity .2s}
+.doc-save-status.show{opacity:1}
+.doc-foot-actions{display:flex;gap:8px;flex-wrap:wrap}
+.doc-btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:9px 14px;border-radius:var(--r2);border:1px solid transparent;cursor:pointer}
+.doc-btn-primary{background:var(--azul);color:#FFCB00}
+.doc-btn-primary:hover{background:var(--azul2)}
+.doc-btn-primary:disabled{opacity:.6;cursor:default}
+.doc-btn-ghost{background:transparent;border-color:var(--border);color:var(--text)}
+.doc-btn-ghost:hover{border-color:var(--muted)}
+.doc-btn-accent{background:#8DE2D6;color:var(--azul)}
+.doc-btn-accent:hover{background:#6fd4c4}
+@media(max-width:640px){.doc-row2,.doc-row3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -833,6 +874,18 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
       </div>
     </div>
 
+    <!-- MODAL DOCUMENTOS DE REUNIÓN -->
+    <div class="ov" id="doc-ov" onclick="closeDocModal(event)" style="z-index:1100">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
+        <div class="mh" id="doc-modal-header">
+          <button class="mc" onclick="closeDocModalBtn()">x</button>
+          <div style="font-size:10px;font-weight:700;color:#FFCB00;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px" id="doc-modal-tag"></div>
+          <div class="mt2" style="margin-bottom:0" id="doc-modal-tit"></div>
+        </div>
+        <div class="mb" id="doc-modal-body" style="padding:22px 24px"></div>
+      </div>
+    </div>
+
     <!-- MODAL PROYECTOS -->
     <div class="ov" id="mov" onclick="closeM(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
@@ -843,6 +896,13 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
           <span class="bdg" id="mbdg"></span>
         </div>
         <div class="mb" style="padding:0">
+
+          <!-- BOTONES DE DOCUMENTOS -->
+          <div class="doc-actions-row">
+            <button class="doc-action-btn" onclick="openDocHistory('temario')"><i class="ti ti-list-details" aria-hidden="true"></i>Temario</button>
+            <button class="doc-action-btn" onclick="openDocHistory('minuta')"><i class="ti ti-notes" aria-hidden="true"></i>Minuta</button>
+            <button class="doc-action-btn" onclick="openDocHistory('compromisos')"><i class="ti ti-checklist" aria-hidden="true"></i>Compromisos y definiciones</button>
+          </div>
 
           <!-- SECCION 1: El proyecto -->
           <div id="m-proyecto-block" style="padding:20px 24px;border-bottom:1px solid var(--border)">
@@ -1433,7 +1493,7 @@ function downloadProjectCardPDF(){
 }
 
 function closeAllModals(){
-  ["mov","inv-ov","com-ov","kpi-ov","tm-ov"].forEach(function(id){
+  ["mov","inv-ov","com-ov","kpi-ov","tm-ov","doc-ov"].forEach(function(id){
     var el=eid(id);if(el)el.classList.remove("open");
   });
 }
@@ -3557,6 +3617,392 @@ function downloadTemaPDF(){
     console.error("Error generando PDF del tema:",err);
   });
 }
+
+/* ══════════════════════════════════════════════════════════════
+   DOCUMENTOS DE REUNIÓN — Temario / Minuta / Compromisos y definiciones
+   Backend: Google Apps Script + Sheets (ver apps-script-backend.gs)
+   ══════════════════════════════════════════════════════════════ */
+var DOC_APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfgTMi5VyQnrfbL_S_Ks3j8MFF-izY20BiHPAHzWiSQrFW0zmMJM1rksYZ_OPdxaq-/exec";
+var DOC_TYPES={
+  temario:{label:"Temario"},
+  minuta:{label:"Minuta"},
+  compromisos:{label:"Compromisos y definiciones"}
+};
+var _docProyecto=null,_docTipo=null,_docId=null;
+var _docFormState={};
+
+function docEsc(s){return (s===undefined||s===null)?"":String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+function docVal(id){var el=eid(id);return el?el.value:"";}
+function docNewId(){return "d"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function docTodayISO(){return new Date().toISOString().slice(0,10);}
+function docFmtDate(iso){
+  if(!iso)return "Sin fecha";
+  var p=iso.split("-");
+  if(p.length<3)return iso;
+  return p[2]+"/"+p[1]+"/"+p[0];
+}
+
+/* ── Backend (Apps Script) ── */
+async function docGetIndex(proyecto,tipo){
+  try{
+    var url=DOC_APPS_SCRIPT_URL+"?accion=listar&proyecto="+encodeURIComponent(proyecto)+"&tipo="+encodeURIComponent(tipo);
+    var res=await fetch(url);
+    if(!res.ok)throw new Error("respuesta no ok");
+    return await res.json();
+  }catch(e){
+    console.error("Error al listar documentos:",e);
+    return null; // null = error de conexión; [] = sin registros
+  }
+}
+async function docGetEntry(proyecto,tipo,id){
+  try{
+    var url=DOC_APPS_SCRIPT_URL+"?accion=obtener&proyecto="+encodeURIComponent(proyecto)+"&tipo="+encodeURIComponent(tipo)+"&id="+encodeURIComponent(id);
+    var res=await fetch(url);
+    if(!res.ok)throw new Error("respuesta no ok");
+    var json=await res.json();
+    return (json&&Object.keys(json).length)?json:null;
+  }catch(e){
+    console.error("Error al obtener documento:",e);
+    return null;
+  }
+}
+async function docSaveEntry(proyecto,tipo,id,data){
+  var entry={id:id,proyecto:proyecto,tipo:tipo,fecha:data.fecha||"",titulo:data.titulo||data.nombreReunion||"",datos:data};
+  // Content-Type text/plain evita el preflight CORS que Apps Script no responde bien.
+  var res=await fetch(DOC_APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(entry)});
+  if(!res.ok)throw new Error("No se pudo guardar. Revisá la conexión con el Apps Script.");
+  return await res.json();
+}
+
+/* ── Modal open/close ── */
+function closeDocModal(e){if(e.target===eid("doc-ov"))closeDocModalBtn();}
+function closeDocModalBtn(){eid("doc-ov").classList.remove("open");}
+
+/* ── Vista: historial ── */
+async function openDocHistory(tipo){
+  if(!_modalCurrentP)return;
+  _docProyecto=_modalCurrentP.n;
+  _docTipo=tipo;
+  var meta=DOC_TYPES[tipo];
+
+  eid("doc-modal-tag").textContent=meta.label;
+  eid("doc-modal-tit").textContent=_modalCurrentP.n;
+  var body=eid("doc-modal-body");
+  body.innerHTML="<div style='text-align:center;padding:30px;color:var(--muted);font-size:12px'>Cargando…</div>";
+  eid("doc-ov").classList.add("open");
+
+  var idx=await docGetIndex(_docProyecto,tipo);
+
+  if(idx===null){
+    body.innerHTML="<div class='doc-empty'>No se pudo conectar con el servidor de documentos.<br>Revisá la conexión, o que el Apps Script esté correctamente configurado.</div>";
+    return;
+  }
+
+  var html="<div class='doc-hist-toolbar'>";
+  html+="<span class='doc-cnt-label'>"+idx.length+" registro"+(idx.length===1?"":"s")+" cargado"+(idx.length===1?"":"s")+"</span>";
+  html+="<button class='doc-btn doc-btn-primary' onclick=\"openDocForm(null)\">+ Nuevo "+meta.label.toLowerCase()+"</button>";
+  html+="</div>";
+
+  if(idx.length===0){
+    html+="<div class='doc-empty'>Todavía no se cargó ningún documento de este tipo para este proyecto.<br>Empezá con \"+ Nuevo "+meta.label.toLowerCase()+"\".</div>";
+  } else {
+    html+="<div class='doc-hist-list'>";
+    idx.slice().reverse().forEach(function(entry){
+      html+="<div class='doc-hist-item' data-docid='"+docEsc(entry.id)+"' onclick=\"openDocForm(this.dataset.docid)\">"
+        +"<div><div class='doc-hist-title'>"+(docEsc(entry.titulo)||"(sin título)")+"</div><div class='doc-hist-date'>"+docFmtDate(entry.fecha)+"</div></div>"
+        +"<div style='color:var(--muted);font-size:15px'>→</div></div>";
+    });
+    html+="</div>";
+  }
+  body.innerHTML=html;
+}
+
+/* ── Vista: formulario (crear/editar) ── */
+async function openDocForm(id){
+  var isNew=!id;
+  _docId=id||docNewId();
+  var tipo=_docTipo;
+  var proyectoNombre=_docProyecto;
+
+  var body=eid("doc-modal-body");
+  body.innerHTML="<div style='text-align:center;padding:30px;color:var(--muted);font-size:12px'>Cargando…</div>";
+
+  var data=isNew?docBlankData(tipo,proyectoNombre):await docGetEntry(_docProyecto,tipo,_docId);
+  if(!data)data=docBlankData(tipo,proyectoNombre);
+
+  var meta=DOC_TYPES[tipo];
+  eid("doc-modal-tag").textContent=meta.label+" · "+proyectoNombre;
+  eid("doc-modal-tit").textContent=isNew?"Nuevo registro":"Editar registro";
+
+  var html="<div id='docFormBody'></div>";
+  html+="<div class='doc-foot' style='margin:16px -24px -22px;border-radius:0 0 16px 16px'>";
+  html+="<span class='doc-save-status' id='docSaveStatus'>Guardado ✓</span>";
+  html+="<div class='doc-foot-actions'>";
+  html+="<button class='doc-btn doc-btn-ghost' onclick=\"openDocHistory('"+tipo+"')\">← Volver al historial</button>";
+  html+="<button class='doc-btn doc-btn-accent' id='docDownloadBtn'>Descargar Word</button>";
+  html+="<button class='doc-btn doc-btn-primary' id='docSaveBtn'>Guardar</button>";
+  html+="</div></div>";
+  body.innerHTML=html;
+
+  docRenderForm(tipo,data);
+
+  eid("docSaveBtn").onclick=async function(){
+    var btn=eid("docSaveBtn"),st=eid("docSaveStatus");
+    btn.disabled=true;btn.textContent="Guardando…";
+    try{
+      data=docCollectForm(tipo);
+      await docSaveEntry(_docProyecto,tipo,_docId,data);
+      st.textContent="Guardado ✓";st.style.color="#00c896";st.classList.add("show");
+      setTimeout(function(){st.classList.remove("show");},1800);
+    }catch(err){
+      st.textContent="No se pudo guardar — revisá la conexión";st.style.color="#c0392b";st.classList.add("show");
+      console.error(err);
+    }finally{
+      btn.disabled=false;btn.textContent="Guardar";
+    }
+  };
+  eid("docDownloadBtn").onclick=function(){
+    data=docCollectForm(tipo);
+    docDownloadAsWord(tipo,data,proyectoNombre);
+  };
+}
+
+function docBlankData(tipo,proyectoNombre){
+  if(tipo==="temario")return{fecha:docTodayISO(),horaDesde:"",horaHasta:"",titulo:"Reunión — "+proyectoNombre,temas:[{titulo:"",contenido:""}]};
+  if(tipo==="minuta")return{fecha:docTodayISO(),horaDesde:"",horaHasta:"",nombreReunion:"Reunión — "+proyectoNombre,participantes:"",temas:[{titulo:"",notas:""}]};
+  return{fecha:docTodayISO(),nombreReunion:"Reunión — "+proyectoNombre,
+    participantes:[{area:"",nombre:"",puesto:""}],
+    compromisos:[{accion:"",responsable:"",fechaCumplimiento:""}],
+    definiciones:[{descripcion:"",responsable:""}]};
+}
+
+/* ── Render de formulario por tipo ── */
+function docRenderForm(tipo,data){
+  var body=eid("docFormBody");
+  window.__docFormData=data;
+  if(tipo==="temario")body.innerHTML=docTemarioTemplate(data);
+  if(tipo==="minuta")body.innerHTML=docMinutaTemplate(data);
+  if(tipo==="compromisos")body.innerHTML=docCydTemplate(data);
+  docWireDynamicRows(tipo);
+}
+
+function docTemarioTemplate(d){
+  return "<div class='doc-row3'>"
+    +"<div class='doc-field'><label class='doc-label'>Reunión</label><input type='text' class='doc-input' id='f_titulo' value='"+docEsc(d.titulo)+"'></div>"
+    +"<div class='doc-field'><label class='doc-label'>Fecha</label><input type='date' class='doc-input' id='f_fecha' value='"+(d.fecha||"")+"'></div>"
+    +"<div class='doc-field'><label class='doc-label'>Horario</label><div style='display:flex;gap:6px'>"
+    +"<input type='time' class='doc-input' id='f_horaDesde' value='"+(d.horaDesde||"")+"'>"
+    +"<input type='time' class='doc-input' id='f_horaHasta' value='"+(d.horaHasta||"")+"'></div></div>"
+    +"</div>"
+    +"<div class='doc-section-title'>Temas</div>"
+    +"<div id='temasList'></div>"
+    +"<button class='doc-add-row' data-add='tema'>+ Agregar tema</button>";
+}
+
+function docMinutaTemplate(d){
+  return "<div class='doc-row2'>"
+    +"<div class='doc-field'><label class='doc-label'>Nombre de la reunión</label><input type='text' class='doc-input' id='f_nombreReunion' value='"+docEsc(d.nombreReunion)+"'></div>"
+    +"<div class='doc-field'><label class='doc-label'>Fecha</label><input type='date' class='doc-input' id='f_fecha' value='"+(d.fecha||"")+"'></div>"
+    +"</div><div class='doc-row2'>"
+    +"<div class='doc-field'><label class='doc-label'>Horario</label><div style='display:flex;gap:6px'>"
+    +"<input type='time' class='doc-input' id='f_horaDesde' value='"+(d.horaDesde||"")+"'>"
+    +"<input type='time' class='doc-input' id='f_horaHasta' value='"+(d.horaHasta||"")+"'></div></div>"
+    +"<div class='doc-field'><label class='doc-label'>Participantes</label><input type='text' class='doc-input' id='f_participantes' placeholder='Nombre (Área/cargo), Nombre (Área/cargo)...' value='"+docEsc(d.participantes)+"'></div>"
+    +"</div>"
+    +"<div class='doc-section-title'>Temas tratados</div>"
+    +"<div id='temasList'></div>"
+    +"<button class='doc-add-row' data-add='tema'>+ Agregar tema</button>";
+}
+
+function docCydTemplate(d){
+  return "<div class='doc-row2'>"
+    +"<div class='doc-field'><label class='doc-label'>Reunión</label><input type='text' class='doc-input' id='f_nombreReunion' value='"+docEsc(d.nombreReunion)+"'></div>"
+    +"<div class='doc-field'><label class='doc-label'>Fecha</label><input type='date' class='doc-input' id='f_fecha' value='"+(d.fecha||"")+"'></div>"
+    +"</div>"
+    +"<div class='doc-section-title'>Participantes</div>"
+    +"<div id='participantesList'></div>"
+    +"<button class='doc-add-row' data-add='participante'>+ Agregar participante</button>"
+    +"<div class='doc-section-title'>Compromisos</div>"
+    +"<div id='compromisosList'></div>"
+    +"<button class='doc-add-row' data-add='compromiso'>+ Agregar compromiso</button>"
+    +"<div class='doc-section-title'>Definiciones</div>"
+    +"<div id='definicionesList'></div>"
+    +"<button class='doc-add-row' data-add='definicion'>+ Agregar definición</button>";
+}
+
+function docBlockHTML(kind,i,item){
+  if(kind==="tema"){
+    return "<div class='doc-block' data-kind='tema' data-i='"+i+"'>"
+      +"<div class='doc-block-num'>TEMA "+String(i+1).padStart(2,"0")+"</div>"
+      +"<button class='doc-block-remove' data-remove='tema' data-i='"+i+"'>Quitar</button>"
+      +"<div class='doc-field'><label class='doc-label'>Título del tema</label><input type='text' class='doc-input tema-titulo' value='"+docEsc(item.titulo)+"'></div>"
+      +"<div class='doc-field'><label class='doc-label'>Detalle</label><textarea class='doc-textarea tema-contenido'>"+docEsc(item.contenido!==undefined?item.contenido:item.notas)+"</textarea></div>"
+      +"</div>";
+  }
+  if(kind==="participante"){
+    return "<div class='doc-block' data-kind='participante' data-i='"+i+"'>"
+      +"<button class='doc-block-remove' data-remove='participante' data-i='"+i+"'>Quitar</button>"
+      +"<div class='doc-row3'>"
+      +"<div class='doc-field'><label class='doc-label'>Área / organización</label><input type='text' class='doc-input p-area' value='"+docEsc(item.area)+"'></div>"
+      +"<div class='doc-field'><label class='doc-label'>Nombre y apellido</label><input type='text' class='doc-input p-nombre' value='"+docEsc(item.nombre)+"'></div>"
+      +"<div class='doc-field'><label class='doc-label'>Puesto / cargo</label><input type='text' class='doc-input p-puesto' value='"+docEsc(item.puesto)+"'></div>"
+      +"</div></div>";
+  }
+  if(kind==="compromiso"){
+    return "<div class='doc-block' data-kind='compromiso' data-i='"+i+"'>"
+      +"<div class='doc-block-num'>"+String(i+1).padStart(2,"0")+"</div>"
+      +"<button class='doc-block-remove' data-remove='compromiso' data-i='"+i+"'>Quitar</button>"
+      +"<div class='doc-field'><label class='doc-label'>Acción (verbo en infinitivo)</label><input type='text' class='doc-input c-accion' placeholder='Ej: Enviar el informe preliminar' value='"+docEsc(item.accion)+"'></div>"
+      +"<div class='doc-row2'>"
+      +"<div class='doc-field'><label class='doc-label'>Responsable</label><input type='text' class='doc-input c-responsable' value='"+docEsc(item.responsable)+"'></div>"
+      +"<div class='doc-field'><label class='doc-label'>Fecha de cumplimiento</label><input type='date' class='doc-input c-fecha' value='"+(item.fechaCumplimiento||"")+"'></div>"
+      +"</div></div>";
+  }
+  if(kind==="definicion"){
+    return "<div class='doc-block' data-kind='definicion' data-i='"+i+"'>"
+      +"<div class='doc-block-num'>"+String(i+1).padStart(2,"0")+"</div>"
+      +"<button class='doc-block-remove' data-remove='definicion' data-i='"+i+"'>Quitar</button>"
+      +"<div class='doc-field'><label class='doc-label'>Definición</label><textarea class='doc-textarea d-descripcion'>"+docEsc(item.descripcion)+"</textarea></div>"
+      +"<div class='doc-field'><label class='doc-label'>Responsable</label><input type='text' class='doc-input d-responsable' value='"+docEsc(item.responsable)+"'></div>"
+      +"</div>";
+  }
+}
+
+function docWireDynamicRows(tipo){
+  _docFormState.tipo=tipo;
+  var data=window.__docFormData||{};
+  if(tipo==="temario"||tipo==="minuta"){
+    _docFormState.temas=(data.temas||[]).slice();
+    eid("temasList").innerHTML=_docFormState.temas.map(function(t,i){return docBlockHTML("tema",i,t);}).join("")||"";
+    var addTemaBtn=document.querySelector("[data-add='tema']");
+    if(addTemaBtn)addTemaBtn.onclick=function(){
+      _docFormState.temas=docSyncTemas();
+      _docFormState.temas.push({titulo:"",contenido:"",notas:""});
+      eid("temasList").innerHTML=_docFormState.temas.map(function(t,i){return docBlockHTML("tema",i,t);}).join("");
+      docBindRemove("tema",function(){_docFormState.temas=docSyncTemas();});
+    };
+    docBindRemove("tema",function(){_docFormState.temas=docSyncTemas();});
+  }
+  if(tipo==="compromisos"){
+    _docFormState.participantes=(data.participantes||[]).slice();
+    _docFormState.compromisos=(data.compromisos||[]).slice();
+    _docFormState.definiciones=(data.definiciones||[]).slice();
+
+    eid("participantesList").innerHTML=_docFormState.participantes.map(function(p,i){return docBlockHTML("participante",i,p);}).join("");
+    eid("compromisosList").innerHTML=_docFormState.compromisos.map(function(c,i){return docBlockHTML("compromiso",i,c);}).join("");
+    eid("definicionesList").innerHTML=_docFormState.definiciones.map(function(f,i){return docBlockHTML("definicion",i,f);}).join("");
+
+    document.querySelector("[data-add='participante']").onclick=function(){
+      _docFormState.participantes=docSyncBlocks("participante");
+      _docFormState.participantes.push({area:"",nombre:"",puesto:""});
+      eid("participantesList").innerHTML=_docFormState.participantes.map(function(p,i){return docBlockHTML("participante",i,p);}).join("");
+      docBindRemove("participante",function(){_docFormState.participantes=docSyncBlocks("participante");});
+    };
+    document.querySelector("[data-add='compromiso']").onclick=function(){
+      _docFormState.compromisos=docSyncBlocks("compromiso");
+      _docFormState.compromisos.push({accion:"",responsable:"",fechaCumplimiento:""});
+      eid("compromisosList").innerHTML=_docFormState.compromisos.map(function(c,i){return docBlockHTML("compromiso",i,c);}).join("");
+      docBindRemove("compromiso",function(){_docFormState.compromisos=docSyncBlocks("compromiso");});
+    };
+    document.querySelector("[data-add='definicion']").onclick=function(){
+      _docFormState.definiciones=docSyncBlocks("definicion");
+      _docFormState.definiciones.push({descripcion:"",responsable:""});
+      eid("definicionesList").innerHTML=_docFormState.definiciones.map(function(f,i){return docBlockHTML("definicion",i,f);}).join("");
+      docBindRemove("definicion",function(){_docFormState.definiciones=docSyncBlocks("definicion");});
+    };
+    docBindRemove("participante",function(){_docFormState.participantes=docSyncBlocks("participante");});
+    docBindRemove("compromiso",function(){_docFormState.compromisos=docSyncBlocks("compromiso");});
+    docBindRemove("definicion",function(){_docFormState.definiciones=docSyncBlocks("definicion");});
+  }
+}
+
+function docBindRemove(kind,resyncFn){
+  document.querySelectorAll("[data-remove='"+kind+"']").forEach(function(btn){
+    btn.onclick=function(){
+      resyncFn();
+      var i=parseInt(btn.dataset.i);
+      var map={tema:"temas",participante:"participantes",compromiso:"compromisos",definicion:"definiciones"};
+      var key=map[kind];
+      _docFormState[key].splice(i,1);
+      var listMap={tema:"temasList",participante:"participantesList",compromiso:"compromisosList",definicion:"definicionesList"};
+      eid(listMap[kind]).innerHTML=_docFormState[key].map(function(it,idx){return docBlockHTML(kind,idx,it);}).join("");
+      docBindRemove(kind,resyncFn);
+    };
+  });
+}
+
+function docSyncTemas(){
+  var blocks=document.querySelectorAll("#temasList .doc-block");
+  return Array.from(blocks).map(function(b){
+    return{titulo:b.querySelector(".tema-titulo").value,contenido:b.querySelector(".tema-contenido").value,notas:b.querySelector(".tema-contenido").value};
+  });
+}
+
+function docSyncBlocks(kind){
+  var listMap={participante:"participantesList",compromiso:"compromisosList",definicion:"definicionesList"};
+  var blocks=document.querySelectorAll("#"+listMap[kind]+" .doc-block");
+  return Array.from(blocks).map(function(b){
+    if(kind==="participante")return{area:b.querySelector(".p-area").value,nombre:b.querySelector(".p-nombre").value,puesto:b.querySelector(".p-puesto").value};
+    if(kind==="compromiso")return{accion:b.querySelector(".c-accion").value,responsable:b.querySelector(".c-responsable").value,fechaCumplimiento:b.querySelector(".c-fecha").value};
+    if(kind==="definicion")return{descripcion:b.querySelector(".d-descripcion").value,responsable:b.querySelector(".d-responsable").value};
+  });
+}
+
+function docCollectForm(tipo){
+  if(tipo==="temario"){
+    return{titulo:docVal("f_titulo"),fecha:docVal("f_fecha"),horaDesde:docVal("f_horaDesde"),horaHasta:docVal("f_horaHasta"),temas:docSyncTemas()};
+  }
+  if(tipo==="minuta"){
+    return{nombreReunion:docVal("f_nombreReunion"),fecha:docVal("f_fecha"),horaDesde:docVal("f_horaDesde"),horaHasta:docVal("f_horaHasta"),participantes:docVal("f_participantes"),temas:docSyncTemas()};
+  }
+  return{nombreReunion:docVal("f_nombreReunion"),fecha:docVal("f_fecha"),
+    participantes:docSyncBlocks("participante"),
+    compromisos:docSyncBlocks("compromiso"),
+    definiciones:docSyncBlocks("definicion")};
+}
+
+/* ── Exportar a Word (.doc descargable) ── */
+function docDownloadAsWord(tipo,data,proyectoNombre){
+  var title="",bodyHtml="";
+  if(tipo==="temario"){
+    title=data.titulo||proyectoNombre;
+    bodyHtml="<p><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
+      +"<h1>"+title+"</h1>"
+      +"<p>A continuación, les compartimos el temario de la reunión de referencia:</p>"
+      +(data.temas||[]).map(function(t,i){return "<h2>"+String(i+1).padStart(2,"0")+" | "+(t.titulo||"TEMA")+"</h2><p>"+(t.contenido||"").replace(/\n/g,"<br>")+"</p>";}).join("")
+      +"<p><b>¡Saludos!</b></p>";
+  } else if(tipo==="minuta"){
+    title=data.nombreReunion||proyectoNombre;
+    bodyHtml="<p><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
+      +"<h1>"+title+"</h1>"
+      +"<p><b>Participantes:</b> "+(data.participantes||"")+"</p>"
+      +(data.temas||[]).map(function(t,i){return "<h2>"+String(i+1).padStart(2,"0")+" | "+(t.titulo||"TEMA")+"</h2><p>"+((t.notas||t.contenido||"").replace(/\n/g,"<br>"))+"</p>";}).join("");
+  } else {
+    title=data.nombreReunion||proyectoNombre;
+    bodyHtml="<h1>Reunión: "+title+"</h1>"
+      +"<p><b>Fecha:</b> "+docFmtDate(data.fecha)+"</p>"
+      +"<p><b>PARTICIPANTES</b></p>"
+      +"<ul>"+(data.participantes||[]).map(function(p){return "<li><u>"+(p.area||"")+":</u> "+(p.nombre||"")+" ("+(p.puesto||"")+")</li>";}).join("")+"</ul>"
+      +"<p>A continuación, les enviamos los compromisos y definiciones surgidas de la reunión:</p>"
+      +"<p><b>COMPROMISOS</b></p>"
+      +"<ul>"+(data.compromisos||[]).map(function(c){return "<li>"+(c.accion||"")+"<br>Responsable: "+(c.responsable||"")+"<br>Fecha de cumplimiento: "+docFmtDate(c.fechaCumplimiento)+"</li>";}).join("")+"</ul>"
+      +"<p><b>DEFINICIONES</b></p>"
+      +"<ul>"+(data.definiciones||[]).map(function(f){return "<li>"+(f.descripcion||"")+"<br>Responsable: "+(f.responsable||"")+"</li>";}).join("")+"</ul>";
+  }
+
+  var html="<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>"
+    +"<head><meta charset='utf-8'><title>"+title+"</title>"
+    +"<style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt;} h1{font-size:15pt;} h2{font-size:12.5pt;}</style>"
+    +"</head><body>"+bodyHtml+"</body></html>";
+  var blob=new Blob(["\ufeff",html],{type:"application/msword"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url;
+  a.download=DOC_TYPES[tipo].label.split(" ")[0]+"_"+(title||"documento").replace(/[^a-zA-Z0-9]+/g,"_")+".doc";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 
 function downloadRepAllPDF(){
   if(!REP_PAGES.length||typeof html2canvas==="undefined"||typeof jspdf==="undefined")return;
