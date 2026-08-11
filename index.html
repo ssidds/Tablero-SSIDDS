@@ -266,7 +266,8 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .tm-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0}
 .tm-meta{margin-bottom:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .tm-resp{font-size:11.5px;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:4px}
-.tm-ultima{font-size:12px;font-weight:700;color:#fff;background:#035c80;padding:4px 10px;border-radius:8px;word-break:break-word;line-height:1.4;min-width:0;max-width:100%}
+.tm-ultima{font-size:12px;font-weight:400;color:#fff;background:#035c80;padding:4px 10px;border-radius:8px;word-break:break-word;line-height:1.4;min-width:0;max-width:100%}
+.tm-ultima b{font-weight:700}
 .tm-next{background:#c2d5e1;border-radius:8px;padding:10px 12px;margin-bottom:10px}
 .tm-next-lbl{font-size:9px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
 .tm-next-val{font-size:11.5px;color:var(--azul);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -3313,7 +3314,7 @@ function renderEquipo(data){
 }
 
 function buildEquipoCard(person,cardId,areaColor){
-  var projNames=(person.proyectos||"").split(",").map(function(s){return s.trim();}).filter(Boolean);
+  var projNames=(person.proyectos||"").split(";").map(function(s){return s.trim();}).filter(Boolean);
   var ESTADO_ORDER={activo:0,standby:1,final:2};
   var projObjs=projNames.map(function(name){
     var proj=DATA.find(function(d){return d.n&&normEq(d.n)===normEq(name);});
@@ -3479,13 +3480,11 @@ function buildTemaCard(t,idx){
 
   html+="<div class='tm-meta'>";
   if(t.responsable)html+="<span class='tm-resp'><i class=\"ti ti-user\" aria-hidden=\"true\"></i>"+escTm(t.responsable)+"</span>";
-  if(t.ultima)html+="<span class='tm-ultima'>"+escTm(t.ultima)+"</span>";
+  if(t.ultima)html+="<span class='tm-ultima'><b>Última actualización:</b> "+escTm(t.ultima)+"</span>";
   html+="</div>";
 
   if(sinNovedades){
     html+="<div class='tm-sinnov'>Sin novedades</div>";
-  } else if(t.proximo&&t.proximo.trim()){
-    html+="<div class='tm-next'><div class='tm-next-lbl'>Próximo paso</div><div class='tm-next-val'>"+escTm(t.proximo)+"</div></div>";
   }
 
   if(t.meta&&t.meta.trim()){
@@ -3517,7 +3516,7 @@ function openTemaModal(idx){
 
   var body="<div class='tm-meta' style='margin-bottom:14px'>";
   if(t.responsable)body+="<span class='tm-resp'><i class=\"ti ti-user\" aria-hidden=\"true\"></i>"+escTm(t.responsable)+"</span>";
-  if(t.ultima)body+="<span class='tm-ultima'>"+escTm(t.ultima)+"</span>";
+  if(t.ultima)body+="<span class='tm-ultima'><b>Última actualización:</b> "+escTm(t.ultima)+"</span>";
   body+="</div>";
 
   if(t.proximo&&t.proximo.trim()){
