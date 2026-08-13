@@ -4070,22 +4070,22 @@ function docDownloadAsWord(tipo,data,proyectoNombre){
 
   if(tipo==="temario"){
     title=data.titulo||proyectoNombre;
-    bodyHtml="<p><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
+    bodyHtml="<p style='text-align:center'><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
       +"<h1>"+title+"</h1>"
       +participantesHtml
       +"<p>A continuación, les compartimos el temario de la reunión de referencia:</p>"
       +(data.temas||[]).map(function(t,i){return "<h2>"+String(i+1).padStart(2,"0")+" | "+(t.titulo||"TEMA")+"</h2><p>"+(t.contenido||"").replace(/\n/g,"<br>")+"</p>";}).join("")
-      +"<p><b>¡Saludos!</b></p>";
+      +"<p style='text-align:center'><b>¡Saludos!</b></p>";
   } else if(tipo==="minuta"){
     title=data.nombreReunion||proyectoNombre;
-    bodyHtml="<p><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
+    bodyHtml="<p style='text-align:center'><b>Fecha:</b> "+docFmtDate(data.fecha)+" &nbsp; <b>Horario:</b> "+(data.horaDesde||"xx")+"hs a "+(data.horaHasta||"xx")+"hs</p>"
       +"<h1>"+title+"</h1>"
       +participantesHtml
       +(data.temas||[]).map(function(t,i){return "<h2>"+String(i+1).padStart(2,"0")+" | "+(t.titulo||"TEMA")+"</h2><p>"+((t.notas||t.contenido||"").replace(/\n/g,"<br>"))+"</p>";}).join("");
   } else {
     title=data.nombreReunion||proyectoNombre;
     bodyHtml="<h1>Reunión: "+title+"</h1>"
-      +"<p><b>Fecha:</b> "+docFmtDate(data.fecha)+"</p>"
+      +"<p style='text-align:center'><b>Fecha:</b> "+docFmtDate(data.fecha)+"</p>"
       +participantesHtml
       +"<p>A continuación, les enviamos los compromisos y definiciones surgidas de la reunión:</p>"
       +"<p><b>COMPROMISOS</b></p>"
@@ -4095,8 +4095,11 @@ function docDownloadAsWord(tipo,data,proyectoNombre){
   }
 
   var membreteSrc=DOC_MEMBRETES[tipo];
-  var membreteHtml=membreteSrc
-    ?"<p style='margin:0 0 18pt -56pt;width:calc(100% + 112pt)'><img src='"+membreteSrc+"' style='width:100%;display:block'></p>"
+  // La imagen va como encabezado real de Word (se repite en cada página),
+  // no como párrafo suelto — así evitamos el hack de calc()/márgenes negativos
+  // que no se interpretaba bien en el motor de render de Word.
+  var headerHtml=membreteSrc
+    ?"<div style='mso-element:header' id='h1hdr'><p style='margin:0'><img src='"+membreteSrc+"' style='width:100%;display:block'></p></div>"
     :"";
 
   var footerHtml="<div style='mso-element:footer' id='f1'>"
@@ -4107,17 +4110,17 @@ function docDownloadAsWord(tipo,data,proyectoNombre){
   var html="<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>"
     +"<head><meta charset='utf-8'><title>"+title+"</title>"
     +"<style>"
-    +"body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#222222}"
-    +"h1{font-size:16pt;color:"+color+";border-bottom:2pt solid "+color+";padding-bottom:6pt;margin-bottom:14pt}"
+    +"body{font-family:'Archivo',Calibri,Arial,sans-serif;font-size:11pt;color:#222222}"
+    +"h1{font-size:16pt;color:"+color+";border-bottom:2pt solid "+color+";padding-bottom:6pt;margin-bottom:14pt;text-align:center}"
     +"h2{font-size:12.5pt;color:"+color+";margin-top:16pt}"
     +"ul{margin-top:4pt}"
-    +"@page Section1{mso-footer:f1;mso-footer-margin:36pt;margin:42pt 56pt 56pt 56pt}"
+    +(membreteSrc?"@page Section1{mso-header:h1hdr;mso-header-margin:14pt;mso-footer:f1;mso-footer-margin:36pt;margin:175pt 28pt 56pt 28pt}":"@page Section1{mso-footer:f1;mso-footer-margin:36pt;margin:42pt 40pt 56pt 40pt}")
     +"div.Section1{page:Section1}"
     +"</style>"
     +"</head><body>"
+    +headerHtml
     +footerHtml
     +"<div class='Section1'>"
-    +membreteHtml
     +bodyHtml
     +"</div>"
     +"</body></html>";
@@ -4130,6 +4133,7 @@ function docDownloadAsWord(tipo,data,proyectoNombre){
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
 
 
 
