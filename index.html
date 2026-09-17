@@ -3826,10 +3826,14 @@ async function openDocHistory(tipo){
   } else {
     html+="<div class='doc-hist-list'>";
     idx.slice().reverse().forEach(function(entry){
+      var fechaLbl=docFmtDate(entry.fecha);
+      if(entry.horaDesde||entry.horaHasta){
+        fechaLbl+=" · "+(entry.horaDesde||"xx")+"hs a "+(entry.horaHasta||"xx")+"hs";
+      }
       html+="<div class='doc-hist-item' data-docid='"+docEsc(entry.id)+"' onclick=\"openDocForm(this.dataset.docid)\">"
-        +"<div><div class='doc-hist-title'>"+(docEsc(entry.titulo)||"(sin título)")+"</div><div class='doc-hist-date'>"+docFmtDate(entry.fecha)+"</div></div>"
+        +"<div><div class='doc-hist-title'>"+(docEsc(entry.titulo)||"(sin título)")+"</div><div class='doc-hist-date'>"+fechaLbl+"</div></div>"
         +"<div style='display:flex;align-items:center;gap:6px'>"
-        +"<button aria-label='Eliminar' onclick=\"docDeleteFromHistory('"+docEsc(entry.id)+"',event)\" style='width:28px;height:28px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;color:#c0392b;cursor:pointer'><i class=\"ti ti-trash\" style=\"font-size:16px\" aria-hidden=\"true\"></i></button>"
+        +"<button aria-label='Eliminar' onclick=\"docDeleteFromHistory('"+docEsc(entry.id)+"',event)\" style='width:28px;height:28px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;color:#c0392b;cursor:pointer'><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7l16 0\"/><path d=\"M10 11l0 6\"/><path d=\"M14 11l0 6\"/><path d=\"M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12\"/><path d=\"M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3\"/></svg></button>"
         +"<div style='color:var(--muted);font-size:15px'>→</div>"
         +"</div></div>";
     });
