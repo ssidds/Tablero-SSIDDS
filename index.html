@@ -291,6 +291,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .doc-hist-list{display:flex;flex-direction:column;gap:8px}
 .doc-hist-item{border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg);transition:border-color .15s}
 .doc-hist-item:hover{border-color:var(--azul)}
+.doc-hist-item button[aria-label='Eliminar']:hover{background:#fdecea}
 .doc-hist-title{font-weight:600;font-size:13px;color:var(--text)}
 .doc-hist-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
 .doc-empty{border:1.5px dashed var(--border);border-radius:var(--r2);padding:22px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
@@ -3761,6 +3762,29 @@ async function docSaveEntry(proyecto,tipo,id,data){
   return await res.json();
 }
 
+async function docDeleteEntry(id){
+  var res=await fetch(DOC_APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({accion:"eliminar",id:id})});
+  if(!res.ok)throw new Error("No se pudo eliminar. Revisá la conexión con el Apps Script.");
+  return await res.json();
+}
+
+async function docDeleteFromHistory(id,event){
+  event.stopPropagation();
+  if(!confirm("¿Eliminar este documento? Esta acción no se puede deshacer."))return;
+  try{
+    var result=await docDeleteEntry(id);
+    if(!result||!result.ok){
+      alert("No se pudo eliminar el documento. Intentá de nuevo.");
+      return;
+    }
+    delete DOC_INDEX_CACHE[_docProyecto+"||"+_docTipo];
+    openDocHistory(_docTipo);
+  }catch(err){
+    console.error("Error al eliminar:",err);
+    alert("No se pudo eliminar el documento. Revisá la conexión.");
+  }
+}
+
 /* ── Modal open/close ── */
 function closeDocModal(e){if(e.target===eid("doc-ov"))closeDocModalBtn();}
 function closeDocModalBtn(){eid("doc-ov").classList.remove("open");}
@@ -3804,7 +3828,10 @@ async function openDocHistory(tipo){
     idx.slice().reverse().forEach(function(entry){
       html+="<div class='doc-hist-item' data-docid='"+docEsc(entry.id)+"' onclick=\"openDocForm(this.dataset.docid)\">"
         +"<div><div class='doc-hist-title'>"+(docEsc(entry.titulo)||"(sin título)")+"</div><div class='doc-hist-date'>"+docFmtDate(entry.fecha)+"</div></div>"
-        +"<div style='color:var(--muted);font-size:15px'>→</div></div>";
+        +"<div style='display:flex;align-items:center;gap:6px'>"
+        +"<button aria-label='Eliminar' onclick=\"docDeleteFromHistory('"+docEsc(entry.id)+"',event)\" style='width:28px;height:28px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;color:#c0392b;cursor:pointer'><i class=\"ti ti-trash\" style=\"font-size:16px\" aria-hidden=\"true\"></i></button>"
+        +"<div style='color:var(--muted);font-size:15px'>→</div>"
+        +"</div></div>";
     });
     html+="</div>";
   }
