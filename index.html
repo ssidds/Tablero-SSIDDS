@@ -3041,7 +3041,8 @@ function ganttBuildNode(h){
 }
 
 function renderGanttSingleLane(hitos,done,container){
-  container.innerHTML="<div style='position:relative;padding:16px 0 48px'>"
+  var minW=(window.innerWidth>768)?"min-width:"+(hitos.length*105)+"px;":"";
+  container.innerHTML="<div style='"+minW+"position:relative;padding:16px 0 48px'>"
     +"<div id='gantt-tl-line' style='position:absolute;top:38px;left:0;right:0;height:2px;background:var(--border);border-radius:1px'></div>"
     +"<div id='gantt-tl-progress' style='position:absolute;top:38px;left:0;height:2px;background:#00c896;transition:width .6s var(--ease-out);width:0%;border-radius:1px'></div>"
     +"<div id='gantt-tl-nodes' style='display:flex;justify-content:space-between;position:relative;z-index:2;gap:4px'></div>"
@@ -3147,6 +3148,7 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
   var wrap=document.createElement("div");
   wrap.style.cssText="position:relative;padding:8px 0;width:"+(info.n*W)+"px";
   var nodeMap={};
+  var laneRefs=[];
   laneOrder.forEach(function(l,li){
     var laneDiv=document.createElement("div");
     laneDiv.style.cssText="margin-bottom:"+(li<laneOrder.length-1?"30px":"8px");
@@ -3162,6 +3164,8 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
     var line=document.createElement("div");
     line.style.cssText="position:absolute;top:"+(R-1)+"px;left:0;right:0;height:2px;background:"+c.line+";border-radius:1px";
     row.appendChild(line);
+    var laneRef={line:line,circles:[]};
+    laneRefs.push(laneRef);
     var grid=document.createElement("div");
     grid.style.cssText="display:grid;grid-template-columns:repeat("+info.n+","+W+"px);position:relative;z-index:2";
     info.ordered[li].forEach(function(h,hi){
@@ -3169,6 +3173,7 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
       b.node.style.gridColumn=(info.cols[li][hi]+1)+" / span 1";
       b.node.style.gridRow="1";
       grid.appendChild(b.node);
+      laneRef.circles.push(b.circle);
       nodeMap[normEq(h.hito)]={circle:b.circle,col:info.cols[li][hi],target:(h.convergeEn||"").trim()};
     });
     row.appendChild(grid);
@@ -3186,6 +3191,15 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
     svg.setAttribute("height",hgt);
     svg.setAttribute("viewBox","0 0 "+w+" "+hgt);
     while(svg.firstChild)svg.removeChild(svg.firstChild);
+    // La línea de cada carril pasa por el centro real de sus círculos y termina en el último hito
+    laneRefs.forEach(function(lr){
+      if(!lr.circles.length)return;
+      var first=lr.circles[0],last=lr.circles[lr.circles.length-1];
+      var of=ganttOffsetIn(first,lr.line.offsetParent),ol=ganttOffsetIn(last,lr.line.offsetParent);
+      lr.line.style.top=(of.y+first.offsetHeight/2-1)+"px";
+      lr.line.style.right="auto";
+      lr.line.style.width=(ol.x+last.offsetWidth/2)+"px";
+    });
     var gutterCount={};
     Object.keys(nodeMap).forEach(function(key){
       var src=nodeMap[key];
@@ -3193,6 +3207,7 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
       var dst=nodeMap[normEq(src.target)];
       if(!dst||dst===src)return;
       var o1=ganttOffsetIn(src.circle,wrap),o2=ganttOffsetIn(dst.circle,wrap);
+      var R=src.circle.offsetWidth/2;
       var x1=o1.x+src.circle.offsetWidth/2,y1=o1.y+src.circle.offsetHeight/2;
       var x2=o2.x+dst.circle.offsetWidth/2,y2=o2.y+dst.circle.offsetHeight/2;
       var pts,tipDir;
@@ -3254,10 +3269,21 @@ function openGanttModal(p){
   var lanes=grp.lanes,laneOrder=grp.laneOrder;
 
   var container=eid("gantt-timeline-container");
+  container.style.overflowX="auto";
   if(laneOrder.length>1){
     renderGanttMultiLane(lanes,laneOrder,container);
   } else {
     renderGanttSingleLane(p.hitos,done,container);
+  }
+  // Con más de 10 columnas el modal se agranda (hasta casi todo el ancho de pantalla)
+  var nCols=laneOrder.length>1?ganttBuildColumns(lanes,laneOrder).n:p.hitos.length;
+  var mdl=eid("gantt-ov").querySelector(".modal");
+  if(mdl){
+    if(nCols>10&&window.innerWidth>768){
+      mdl.style.maxWidth=Math.min(nCols*(laneOrder.length>1?130:112)+80,window.innerWidth-40)+"px";
+    } else {
+      mdl.style.maxWidth="1200px";
+    }
   }
 
   eid("gantt-pct-label").textContent=done+" de "+p.hitos.length+" hitos completados · "+pct+"% avance";
