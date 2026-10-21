@@ -3055,62 +3055,189 @@ function renderGanttSingleLane(hitos,done,container){
   setTimeout(function(){var el=eid("gantt-tl-progress");if(el)el.style.width=progPct+"%";},80);
 }
 
-function renderGanttMultiLane(lanes,laneOrder,container){
-  var html="<div id='gantt-lanes-wrap' style='position:relative;padding:8px 0'>";
-  laneOrder.forEach(function(l,li){
-    html+="<div style='margin-bottom:"+(li<laneOrder.length-1?"30px":"8px")+"'>"
-      +"<div style='font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px'>"+l.replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</div>"
-      +"<div style='position:relative;padding:0 0 8px'>"
-      +"<div style='position:absolute;top:18px;left:0;right:0;height:2px;background:var(--border);border-radius:1px'></div>"
-      +"<div class='gantt-lane-nodes' id='gantt-lane-nodes-"+li+"' style='display:flex;gap:22px;position:relative;z-index:2;flex-wrap:wrap'></div>"
-      +"</div></div>";
-  });
-  html+="<svg id='gantt-connectors' style='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1'></svg>";
-  html+="</div>";
-  container.innerHTML=html;
+function ganttEsAD(h){
+  return !parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
+}
 
+function ganttGroupLanes(hitos){
+  var lanes={},laneOrder=[];
+  hitos.forEach(function(h){
+    var l=(h.linea||"").trim()||"Principal";
+    if(!lanes[l]){lanes[l]=[];laneOrder.push(l);}
+    lanes[l].push(h);
+  });
+  return{lanes:lanes,laneOrder:laneOrder};
+}
+
+// Asigna a cada hito una columna compartida por todas las líneas: misma fecha = misma columna
+function ganttBuildColumns(lanes,laneOrder){
+  var ordered=laneOrder.map(function(l){return ganttOrdenarHitos(lanes[l]);});
+  var dated={};
+  ordered.forEach(function(arr){
+    var cnt={};
+    arr.forEach(function(h){
+      if(ganttEsAD(h))return;
+      var d=parseGanttDate(h.fecha);
+      cnt[d]=(cnt[d]||0)+1;
+      if(!dated[d]||dated[d]<cnt[d])dated[d]=cnt[d];
+    });
+  });
+  var keys=Object.keys(dated).map(Number).sort(function(a,b){return a-b;});
+  var start={},n=0;
+  keys.forEach(function(k){start[k]=n;n+=dated[k];});
+  var maxAD=0;
+  ordered.forEach(function(arr){var c=arr.filter(ganttEsAD).length;if(c>maxAD)maxAD=c;});
+  var adStart=n;
+  n+=maxAD;
+  var cols=ordered.map(function(arr){
+    var cnt={},ad=0;
+    return arr.map(function(h){
+      if(ganttEsAD(h))return adStart+(ad++);
+      var d=parseGanttDate(h.fecha);
+      var k=cnt[d]||0;
+      cnt[d]=k+1;
+      return start[d]+k;
+    });
+  });
+  return{n:n,cols:cols,ordered:ordered};
+}
+
+function ganttOffsetIn(el,root){
+  var x=0,y=0;
+  while(el&&el!==root){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}
+  return{x:x,y:y};
+}
+
+var GANTT_CFG_SCREEN={colW:130,S:36,fd:11,fl:12,lblMax:115,ft:10,icons:true,
+  c:{ok:"#00c896",warn:"#FFCB00",pend:"var(--azul3)",border:"var(--border)",dark:"#153244",text:"var(--text)",muted:"var(--muted)",bg:"var(--card)",line:"var(--border)",conn:"#5470b8"}};
+var GANTT_CFG_PDF={colW:128,S:32,fd:10,fl:10,lblMax:108,ft:9,icons:false,
+  c:{ok:"#00c896",warn:"#FFCB00",pend:"#e8f0f5",border:"#dce8ef",dark:"#153244",text:"#153244",muted:"#6b8395",bg:"white",line:"#dce8ef",conn:"#5470b8"}};
+
+function ganttNodeEl(h,cfg){
+  var c=cfg.c,est=(h.estado||"").toLowerCase(),esAD=ganttEsAD(h);
+  var node=document.createElement("div");
+  node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0";
+  var circle=document.createElement("div");
+  var bgC=est==="cumplido"?c.ok:est==="en curso"?c.warn:c.pend;
+  var bdC=est==="cumplido"?c.ok:est==="en curso"?c.dark:c.border;
+  circle.style.cssText="width:"+cfg.S+"px;height:"+cfg.S+"px;border-radius:50%;background:"+bgC+";border:2px solid "+bdC+";display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":c.dark);
+  if(cfg.icons){
+    if(est==="cumplido")circle.innerHTML='<i class="ti ti-check" style="font-size:13px;color:white" aria-hidden="true"></i>';
+    else if(est==="en curso")circle.innerHTML='<i class="ti ti-player-play" style="font-size:11px;color:#153244" aria-hidden="true"></i>';
+  } else {
+    circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+  }
+  // Fecha y descripción con fondo propio: el conector pasa por detrás y no se ve sobre el texto
+  var date=document.createElement("div");
+  date.style.cssText="font-size:"+cfg.fd+"px;font-weight:700;color:"+c.text+";text-align:center;margin-top:4px;background:"+c.bg+";padding:0 3px;white-space:nowrap";
+  date.textContent=esAD?"A definir":h.fecha;
+  var lbl=document.createElement("div");
+  lbl.style.cssText="font-size:"+cfg.fl+"px;color:"+c.muted+";text-align:center;line-height:1.3;max-width:"+cfg.lblMax+"px;background:"+c.bg+";padding:0 3px;word-break:break-word";
+  lbl.textContent=h.hito||"";
+  node.appendChild(circle);
+  node.appendChild(date);
+  node.appendChild(lbl);
+  return{node:node,circle:circle};
+}
+
+// Construye la vista multi-línea (columnas por fecha compartidas + conectores ortogonales)
+function ganttBuildLanesView(lanes,laneOrder,cfg){
+  var info=ganttBuildColumns(lanes,laneOrder);
+  var W=cfg.colW,c=cfg.c,R=(cfg.S+4)/2;
+  var wrap=document.createElement("div");
+  wrap.style.cssText="position:relative;padding:8px 0;width:"+(info.n*W)+"px";
   var nodeMap={};
   laneOrder.forEach(function(l,li){
-    var nodesContainer=eid("gantt-lane-nodes-"+li);
-    ganttOrdenarHitos(lanes[l]).forEach(function(h){
-      var built=ganttBuildNode(h);
-      built.node.style.flex="none";
-      built.node.style.width="118px";
-      nodesContainer.appendChild(built.node);
-      nodeMap[normEq(h.hito)]=built.circle;
-      if(h.convergeEn&&h.convergeEn.trim()){
-        built.circle.dataset.convergeTarget=h.convergeEn.trim();
-      }
+    var laneDiv=document.createElement("div");
+    laneDiv.style.cssText="margin-bottom:"+(li<laneOrder.length-1?"30px":"8px");
+    var tw=document.createElement("div");
+    tw.style.cssText="margin-bottom:10px";
+    var tt=document.createElement("span");
+    tt.style.cssText="position:relative;z-index:2;display:inline-block;background:"+c.bg+";padding-right:6px;font-size:"+cfg.ft+"px;font-weight:700;color:"+c.muted+";text-transform:uppercase;letter-spacing:.06em";
+    tt.textContent=l;
+    tw.appendChild(tt);
+    laneDiv.appendChild(tw);
+    var row=document.createElement("div");
+    row.style.cssText="position:relative;padding:0 0 8px";
+    var line=document.createElement("div");
+    line.style.cssText="position:absolute;top:"+(R-1)+"px;left:0;right:0;height:2px;background:"+c.line+";border-radius:1px";
+    row.appendChild(line);
+    var grid=document.createElement("div");
+    grid.style.cssText="display:grid;grid-template-columns:repeat("+info.n+","+W+"px);position:relative;z-index:2";
+    info.ordered[li].forEach(function(h,hi){
+      var b=ganttNodeEl(h,cfg);
+      b.node.style.gridColumn=(info.cols[li][hi]+1)+" / span 1";
+      b.node.style.gridRow="1";
+      grid.appendChild(b.node);
+      nodeMap[normEq(h.hito)]={circle:b.circle,col:info.cols[li][hi],target:(h.convergeEn||"").trim()};
     });
+    row.appendChild(grid);
+    laneDiv.appendChild(row);
+    wrap.appendChild(laneDiv);
   });
+  var NS="http://www.w3.org/2000/svg";
+  var svg=document.createElementNS(NS,"svg");
+  svg.style.cssText="position:absolute;top:0;left:0;pointer-events:none;z-index:1";
+  wrap.appendChild(svg);
 
-  // Dibujar conectores de convergencia una vez que el layout está listo
-  setTimeout(function(){
-    var svg=eid("gantt-connectors");
-    var wrap=eid("gantt-lanes-wrap");
-    if(!svg||!wrap)return;
-    var wrapRect=wrap.getBoundingClientRect();
-    svg.setAttribute("viewBox","0 0 "+wrapRect.width+" "+wrapRect.height);
-    svg.innerHTML="";
+  function draw(){
+    var w=wrap.offsetWidth,hgt=wrap.offsetHeight;
+    svg.setAttribute("width",w);
+    svg.setAttribute("height",hgt);
+    svg.setAttribute("viewBox","0 0 "+w+" "+hgt);
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    var gutterCount={};
     Object.keys(nodeMap).forEach(function(key){
-      var circle=nodeMap[key];
-      var target=circle.dataset.convergeTarget;
-      if(!target)return;
-      var targetCircle=nodeMap[normEq(target)];
-      if(!targetCircle)return;
-      var r1=circle.getBoundingClientRect(),r2=targetCircle.getBoundingClientRect();
-      var x1=r1.left+r1.width/2-wrapRect.left,y1=r1.top+r1.height/2-wrapRect.top;
-      var x2=r2.left+r2.width/2-wrapRect.left,y2=r2.top+r2.height/2-wrapRect.top;
-      var midY=(y1+y2)/2;
-      var path=document.createElementNS("http://www.w3.org/2000/svg","path");
-      path.setAttribute("d","M"+x1+","+y1+" C"+x1+","+midY+" "+x2+","+midY+" "+x2+","+y2);
-      path.setAttribute("fill","none");
-      path.setAttribute("stroke","#5470b8");
-      path.setAttribute("stroke-width","2");
-      path.setAttribute("stroke-dasharray","4,3");
-      svg.appendChild(path);
+      var src=nodeMap[key];
+      if(!src.target)return;
+      var dst=nodeMap[normEq(src.target)];
+      if(!dst||dst===src)return;
+      var o1=ganttOffsetIn(src.circle,wrap),o2=ganttOffsetIn(dst.circle,wrap);
+      var x1=o1.x+src.circle.offsetWidth/2,y1=o1.y+src.circle.offsetHeight/2;
+      var x2=o2.x+dst.circle.offsetWidth/2,y2=o2.y+dst.circle.offsetHeight/2;
+      var pts,tipDir;
+      if(Math.abs(y1-y2)<1){
+        // misma línea: tramo recto
+        var dirS=x2>x1?1:-1;
+        pts=[[x1+dirS*R,y1],[x2-dirS*R,y2]];
+        tipDir=dirS;
+      } else {
+        // sale por el costado del origen, baja/sube por el pasillo entre columnas y entra por el costado del destino
+        var gx=dst.col>src.col?dst.col*W:(dst.col+1)*W;
+        var k=gutterCount[gx]||0;
+        gutterCount[gx]=k+1;
+        gx+=[0,4,-4,8,-8][k%5];
+        var sx=gx>x1?x1+R:x1-R;
+        var tx=gx>x2?x2+R:x2-R;
+        pts=[[sx,y1],[gx,y1],[gx,y2],[tx,y2]];
+        tipDir=tx>gx?1:-1;
+      }
+      var pl=document.createElementNS(NS,"polyline");
+      pl.setAttribute("points",pts.map(function(q){return q[0]+","+q[1];}).join(" "));
+      pl.setAttribute("fill","none");
+      pl.setAttribute("stroke",c.conn);
+      pl.setAttribute("stroke-width","2");
+      pl.setAttribute("stroke-dasharray","4,3");
+      pl.setAttribute("stroke-linejoin","miter");
+      svg.appendChild(pl);
+      var end=pts[pts.length-1];
+      var tri=document.createElementNS(NS,"polygon");
+      tri.setAttribute("points",end[0]+","+end[1]+" "+(end[0]-tipDir*7)+","+(end[1]-4)+" "+(end[0]-tipDir*7)+","+(end[1]+4));
+      tri.setAttribute("fill",c.conn);
+      svg.appendChild(tri);
     });
-  },60);
+  }
+  return{el:wrap,draw:draw,info:info};
+}
+
+function renderGanttMultiLane(lanes,laneOrder,container){
+  container.innerHTML="";
+  container.style.overflowX="auto";
+  var view=ganttBuildLanesView(lanes,laneOrder,GANTT_CFG_SCREEN);
+  container.appendChild(view.el);
+  view.draw();
+  setTimeout(view.draw,60);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){view.draw();});
 }
 
 function openGanttModal(p){
@@ -3123,13 +3250,8 @@ function openGanttModal(p){
   eid("gantt-modal-sub").textContent=sub+(sub?" · ":"")+pct+"% completado";
 
   // Agrupar hitos por línea — si no hay datos en esa columna, cae todo en "Principal"
-  var lanes={};
-  var laneOrder=[];
-  p.hitos.forEach(function(h){
-    var l=(h.linea||"").trim()||"Principal";
-    if(!lanes[l]){lanes[l]=[];laneOrder.push(l);}
-    lanes[l].push(h);
-  });
+  var grp=ganttGroupLanes(p.hitos);
+  var lanes=grp.lanes,laneOrder=grp.laneOrder;
 
   var container=eid("gantt-timeline-container");
   if(laneOrder.length>1){
@@ -3176,7 +3298,13 @@ function downloadGanttPDF(){
   var dateLbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
 
   var esDesktop=window.innerWidth>768;
+  var grp=ganttGroupLanes(p.hitos);
+  var multi=grp.laneOrder.length>1;
   var W=esDesktop?Math.max(760,hitosOrdenados.length*130):580;
+  if(multi&&esDesktop){
+    W=Math.max(760,ganttBuildColumns(grp.lanes,grp.laneOrder).n*GANTT_CFG_PDF.colW+60);
+  }
+  var lanesView=null;
 
   var outer=document.createElement("div");
   outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
@@ -3202,6 +3330,11 @@ function downloadGanttPDF(){
     // ── Formato horizontal — replica la línea de tiempo tal como se ve en pantalla ──
     body.style.cssText="padding:30px 30px 26px;box-sizing:border-box;width:100%";
 
+    if(multi){
+      // Varias líneas: misma estructura que en pantalla (columnas por fecha + conectores)
+      lanesView=ganttBuildLanesView(grp.lanes,grp.laneOrder,GANTT_CFG_PDF);
+      body.appendChild(lanesView.el);
+    }
     var tlWrap=document.createElement("div");
     tlWrap.style.cssText="position:relative;padding:16px 0 8px";
 
@@ -3239,7 +3372,7 @@ function downloadGanttPDF(){
     });
 
     tlWrap.appendChild(nodesRow);
-    body.appendChild(tlWrap);
+    if(!multi)body.appendChild(tlWrap);
 
     var pctLbl=document.createElement("div");
     pctLbl.style.cssText="font-size:11px;color:#6b8395;margin-top:14px;font-weight:600";
@@ -3267,7 +3400,7 @@ function downloadGanttPDF(){
       lbl.textContent=h.hito||"";
       var date=document.createElement("div");
       date.style.cssText="font-size:10px;color:#6b8395;margin-top:2px;font-weight:600;word-break:break-word";
-      date.textContent=esAD?"A definir":h.fecha;
+      date.textContent=(esAD?"A definir":h.fecha)+(multi?" · "+((h.linea||"").trim()||"Principal"):"");
       txt.appendChild(lbl);
       txt.appendChild(date);
       row.appendChild(circle);
@@ -3285,8 +3418,9 @@ function downloadGanttPDF(){
   wrap.appendChild(body);
   outer.appendChild(wrap);
   document.body.appendChild(outer);
+  if(lanesView)lanesView.draw();
 
-  var fullHeight=wrap.scrollHeight||wrap.offsetHeight;
+  var fullHeight=Math.max(wrap.scrollHeight,wrap.offsetHeight);
 
   html2canvas(wrap,{
     scale:2,
