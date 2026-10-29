@@ -123,6 +123,9 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 .ml{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .mv{font-size:11px;color:var(--text);line-height:1.6}
 .mv.acc{color:var(--azul2);font-weight:500}
+.mrp-row{margin-bottom:12px}.mrp-row:last-child{margin-bottom:0}
+.mrp-sub{font-size:11px;font-weight:700;color:var(--text);border-left:3px solid var(--azul);padding-left:7px;margin:0 0 4px;line-height:1.4}
+.mrp-txt{white-space:pre-wrap;word-break:break-word}
 .bv{background:var(--amarillo);color:var(--azul);border:none;padding:10px 28px;border-radius:var(--r2);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:block;margin:0 auto}
 .bv:hover{background:var(--amarillo2)}
 #map{height:calc(100vh - 140px);border-radius:var(--r);border:1px solid var(--border)}
@@ -335,7 +338,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
   </div>
   <div class="hdr-r">
     <span class="upd" id="upd">Cargando...</span>
-    <button class="btn-upd" onclick="cargar()">Actualizar</button>
+    <button class="btn-upd" onclick="refreshAll(true)">Actualizar</button>
   </div>
 </div>
 <div class="app">
@@ -937,7 +940,7 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                 <div class="mv" id="m-st"></div>
               </div>
               <div class="mcd">
-                <div class="ml">Próximo hito y fecha</div>
+                <div class="ml">Próximo/s paso/s</div>
                 <div class="mv" id="m-hi"></div>
               </div>
             </div>
@@ -948,6 +951,11 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
             <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Actores involucrados</div>
             <div id="m-act-wrap"></div>
           </div>
+          <div id="m-gantt-sec" style="display:none;padding:20px 24px;border-top:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Gantt</div>
+            <div id="m-gantt-box" style="overflow-x:auto"></div>
+            <div id="m-gantt-pct" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:500"></div>
+          </div>
 
         </div>
       </div>
@@ -957,6 +965,30 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
 var PINES=[{"name":"Mercado de Hacienda","lat":-34.664361,"lon":-58.495351,"color":"pink"},{"name":"CTC","lat":-34.66942,"lon":-58.439809,"color":"pink"},{"name":"Patio Gastronómico Lago Lugano","lat":-34.680001,"lon":-58.449173,"color":"yellow"},{"name":"Mudanza Pistas + Licencias - Parque Indoamericano","lat":-34.669192,"lon":-58.461103,"color":"pink"},{"name":"Polo logístico","lat":-34.668604,"lon":-58.44759,"color":"blue"},{"name":"Bajada Autopista Cámpora","lat":-34.66742,"lon":-58.447429,"color":"pink"},{"name":"Club Asociación del Sur","lat":-34.667023,"lon":-58.463147,"color":"blue"},{"name":"Viviendas Barrio Olímpico","lat":-34.675657,"lon":-58.453937,"color":"blue"},{"name":"Estacionamiento Barrio Olímpico - Manzana O","lat":-34.677321,"lon":-58.45098,"color":"blue"},{"name":"Alcaidía 27 de Febrero","lat":-34.675537,"lon":-58.438339,"color":"yellow"},{"name":"IUSE - UE","lat":-34.674367,"lon":-58.443945,"color":"blue"},{"name":"Centro de Rehabilitación","lat":-34.675258,"lon":-58.444256,"color":"blue"},{"name":"Hotel","lat":-34.674124,"lon":-58.444712,"color":"blue"},{"name":"Estadio Mary Terán","lat":-34.677133,"lon":-58.446189,"color":"blue"},{"name":"Aulas Modulares","lat":-34.671507,"lon":-58.443799,"color":"yellow"},{"name":"Polo Farmacéutico","lat":-34.670465,"lon":-58.457936,"color":"blue"},{"name":"Biotenk","lat":-34.671209,"lon":-58.460052,"color":"blue"},{"name":"Panalab","lat":-34.669935,"lon":-58.45649,"color":"blue"},{"name":"Nuevo predio Monroe Americana","lat":-34.655271,"lon":-58.452821,"color":"pink"},{"name":"Ascensores Torre Espacial","lat":-34.672836,"lon":-58.449822,"color":"yellow"},{"name":"Centro Metropolitano de Eventos","lat":-34.670668,"lon":-58.44723,"color":"blue"},{"name":"Predio Ferré","lat":-34.667102,"lon":-58.432801,"color":"pink"},{"name":"Profesión Sur","lat":-34.675852,"lon":-58.486358,"color":"pink"},{"name":"Empleabilidad","lat":-34.67604,"lon":-58.466815,"color":"pink"},{"name":"Parque de la Ribera - OSPESE","lat":-34.699261,"lon":-58.459074,"color":"pink"},{"name":"Mudanza UGIS","lat":-34.673465,"lon":-58.457336,"color":"pink"},{"name":"Centro Integral de Discapacidad","lat":-34.678756,"lon":-58.464056,"color":"yellow"},{"name":"Polo Educativo","lat":-34.67901,"lon":-58.463824,"color":"yellow"},{"name":"Golf Club José Jurado","lat":-34.679278,"lon":-58.458425,"color":"pink"},{"name":"Viviendas Sindicales - Sindicato Taxistas","lat":-34.679359,"lon":-58.452331,"color":"blue"},{"name":"Cinemark","lat":-34.676125,"lon":-58.458416,"color":"blue"},{"name":"Era Cretácica 3","lat":-34.675643,"lon":-58.460899,"color":"pink"},{"name":"Lote 123D - Arq. GIOIA | AMERISE","lat":-34.674864,"lon":-58.454158,"color":"blue"},{"name":"Autódromo","lat":-34.691835,"lon":-58.457862,"color":"yellow"},{"name":"Calle lindera a 123N","lat":-34.677686,"lon":-58.451424,"color":"yellow"},{"name":"Retome Av. Fernández de la Cruz","lat":-34.667716,"lon":-58.45275,"color":"pink"},{"name":"Apertura Calle Corrales","lat":-34.648072,"lon":-58.422506,"color":"pink"},{"name":"Club Social y Deportivo Unidos de Pompeya","lat":-34.650488,"lon":-58.417061,"color":"pink"},{"name":"Plaza Nueva Pompeya","lat":-34.651987,"lon":-58.415935,"color":"pink"},{"name":"Corredor Sáenz","lat":-34.653212,"lon":-58.4164,"color":"pink"},{"name":"Revitalización Calle Necochea","lat":-34.63522,"lon":-58.357283,"color":"yellow"},{"name":"Puerto Pampa","lat":-34.62779,"lon":-58.360109,"color":"pink"},{"name":"Viviendas Gianotti-Zanetti","lat":-34.63363,"lon":-58.360082,"color":"blue"},{"name":"Reordenamiento Urbano Dique 0","lat":-34.627302,"lon":-58.358381,"color":"yellow"},{"name":"Barrio Chino La Boca","lat":-34.645979,"lon":-58.365372,"color":"pink"},{"name":"Anfiteatros - Plaza Islas Malvinas","lat":-34.626606,"lon":-58.360419,"color":"pink"},{"name":"Servicios Púbicos en Plazas - Parque Patricios","lat":-34.638683,"lon":-58.407079,"color":"pink"},{"name":"Servicios Públicos en Plazas - Parque España","lat":-34.633809,"lon":-58.38559,"color":"pink"},{"name":"Cochabamba - Viviendas Policía","lat":-34.623951,"lon":-58.382321,"color":"blue"},{"name":"Avenidas Porteñas 2 - Av. Martín García","lat":-34.630738,"lon":-58.371742,"color":"yellow"},{"name":"Estacionamientos Subterráneos - Predio Lavardén","lat":-34.640777,"lon":-58.400475,"color":"blue"},{"name":"Flotantes en Vuelta de Rocha","lat":-34.640403,"lon":-58.359434,"color":"pink"},{"name":"Colón Fábrica - Dulce de Leche","lat":-34.641334,"lon":-58.360906,"color":"blue"},{"name":"Puente Transbordador","lat":-34.638643,"lon":-58.356285,"color":"pink"},{"name":"Remo en Barracas","lat":-34.657579,"lon":-58.383794,"color":"pink"},{"name":"Estacionamientos Subterráneos - Parque España","lat":-34.633617,"lon":-58.38504,"color":"blue"},{"name":"Hermetia - Planta de Reciclaje","lat":-34.653599,"lon":-58.381364,"color":"pink"},{"name":"Polo de Reciclaje","lat":-34.650958,"lon":-58.372957,"color":"pink"},{"name":"Anfiteatros - Parque Lezama","lat":-34.625503,"lon":-58.369361,"color":"pink"},{"name":"Viviendas Clase Media - Av. La Plata 2241","lat":-34.640668,"lon":-58.423791,"color":"yellow"},{"name":"Viviendas Clase Media - Av. Varela 2951","lat":-34.657282,"lon":-58.437077,"color":"yellow"},{"name":"Rueda de la Ciudad","lat":-34.62253,"lon":-58.364197,"color":"pink"},{"name":"Carrusel flotante","lat":-34.622038,"lon":-58.364267,"color":"pink"},{"name":"Parque José Evaristo Uriburu","lat":-34.642209,"lon":-58.41113,"color":"yellow"},{"name":"Trambus Av. Roca","lat":-34.660874,"lon":-58.431061,"color":"pink"},{"name":"Obra Premetro","lat":-34.685815,"lon":-58.462812,"color":"yellow"},{"name":"Carrefour","lat":-34.678881,"lon":-58.450709,"color":"blue"},{"name":"Au. Dellepiane","lat":-34.669785,"lon":-58.475363,"color":"yellow"},{"name":"CTC - Montaña","lat":-34.670409,"lon":-58.435546,"color":"pink"},{"name":"Parque de la Ciudad","lat":-34.67317,"lon":-58.452434,"color":"yellow"},{"name":"Avenidas Porteñas 2 - Av. Pérez Galdos","lat":-34.630056,"lon":-58.359156,"color":"yellow"}];
 var COL={"En ejecución":"#00c896","En licitación":"#FFCB00","En stand-by":"#a89dc8","Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8","En ajustes del proyecto":"#3a5da8","En tramitación de permisos":"#e07830","En proceso licitatorio":"#c07820"};
 var BDG={"En ejecución":["bej","En ejecución"],"En licitación":["blic","En licitación"],"En stand-by":["bsb","En stand-by"],"Finalizado":["bfin","Finalizado"],"En armado de proyecto":["barm","En armado de proyecto"],"En ajustes del proyecto":["baj","En ajustes del proyecto"],"En tramitación de permisos":["btra","En tramitación de permisos"],"En proceso licitatorio":["blic","En proceso licitatorio"]};
+// Estilo de tarjeta/badge por etapa (columna K) y por estado (stand-by / finalizado tienen prioridad)
+var _PERM={band:"#f4991a",bg:"#fdf0dc",tx:"#8a4f00"};
+var ETAPA_STYLE={
+  "en evaluacion/diagnostico":{band:"#94a5ba",bg:"#eceff3",tx:"#4a5a70"},
+  "en armado de proyecto":{band:"#035c80",bg:"#e1eef4",tx:"#035c80"},
+  "en gestion de aprobaciones":_PERM,
+  "en gestion de permisos":_PERM,
+  "en tramitacion de permisos":_PERM,
+  "en licitacion":{band:"#FFCB00",bg:"#fff8e0",tx:"#8a6a00"},
+  "en ejecucion":{band:"#1d3343",bg:"#e3e8ec",tx:"#1d3343"}
+};
+var ESTADO_STYLE={
+  "en stand by":{band:"#e53935",bg:"#fdecea",tx:"#b71c1c",label:"En stand-by"},
+  "finalizado":{band:"#00a86b",bg:"#e0f5ec",tx:"#006b3f",label:"Finalizado"}
+};
+function proyStyle(p){
+  var est=normEq(p.est||"").replace(/-/g," ").replace(/\s+/g," ");
+  if(ESTADO_STYLE[est])return ESTADO_STYLE[est];
+  var k=normEq(p.e||"").replace(/\s+/g," ");
+  var st=ETAPA_STYLE[k];
+  if(st)return{band:st.band,bg:st.bg,tx:st.tx,label:p.e};
+  return{band:"#6b8395",bg:"#eef2f5",tx:"#4a5a70",label:p.e||""};
+}
+function escHtmlS(t){return String(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 var DATA=[],FILTRO="Todos",BUSQ="",CIDX=0,CTIMER=null,HITOS=[],MAPOK=false,_donutChart=null;
 var _logrosLoaded=false;
 var _repLoaded=false;
@@ -987,30 +1019,201 @@ function estado(s){
 }
 function cnt(e){return e==="Todos"?DATA.length:DATA.filter(function(p){return p.e===e;}).length;}
 
-function cargar(){
-  eid("ldg").style.display="block";
-  eid("ind-c").style.display="none";
-  eid("eb").style.display="none";
-  fetch("datos.json?t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+// ====================== CAPA DE DATOS EN VIVO ======================
+// Todas las pestañas leen el Sheet publicado (CSV). Si el Sheet no responde,
+// se usa la última copia guardada por GitHub Actions (datos.json, etc.).
+var SHEET_PUB_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub";
+var SHEET_GID={datos:"0",logros:"1689415169",mapa:"1782300802",equipo:"815773194",temas:"881345739",gantt:"1784065815"};
+var REFRESH_MS=5*60*1000;
+var _lastRefresh=Date.now(),_refreshing=false;
+var _sigs={};
+function sigChanged(key,data){
+  var sg;
+  try{sg=typeof data==="string"?data:JSON.stringify(data);}catch(e){sg=String(Math.random());}
+  if(_sigs[key]===sg)return false;
+  _sigs[key]=sg;
+  return true;
+}
+
+// Parser CSV (respeta comillas, comas y saltos de línea dentro de celdas)
+function csvParse(text){
+  text=(text||"").replace(/^﻿/,"");
+  var rows=[],row=[],cur="",inQ=false,n=text.length,ch,i;
+  for(i=0;i<n;i++){
+    ch=text.charAt(i);
+    if(inQ){
+      if(ch==='"'){if(text.charAt(i+1)==='"'){cur+='"';i++;}else{inQ=false;}}
+      else{cur+=ch;}
+    } else if(ch==='"'){inQ=true;}
+    else if(ch===","){row.push(cur);cur="";}
+    else if(ch==="\n"||ch==="\r"){
+      if(ch==="\r"&&text.charAt(i+1)==="\n")i++;
+      row.push(cur);cur="";rows.push(row);row=[];
+    } else{cur+=ch;}
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row);}
+  return rows;
+}
+
+// Mapeo de columnas (idéntico al que hacía el workflow de GitHub Actions)
+var SHEET_MAP={
+  datos:function(rows){
+    var out=[];
+    rows.forEach(function(row){
+      function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
+      if(!c(0))return;
+      out.push({n:c(0),s:c(2),a:c(7),h:c(6),ac:c(4),mo:c(8),est:c(9),e:c(10),co:c(11),ba:c(12),te:c(13),inv:c(14),imp:c(15),desc:c(16),obj:c(17)});
+    });
+    return out;
+  },
+  logros:function(rows){
+    var out=[];
+    rows.forEach(function(row){
+      function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
+      if(!c(1))return;
+      out.push({f:c(0),l:c(1),p:c(2),te:c(3)});
+    });
+    return out;
+  },
+  mapa:function(rows){
+    var out=[];
+    rows.forEach(function(row){
+      function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
+      if(!c(0))return;
+      out.push({pr:c(0),pt:c(1),co:c(2),ti:c(3),ex:c(4),sz:c(5),sm:c(6),es:c(7),cm:c(8),ba:c(9),te:c(10),iv:c(11)});
+    });
+    return out;
+  },
+  equipo:function(rows){
+    var out=[];
+    rows.forEach(function(row){
+      function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
+      if(!c(0))return;
+      out.push({nombre:c(0),rol:c(1),oficio:c(2),area:c(3),foto:c(4),proyectos:c(5),temas:c(6)});
+    });
+    return out;
+  },
+  temas:function(rows){
+    var out=[];
+    rows.forEach(function(row){
+      function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
+      if(!c(0))return;
+      out.push({tema:c(0),fecha:c(1),status:c(2),ultima:c(3),proximo:c(4),pasos:c(5),responsable:c(6),meta:c(7)});
+    });
+    return out;
+  }
+};
+
+var _sheetCache={};
+// Devuelve una promesa con los datos de la hoja `key`: primero en vivo, y si falla, el JSON de respaldo
+function fetchSheetData(key,force){
+  var now=Date.now();
+  if(!force&&_sheetCache[key]&&now-_sheetCache[key].t<15000)return _sheetCache[key].p;
+  var url=SHEET_PUB_URL+"?gid="+SHEET_GID[key]+"&single=true&output=csv&t="+now;
+  var pr=fetch(url)
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
+    .then(function(txt){
+      if(/^\s*</.test(txt))throw new Error("respuesta no es CSV");
+      var rows=csvParse(txt);
+      var d=SHEET_MAP[key](rows.slice(1));
+      if(key==="datos"&&!d.length)throw new Error("hoja vacía");
+      return d;
+    })
+    .catch(function(err){
+      console.warn("Lectura en vivo de '"+key+"' falló ("+err.message+"); uso copia de respaldo");
+      return fetch(key+".json?t="+Date.now()).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();});
+    });
+  _sheetCache[key]={t:now,p:pr};
+  return pr;
+}
+
+var _rowsCache={};
+// Filas crudas (CSV) de una hoja en vivo
+function fetchSheetRows(key,force){
+  var now=Date.now();
+  if(!force&&_rowsCache[key]&&now-_rowsCache[key].t<15000)return _rowsCache[key].p;
+  var pr=fetch(SHEET_PUB_URL+"?gid="+SHEET_GID[key]+"&single=true&output=csv&t="+now)
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
+    .then(function(txt){if(/^\s*</.test(txt))throw new Error("respuesta no es CSV");return csvParse(txt);});
+  _rowsCache[key]={t:now,p:pr};
+  return pr;
+}
+
+// Orden único de proyectos: el de la columna Proyecto de la hoja Tablero.
+// Los que no estén en Tablero van al final, en su orden original.
+function ordenarSegunTablero(list,getName){
+  var idx={};
+  DATA.forEach(function(p,i){var k=normEq(p.n);if(idx[k]===undefined)idx[k]=i;});
+  return list.map(function(x,i){
+    var k=idx[normEq(getName(x))];
+    return{x:x,k:k===undefined?1e9+i:k};
+  }).sort(function(a,b){return a.k-b.k;}).map(function(o){return o.x;});
+}
+
+function setUpdLabel(){
+  var u=eid("upd");
+  if(u)u.textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+}
+
+function cargar(silent){
+  if(silent!==true){
+    eid("ldg").style.display="block";
+    eid("ind-c").style.display="none";
+    eid("eb").style.display="none";
+  }
+  return fetchSheetData("datos",silent!==true)
     .then(function(d){
-      DATA=d.map(function(p){return{
+      var nuevo=d.map(function(p){return{
         n:p.n||"",est:p.est||"",e:p.e||"",s:p.s||"",
         a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",
         te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||"",
         imp:p.imp||"",desc:p.desc||"",obj:p.obj||""
       };});
-      eid("upd").textContent="Actualizado: "+new Date().toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+      var cambio=sigChanged("datos",nuevo);
+      if(silent===true&&!cambio){setUpdLabel();return;}
+      DATA=nuevo;
+      setUpdLabel();
       eid("ldg").style.display="none";
+      eid("eb").style.display="none";
       eid("ind-c").style.display="block";
-      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas();setTimeout(initSecAnim,300);
+      renderInd();renderCards();renderInversion();renderComunas();renderCls();renderLogrosRecientes();loadEmpresas(silent===true);
+      window._mapProjDirty=true;
+      if(window._mapReload)window._mapReload();
+      if(GANTT_DATA.length){var gsx=eid("gantt-search");filterGantt(gsx?gsx.value:"");}
+      if(silent!==true)setTimeout(initSecAnim,300);
     })
     .catch(function(err){
+      if(silent===true)return;
       eid("ldg").style.display="none";
       eid("eb").style.display="block";
       eid("eb").textContent="No se pudieron cargar los datos: "+err.message;
     });
 }
+
+// Actualiza todas las secciones ya cargadas. silent=true: sin pantallas de carga y solo re-dibuja lo que cambió
+function refreshAll(manual){
+  if(_refreshing)return;
+  _refreshing=true;
+  var silent=manual!==true;
+  _sheetCache={};_rowsCache={};
+  var jobs=[cargar(silent)];
+  jobs.push(loadGantt(true));
+  jobs.push(fetchReporteLive(false,true));
+  jobs.push(loadEmpresas(true));
+  if(window._mapReload)window._mapReload();
+  renderLogrosRecientes();
+  if(_logrosLoaded)jobs.push(loadLogros(true));
+  if(_equipoLoaded)jobs.push(loadEquipo(true));
+  else if(_temasLoaded)jobs.push(loadTemas(true));
+  Promise.all(jobs.map(function(p){return Promise.resolve(p).catch(function(){});})).then(function(){
+    _refreshing=false;
+    _lastRefresh=Date.now();
+  });
+}
+setInterval(function(){if(!document.hidden)refreshAll(false);},REFRESH_MS);
+document.addEventListener("visibilitychange",function(){
+  if(!document.hidden&&Date.now()-_lastRefresh>60000)refreshAll(false);
+});
 
 function renderInd(){
   var _k0=DATA.length;
@@ -1351,11 +1554,11 @@ function renderCards(){
   var clbl=eid("clbl");if(clbl)clbl.textContent=f.length+" proyecto"+(f.length!==1?"s":"")+" encontrado"+(f.length!==1?"s":"");
   if(!f.length){eid("cards").innerHTML="<div class='empty'>No se encontraron proyectos</div>";return;}
   eid("cards").innerHTML=f.map(function(p){
-    var b=BDG[p.e]||["baj",p.e],ac=COL[p.e]||"#153244";
+    var sty=proyStyle(p),ac=sty.band;
     var st=nl(p.s).substring(0,85),ht=nl(p.h).substring(0,50);
     var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div><span class='bdg "+b[0]+"'>"+b[1]+"</span>"+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
+    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div>"+(sty.label?"<span class='bdg' style='background:"+sty.bg+";color:"+sty.tx+"'>"+escHtmlS(sty.label)+"</span>":"")+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
   }).join("");
 }
 function setF(e){FILTRO=e;renderCards();}
@@ -1391,6 +1594,81 @@ function renderActores(raw){
   return out||"--";
 }
 
+// ---- Tarjeta ampliada: Estado actual y Próximo/s paso/s desde la hoja Reporte ----
+function modalReporte(p){
+  var k=normEq(p.n),gen=null,subs=[];
+  (REP_DATA||[]).forEach(function(r){
+    if(normEq(r.n)!==k)return;
+    if(r.sub)subs.push(r);else if(!gen)gen=r;
+  });
+  return(gen||subs.length)?{gen:gen,subs:subs}:null;
+}
+function fillModalEstado(p){
+  var st=eid("m-st"),hi=eid("m-hi");
+  if(!st||!hi)return;
+  var rp=modalReporte(p);
+  if(!rp){
+    st.textContent=nl(p.s)||"--";
+    hi.textContent=nl(p.h)||"--";
+    return;
+  }
+  var band=proyStyle(p).band;
+  function build(field){
+    var out="";
+    if(rp.gen&&(rp.gen[field]||"").trim()){
+      out+="<div class='mrp-row'><div class='mrp-txt'>"+escHtmlS(rp.gen[field].trim())+"</div></div>";
+    }
+    rp.subs.forEach(function(sb){
+      var t=(sb[field]||"").trim();
+      out+="<div class='mrp-row'><div class='mrp-sub' style='border-left-color:"+band+"'>"+escHtmlS(sb.sub)+"</div><div class='mrp-txt'>"+(t?escHtmlS(t):"--")+"</div></div>";
+    });
+    return out||"--";
+  }
+  st.innerHTML=build("s");
+  hi.innerHTML=build("pp");
+}
+
+// ---- Tarjeta ampliada: Gantt completo del proyecto ----
+function renderModalGantt(p){
+  var sec=eid("m-gantt-sec"),box=eid("m-gantt-box"),pctEl=eid("m-gantt-pct");
+  var mdl=eid("mov")?eid("mov").querySelector(".modal"):null;
+  if(!sec||!box)return;
+  var k=normEq(p.n),g=null;
+  for(var i=0;i<GANTT_DATA.length;i++){if(normEq(GANTT_DATA[i].n)===k){g=GANTT_DATA[i];break;}}
+  if(!g||!g.hitos||!g.hitos.length){
+    sec.style.display="none";box.innerHTML="";
+    if(mdl)mdl.style.maxWidth="720px";
+    return;
+  }
+  sec.style.display="block";
+  var grp=ganttGroupLanes(g.hitos);
+  var multi=grp.laneOrder.length>1;
+  var done=g.hitos.filter(function(h){return(h.estado||"").toLowerCase()==="cumplido";}).length;
+  var pct=g.hitos.length?Math.round(done/g.hitos.length*100):0;
+  var nCols=multi?ganttBuildColumns(grp.lanes,grp.laneOrder).n:g.hitos.length;
+  if(multi){
+    box.innerHTML="";
+    var view=ganttBuildLanesView(grp.lanes,grp.laneOrder,GANTT_CFG_SCREEN);
+    box.appendChild(view.el);
+    view.draw();
+    setTimeout(view.draw,60);
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){view.draw();});
+  } else {
+    renderGanttSingleLane(g.hitos,done,box);
+  }
+  if(pctEl)pctEl.textContent=done+" de "+g.hitos.length+" hitos completados · "+pct+"% avance";
+  if(mdl){
+    mdl.style.maxWidth=(window.innerWidth>768&&nCols>6)?Math.min(nCols*(multi?130:112)+80,window.innerWidth-40)+"px":"720px";
+  }
+}
+window._modalRefresh=function(){
+  var ov=eid("mov");
+  if(_modalCurrentP&&ov&&ov.classList.contains("open")){
+    fillModalEstado(_modalCurrentP);
+    renderModalGantt(_modalCurrentP);
+  }
+};
+
 function openM(did){
   var p;
   if(!isNaN(did)&&Number(did)>=0&&Number(did)<DATA.length){
@@ -1400,18 +1678,18 @@ function openM(did){
   }
   if(!p)return;
   _modalCurrentP=p;
-  var b=BDG[p.e]||["baj",p.e];
+  var sty=proyStyle(p);
   eid("mtit").textContent=p.n;
-  var mb=eid("mbdg");mb.className="bdg "+b[0];mb.textContent=b[1];
+  var mb=eid("mbdg");mb.className="bdg";mb.style.background=sty.bg;mb.style.color=sty.tx;mb.textContent=sty.label;mb.style.display=sty.label?"inline-block":"none";
   eid("m-desc").textContent=p.desc||"Sin descripción disponible.";
   eid("m-obj").textContent=p.obj||"--";
   eid("m-mo").textContent=p.mo||"--";
   eid("m-te").textContent=p.te||"--";
   eid("m-inv").textContent=p.inv||"--";
-  eid("m-st").textContent=nl(p.s)||"--";
-  eid("m-hi").textContent=nl(p.h)||"--";
+  fillModalEstado(p);
   eid("m-ac").textContent=nl(p.ac)||"--";
   eid("m-act-wrap").innerHTML=renderActores(p.a);
+  renderModalGantt(p);
   eid("mov").classList.add("open");
 }
 function closeM(e){if(e.target===eid("mov"))closeModalBtn();}
@@ -1694,9 +1972,10 @@ function initMap(){
   var TAMANIOS={chico:8,mediano:12,grande:18};
   var COMUNAS_COLOR={"1":"#153244","4":"#1e7a9e","8":"#b8920a","9":"#00967a"};
   var COLMAP={
-    "En ejecución":"#00c896","En licitación":"#FFCB00","En stand-by":"#a89dc8",
-    "Finalizado":"#8DE2D6","En armado de proyecto":"#5470b8",
-    "activo":"#00c896","en stand by":"#a89dc8","finalizado":"#8DE2D6"
+    "En ejecución":"#1d3343","En licitación":"#FFCB00","En stand-by":"#e53935",
+    "Finalizado":"#00a86b","En armado de proyecto":"#035c80",
+    "En evaluación/diagnóstico":"#94a5ba","En gestión de aprobaciones":"#f4991a","En gestión de permisos":"#f4991a","En tramitación de permisos":"#f4991a",
+    "activo":"#00c896","en stand by":"#e53935","finalizado":"#00a86b"
   };
 
   // Mapa Leaflet
@@ -1947,17 +2226,31 @@ function initMap(){
     window.applyMapFiltros();
   };
 
-  // Fetch mapa.json
-  fetch("mapa.json?t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
-    .then(function(data){renderItems(data);})
+  // Recarga del mapa con datos nuevos (refresco automático)
+  window._mapReload=function(){
+    fetchSheetData("mapa").then(function(data){
+      if(!sigChanged("mapa",data)&&!window._mapProjDirty)return;
+      window._mapProjDirty=false;
+      layerPub.clearLayers();layerPriv.clearLayers();layerMix.clearLayers();layerNoVal.clearLayers();
+      shapeLayer.clearLayers();
+      ALL_ITEMS.length=0;
+      Object.keys(projLookup).forEach(function(k){delete projLookup[k];});
+      DATA.forEach(function(p,idx){if(p.n)projLookup[normN(p.n)]={p:p,idx:idx};});
+      renderItems(data);
+      window.applyMapFiltros();
+    }).catch(function(){});
+  };
+
+  // Datos del mapa (hoja Mapa en vivo, con respaldo en mapa.json)
+  fetchSheetData("mapa")
+    .then(function(data){sigChanged("mapa",data);renderItems(data);})
     .catch(function(e){
       var mapDiv=eid("map");
       if(mapDiv){
         var msg=document.createElement("div");
         msg.style.cssText="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:var(--muted);font-family:DM Sans,sans-serif;z-index:999;pointer-events:none";
         msg.innerHTML='<div style="font-size:14px;font-weight:500;margin-bottom:6px">Sin datos de mapa</div>'
-          +'<div style="font-size:11px">Subí el <code>actualizar.yml</code> al repo<br>y ejecutá el workflow manualmente</div>';
+          +'<div style="font-size:11px">No se pudo leer la hoja "Mapa" del Sheet</div>';
         mapDiv.style.position="relative";
         mapDiv.appendChild(msg);
       }
@@ -1967,10 +2260,11 @@ function initMap(){
   setTimeout(function(){m.invalidateSize();},200);
 }
 
-function loadLogros(){
-  fetch("logros.json?t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+function loadLogros(silent){
+  return fetchSheetData("logros",silent!==true)
     .then(function(data){
+      if(silent===true&&!sigChanged("logros",data))return;
+      if(silent!==true)sigChanged("logros",data);
       window._logrosData=data.map(function(l){return{
         fecha:l.fecha||l.f||"",
         logro:l.logro||l.l||"",
@@ -1980,6 +2274,7 @@ function loadLogros(){
       _logrosLoaded=true;renderLogros();
     })
     .catch(function(err){
+      if(silent===true)return;
       var tl=eid("logros-timeline");
       if(tl)tl.innerHTML="<div style='color:var(--muted);font-size:12px;padding:20px'>No se pudieron cargar los logros: "+err.message+"</div>";
     });
@@ -2101,11 +2396,20 @@ function loadReportes(){
   fetchReporteLive(true);
 }
 
-function fetchReporteLive(alsoLoadSnapshots){
-  fetch(REPORTE_CSV_URL+"&t="+Date.now())
+function fetchReporteLive(alsoLoadSnapshots,silent){
+  return fetch(REPORTE_CSV_URL+"&t="+Date.now())
     .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
     .then(function(csv){
-      REP_DATA=parseReporteCSV(csv);
+      var nuevoRep=parseReporteCSV(csv);
+      var cambioRep=sigChanged("reporte",nuevoRep);
+      if(silent===true&&!cambioRep&&REP_DATA.length)return;
+      REP_DATA=nuevoRep;
+      window._modalRefresh&&window._modalRefresh();
+      // si el reporte semanal todavía no se mostró, no se dibuja hasta que se abra la pestaña
+      if(silent===true&&!_repLoaded)return;
+      // si se está viendo una semana anterior, no se pisa
+      var selW=eid("rep-week-sel");
+      if(silent===true&&selW&&selW.value&&selW.value!=="current")return;
       var now=new Date();
       var lbl=(now.getDate()<10?"0":"")+now.getDate()+"/"+(now.getMonth()<9?"0":"")+(now.getMonth()+1)+"/"+now.getFullYear();
       REP_DATE_LABEL=lbl;
@@ -2121,6 +2425,7 @@ function fetchReporteLive(alsoLoadSnapshots){
       if(alsoLoadSnapshots)loadRepSnapshots();
     })
     .catch(function(){
+      if(silent===true)return;
       eid("rep-page-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted);font-size:13px'>"
         +"<div style='font-size:24px;margin-bottom:12px'>📋</div>"
         +"<div style='font-weight:600;margin-bottom:6px'>No se pudo cargar el reporte</div>"
@@ -2673,7 +2978,7 @@ function downloadRepPDF(mode){
 var ACTIVOS_EST=["En evaluación/diagnóstico","En armado de proyecto","En gestión de aprobaciones","En licitación","En ejecución"];
 var STANDBY_EST=["En stand-by","en stand by","En stand by"];
 var FINAL_EST=["Finalizado","finalizado","Finalizado"];
-var CLS_COLORS_EST={"En evaluación/diagnóstico":"#5470b8","En armado de proyecto":"#3a5da8","En gestión de aprobaciones":"#e07830","En licitación":"#FFCB00","En ejecución":"#00c896"};
+var CLS_COLORS_EST={"En evaluación/diagnóstico":"#94a5ba","En armado de proyecto":"#035c80","En gestión de aprobaciones":"#f4991a","En licitación":"#FFCB00","En ejecución":"#1d3343"};
 var CLS_SEL=null;
 
 function renderCls(){
@@ -2767,8 +3072,7 @@ function toggleClsAcc(bodyId,chevId){
 function renderLogrosRecientes(){
   var lr=eid("logros-recientes");
   if(!lr)return;
-  fetch("logros.json?t="+Date.now())
-    .then(function(r){return r.json();})
+  fetchSheetData("logros")
     .then(function(data){
       var TECOLS={"Infraestructura y movilidad":"#153244","Deportes":"#4A90D9","Educación y empleo":"#FFCB00","Comercial y gastronómico":"#E91E8C","Ambiental":"#8DE2D6","Vivienda":"#5470b8","Salud":"#00c896","Desarrollo urbano":"#e07830"};
       // Ordenar por fecha desc y tomar los últimos 5
@@ -2806,23 +3110,19 @@ function onEstadoChange(){
 var _ganttCurrentProject=null;
 var _modalCurrentP=null;
 
-function loadGantt(){
-  var CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=1784065815&single=true&output=csv";
-  fetch(CSV_URL+"&t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
-    .then(function(csv){
-      var lines=csv.split("\n").slice(1);
-      var grouped={};
-      lines.forEach(function(line){
-        if(!line.trim())return;
-        var cols=line.split(",");
-        function col(i){return(cols[i]||"").replace(/^"|"$/g,"").trim();}
+function loadGantt(silent){
+  return fetchSheetRows("gantt")
+    .then(function(rows){
+      if(!sigChanged("gantt",rows)&&GANTT_DATA.length)return;
+      var grouped={},order=[];
+      rows.slice(1).forEach(function(r){
+        function col(i){return(r[i]||"").trim();}
         var proy=col(0),hito=col(1),fecha=col(2),estado=col(3),linea=col(4),convergeEn=col(5);
         if(!proy||!hito)return;
-        if(!grouped[proy])grouped[proy]=[];
+        if(!grouped[proy]){grouped[proy]=[];order.push(proy);}
         grouped[proy].push({hito:hito,fecha:fecha,estado:estado,linea:linea,convergeEn:convergeEn});
       });
-      GANTT_DATA=Object.keys(grouped).map(function(p){
+      GANTT_DATA=order.map(function(p){
         var hitos=grouped[p].sort(function(a,b){
           return parseGanttDate(a.fecha)-parseGanttDate(b.fecha);
         });
@@ -2835,9 +3135,13 @@ function loadGantt(){
         var fechaFin=hitosConFechaValida.length?hitosConFechaValida[hitosConFechaValida.length-1].fecha:"";
         return{n:p,hitos:hitos,pct:pct,fechaInicio:fechaInicio,fechaFin:fechaFin};
       });
-      renderGantt(GANTT_DATA);
+      _ganttLoaded=true;
+      var gs=eid("gantt-search");
+      if(gs&&gs.value)filterGantt(gs.value);else renderGantt(GANTT_DATA);
+      if(window._modalRefresh)window._modalRefresh();
     })
     .catch(function(){
+      if(silent===true)return;
       var empty=eid("gantt-empty");
       if(empty)empty.style.display="block";
     });
@@ -2861,6 +3165,7 @@ function filterGantt(q){
 }
 
 function renderGantt(data){
+  if(data&&data.length)data=ordenarSegunTablero(data,function(p){return p.n;});
   var container=eid("gantt-rows");
   var empty=eid("gantt-empty");
   var header=eid("gantt-header");
@@ -3047,13 +3352,14 @@ function renderGanttSingleLane(hitos,done,container){
     +"<div id='gantt-tl-progress' style='position:absolute;top:38px;left:0;height:2px;background:#00c896;transition:width .6s var(--ease-out);width:0%;border-radius:1px'></div>"
     +"<div id='gantt-tl-nodes' style='display:flex;justify-content:space-between;position:relative;z-index:2;gap:4px'></div>"
     +"</div>";
-  var nodesContainer=eid("gantt-tl-nodes");
+  var nodesContainer=container.querySelector("#gantt-tl-nodes");
   ganttOrdenarHitos(hitos).forEach(function(h){
     nodesContainer.appendChild(ganttBuildNode(h).node);
   });
   var progPct=hitos.length?Math.round(done/hitos.length*100):0;
-  eid("gantt-tl-progress").style.width="0%";
-  setTimeout(function(){var el=eid("gantt-tl-progress");if(el)el.style.width=progPct+"%";},80);
+  var progEl=container.querySelector("#gantt-tl-progress");
+  if(progEl)progEl.style.width="0%";
+  setTimeout(function(){if(progEl)progEl.style.width=progPct+"%";},80);
 }
 
 function ganttEsAD(h){
@@ -3481,16 +3787,19 @@ function downloadGanttPDF(){
   });
 }
 
-function loadEquipo(){
-  Promise.all([
-    fetch("equipo.json?t="+Date.now()).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();}),
-    fetch("temas.json?t="+Date.now()).then(function(r){return r.ok?r.json():[];}).catch(function(){return [];})
+function loadEquipo(silent){
+  return Promise.all([
+    fetchSheetData("equipo",silent!==true),
+    fetchSheetData("temas",silent!==true).catch(function(){return [];})
   ]).then(function(results){
+    if(silent===true&&!sigChanged("equipo",results))return;
+    if(silent!==true)sigChanged("equipo",results);
     EQUIPO_DATA=results[0];
     TEMAS_DATA=results[1];
     _temasLoaded=true;
     renderEquipo(EQUIPO_DATA);
   }).catch(function(){
+    if(silent===true)return;
     eid("equipo-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted);font-size:13px'>"
       +"<div style='font-size:24px;margin-bottom:12px'>👥</div>"
       +"<div style='font-weight:600;margin-bottom:6px'>El equipo aún no está cargado</div>"
@@ -3653,11 +3962,15 @@ function goToTema(nombre){
   },80);
 }
 
-function loadTemas(){
-  fetch("temas.json?t="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
-    .then(function(d){TEMAS_DATA=d;renderTemas(d);})
+function loadTemas(silent){
+  return fetchSheetData("temas",silent!==true)
+    .then(function(d){
+      if(silent===true&&!sigChanged("temas",d))return;
+      if(silent!==true)sigChanged("temas",d);
+      TEMAS_DATA=d;renderTemas(d);
+    })
     .catch(function(){
+      if(silent===true)return;
       eid("temas-container").innerHTML="<div style='text-align:center;padding:40px;color:var(--muted);font-size:13px'>"
         +"<div style='font-size:24px;margin-bottom:12px'>💡</div>"
         +"<div style='font-weight:600;margin-bottom:6px'>Los temas aún no están cargados</div>"
@@ -4388,11 +4701,13 @@ function getEmpPerPage(){return window.innerWidth<=480?2:window.innerWidth<=768?
 var EMP_PER_PAGE=getEmpPerPage();
 window.addEventListener("resize",function(){var n=getEmpPerPage();if(n!==EMP_PER_PAGE){EMP_PER_PAGE=n;EMP_OFFSET=0;renderEmpCarrusel();}});
 
-function loadEmpresas(){
+function loadEmpresas(silent){
   var CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTzG6tPMiSKxlPR-SxPh-E55Xvg9xgA54ZzBhLNqx7d4Cxr-ww56eoY5m1xOMoWdwWFQoLzs_Za79Y2/pub?gid=1263204437&single=true&output=csv";
-  fetch(CSV_URL+"&t="+Date.now())
+  return fetch(CSV_URL+"&t="+Date.now())
     .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();})
     .then(function(csv){
+      if(silent===true&&!sigChanged("empresas",csv))return;
+      if(silent!==true)sigChanged("empresas",csv);
       // Parser CSV robusto que maneja celdas con comas y comillas
       function parseCSVLine(line){
         var result=[],cur="",inQ=false;
@@ -4824,6 +5139,9 @@ function limpiarFiltrosLogros(){
   renderLogros();
 }
 cargar();
+// Datos de Gantt y Reporte en segundo plano: los usa la tarjeta ampliada de cada proyecto
+loadGantt(true);
+fetchReporteLive(false,true);
 
 </script>
 </body>
