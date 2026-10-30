@@ -944,17 +944,19 @@ body{font-family:DM Sans,sans-serif;background:var(--bg);color:var(--text);displ
                 <div class="mv" id="m-hi"></div>
               </div>
             </div>
-            <div class="mcd" style="margin-bottom:14px">
+            <div class="mcd">
               <div class="ml" style="color:#c0392b">Accionable Marce</div>
               <div class="mv acc" id="m-ac"></div>
             </div>
-            <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Actores involucrados</div>
-            <div id="m-act-wrap"></div>
           </div>
           <div id="m-gantt-sec" style="display:none;padding:20px 24px;border-top:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Gantt</div>
             <div id="m-gantt-box" style="overflow-x:auto"></div>
             <div id="m-gantt-pct" style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:500"></div>
+          </div>
+          <div style="padding:20px 24px;border-top:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Actores involucrados</div>
+            <div id="m-act-wrap"></div>
           </div>
 
         </div>
@@ -1555,10 +1557,10 @@ function renderCards(){
   if(!f.length){eid("cards").innerHTML="<div class='empty'>No se encontraron proyectos</div>";return;}
   eid("cards").innerHTML=f.map(function(p){
     var sty=proyStyle(p),ac=sty.band;
-    var st=nl(p.s).substring(0,85),ht=nl(p.h).substring(0,50);
+    var st=nl(p.s).substring(0,85),ht=cardProximoPaso(p);
     var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div>"+(sty.label?"<span class='bdg' style='background:"+sty.bg+";color:"+sty.tx+"'>"+escHtmlS(sty.label)+"</span>":"")+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>"+ht+"</div>":"")+"</div></div>";
+    return "<div class='card' onclick='openM(\""+did+"\")'><div class='ct' style='background:"+ac+"'></div><div class='cb2'><div class='cn'>"+nm+"</div>"+(sty.label?"<span class='bdg' style='background:"+sty.bg+";color:"+sty.tx+"'>"+escHtmlS(sty.label)+"</span>":"")+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'><b>Próximo/s paso/s:</b> "+escHtmlS(ht)+"</div>":"")+"</div></div>";
   }).join("");
 }
 function setF(e){FILTRO=e;renderCards();}
@@ -1579,19 +1581,31 @@ function parseActores(raw){
   return{groups:groups,order:order,solos:solos};
 }
 function renderActores(raw){
-  var parsed=parseActores(raw);var out="";
-  if(parsed.solos.length>0){
-    parsed.solos.forEach(function(s){out+="<div style='display:flex;align-items:center;gap:6px;margin-bottom:5px'><span style='width:7px;height:7px;border-radius:50%;background:#8DE2D6;flex-shrink:0;display:inline-block'></span><span style='font-size:12px;font-weight:600;color:var(--text)'>"+s+"</span></div>";});
-    if(parsed.order.length>0)out+="<div style='height:0.5px;background:var(--border);margin:8px 0'></div>";
+  var parsed=parseActores(raw);
+  if(!parsed.solos.length&&!parsed.order.length)return "--";
+  function chips(list){
+    return list.map(function(t){return "<span style='font-size:10px;color:#153244;background:#e8f0f5;padding:3px 9px;border-radius:20px;font-weight:500;line-height:1.3'>"+escHtmlS(t)+"</span>";}).join("");
   }
-  parsed.order.forEach(function(min,i){
-    out+="<div style='margin-bottom:8px'><div style='font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:5px'><span style='width:8px;height:8px;border-radius:50%;background:#153244;flex-shrink:0;display:inline-block'></span>"+min+"</div>";
-    out+="<div style='display:flex;flex-wrap:wrap;gap:5px;padding-left:14px'>";
-    parsed.groups[min].forEach(function(sub){out+="<span style='font-size:10px;color:#153244;background:#e8f0f5;padding:3px 10px;border-radius:20px;font-weight:500'>"+sub+"</span>";});
-    out+="</div></div>";
-    if(i<parsed.order.length-1)out+="<div style='height:0.5px;background:var(--border);margin:6px 0'></div>";
-  });
-  return out||"--";
+  function bloque(titulo,dot,list){
+    return "<div style='background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:10px 12px;min-width:0'>"
+      +"<div style='font-size:12px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:7px;line-height:1.3'><span style='width:8px;height:8px;border-radius:50%;background:"+dot+";flex-shrink:0;display:inline-block'></span><span style='min-width:0;word-break:break-word'>"+escHtmlS(titulo)+"</span></div>"
+      +"<div style='display:flex;flex-wrap:wrap;gap:4px'>"+chips(list)+"</div></div>";
+  }
+  var out="<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;align-items:start'>";
+  if(parsed.solos.length)out+=bloque("Otros actores","#8DE2D6",parsed.solos);
+  parsed.order.forEach(function(min){out+=bloque(min,"#153244",parsed.groups[min]);});
+  out+="</div>";
+  return out;
+}
+
+// Próximo/s paso/s de Reporte para la tarjeta chica ("" si no hay)
+function cardProximoPaso(p){
+  var rp=modalReporte(p);
+  if(!rp)return "";
+  var t=(rp.gen&&(rp.gen.pp||"").trim())?rp.gen.pp:"";
+  if(!t){for(var i=0;i<rp.subs.length;i++){if((rp.subs[i].pp||"").trim()){t=rp.subs[i].pp;break;}}}
+  t=nl(t).replace(/\s+/g," ").trim();
+  return t.length>90?t.substring(0,90)+"...":t;
 }
 
 // ---- Tarjeta ampliada: Estado actual y Próximo/s paso/s desde la hoja Reporte ----
@@ -2404,6 +2418,7 @@ function fetchReporteLive(alsoLoadSnapshots,silent){
       var cambioRep=sigChanged("reporte",nuevoRep);
       if(silent===true&&!cambioRep&&REP_DATA.length)return;
       REP_DATA=nuevoRep;
+      if(DATA.length)renderCards();
       window._modalRefresh&&window._modalRefresh();
       // si el reporte semanal todavía no se mostró, no se dibuja hasta que se abra la pestaña
       if(silent===true&&!_repLoaded)return;
@@ -3944,11 +3959,12 @@ function estadoCategoria(s){
   if(n.indexOf("activ")>=0)return "activo";
   return null;
 }
-var ESTADO_DOT_COLORS={activo:"#00c896",standby:"#a89dc8",final:"#8DE2D6"};
+// Mismos colores que las etiquetas Activo / En stand by / Finalizado de la página general
+var ESTADO_DOT_COLORS={activo:"#FFCB00",standby:"#e53935",final:"#00a86b"};
 var TM_STATUS_COLORS={
-  activo:{bg:"#e0f7f0",text:"#006b4f"},
-  standby:{bg:"#f0edf8",text:"#4a3d78"},
-  final:{bg:"#e8f4de",text:"#2d5a10"}
+  activo:{bg:"#fff8e0",text:"#8a6a00"},
+  standby:{bg:"#fdecea",text:"#b71c1c"},
+  final:{bg:"#e0f5ec",text:"#006b3f"}
 };
 var TM_STATUS_DEFAULT={bg:"#edf0f8",text:"#2a3f8a"};
 
@@ -4015,9 +4031,17 @@ function renderTemas(data){
     TEMAS_RENDERED=[];
     return;
   }
-  var sorted=data.slice().sort(function(a,b){
-    return (isTemaBajaPrioridad(a)?1:0)-(isTemaBajaPrioridad(b)?1:0);
-  });
+  // Orden: activos (y sin estado) arriba, después finalizados y al final en stand by.
+  // Dentro de cada grupo, los que tienen novedades van primero.
+  function grupoTema(t){var c=estadoCategoria(t.status);return c==="standby"?2:c==="final"?1:0;}
+  function sinNov(t){return !(t.ultima&&t.ultima.trim())&&!(t.proximo&&t.proximo.trim());}
+  var sorted=data.map(function(t,i){return{t:t,i:i};}).sort(function(a,b){
+    var ga=grupoTema(a.t),gb=grupoTema(b.t);
+    if(ga!==gb)return ga-gb;
+    var sa=sinNov(a.t)?1:0,sb=sinNov(b.t)?1:0;
+    if(sa!==sb)return sa-sb;
+    return a.i-b.i;
+  }).map(function(o){return o.t;});
   TEMAS_RENDERED=sorted;
   var html="<div class='tm-grid'>";
   sorted.forEach(function(t,idx){html+=buildTemaCard(t,idx);});
@@ -4029,7 +4053,9 @@ function buildTemaCard(t,idx){
   var sc=TM_STATUS_COLORS[estadoCategoria(t.status)]||TM_STATUS_DEFAULT;
   var sinNovedades=!(t.ultima&&t.ultima.trim())&&!(t.proximo&&t.proximo.trim());
 
-  var html="<div class='tm-card"+(sinNovedades?" tm-dim":"")+"' onclick='openTemaModal("+idx+")'>";
+  var catT=estadoCategoria(t.status);
+  var atenuar=sinNovedades||catT==="standby"||catT==="final";
+  var html="<div class='tm-card"+(atenuar?" tm-dim":"")+"' onclick='openTemaModal("+idx+")'>";
   html+="<div class='tm-top'><div class='tm-tit'>"+escTm(t.tema)+"</div>";
   if(t.status&&t.status.trim())html+="<span class='tm-badge' style='background:"+sc.bg+";color:"+sc.text+"'>"+escTm(t.status)+"</span>";
   html+="</div>";
