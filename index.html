@@ -448,6 +448,83 @@ button,input,select,textarea{font-family:inherit}
 .eq-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .tm-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
 #tm-modal-badge{padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-top:8px;display:inline-block}
+/* ---- Fase 11: General ---- */
+.top2{display:grid;grid-template-columns:2fr 3fr;gap:16px;margin-bottom:16px;align-items:stretch}
+.tot-blk{display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh1);background:var(--card)}
+.tot-strip{background:var(--navy);padding:20px 24px;display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;flex:1}
+.tot-strip .kpi-n{color:#fff;font-size:64px;margin:0;line-height:1}
+.tot-strip .kpi-l{color:var(--cielo);font-size:17px;font-weight:600}
+.tot-strip .seg{flex:1 1 100%;height:10px;border-radius:5px;overflow:hidden;display:flex;background:rgba(255,255,255,.15)}
+.tot-strip .seg i{display:block;height:10px;width:0;transition:width .6s var(--ease)}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.cats .kpi{background:var(--card)!important;border:none!important;border-radius:0!important;padding:14px 18px}
+.cats .kpi.clickable:hover{background:var(--g10)!important}
+.cats .kpi-n{font-size:30px;margin-bottom:6px}
+.cats .kpi-l{font-size:13px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cdot2{width:9px;height:9px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1px rgba(21,50,68,.35)}
+.top2 .est-grid{margin:0;gap:12px}
+.top2 .est-card{padding:16px 18px;display:flex;flex-direction:column}
+.top2 .est-n{margin-bottom:10px}
+.top2 .est-pct{margin-top:auto;padding-top:10px;white-space:nowrap;gap:8px;font-size:12px}
+/* dona */
+#box-inversion{padding:0}
+.inv-grid{display:grid;grid-template-columns:3fr 1fr;min-height:100%}
+.inv-l{padding:20px 24px;display:flex;flex-direction:column}
+.inv-l .box-t{margin-bottom:8px}
+.donut-box{position:relative;width:100%;max-width:340px;margin:auto;aspect-ratio:1/1}
+.donut-box svg{width:100%;height:100%;display:block}
+.donut-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.donut-c .inv-tot-n{margin:2px 0}
+.inv-r{border-left:1px solid var(--g50);padding:20px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+@media(max-width:900px){.inv-grid{grid-template-columns:1fr}.inv-r{border-left:none;border-top:1px solid var(--g50);flex-direction:row;flex-wrap:wrap}.inv-r>.inv-leg{flex:1;min-width:110px}.inv-r>.inv-sep{display:none}}
+/* logros / hitos */
+#logros-recientes .lg-f{font-weight:800;color:var(--navy)}
+.hc{align-items:center;text-align:center}
+.hchip{margin:0 0 10px!important}
+.hp{text-align:center;margin-bottom:12px}
+.hcal{width:132px;border-radius:16px;overflow:hidden;box-shadow:var(--sh2);margin:4px auto 14px;background:#fff}
+.hcal .hm{background:var(--navy);color:var(--cielo);font-size:14px;font-weight:700;padding:8px 0;margin:0}
+.hcal .hm:empty{display:none}
+.hcal .hd{display:block;font-size:60px;font-weight:800;color:var(--navy);padding:6px 0 10px;line-height:1}
+.hc .hx{text-align:center;width:100%}
+/* siluetas */
+.com-hd{position:relative;padding-right:112px}
+.com-sil{position:absolute;right:14px;top:12px;width:88px;height:88px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.com-sil svg{width:100%;height:100%;overflow:visible}
+@media(max-width:900px){.top2{grid-template-columns:1fr}}
+@media(max-width:560px){.top2 .est-grid{grid-template-columns:1fr!important}.cats{grid-template-columns:1fr}}
+.top2{grid-template-columns:1fr}
+@media(min-width:901px){.top2{grid-template-columns:11fr 14fr}}
+.cats .kpi{padding:12px 14px}
+.cats .kpi-l{font-size:12.5px;gap:5px}
+.acc-h .ct{line-height:1;align-self:center;display:inline-flex;align-items:center;justify-content:flex-end}
+/* ---- Fase 12: Gantts, filtros de Proyectos, emergente, Reportes ---- */
+#fchips.fbox{display:flex;flex-wrap:wrap;gap:8px;background:none;box-shadow:none;padding:0;margin-bottom:16px}
+#fchips .mf-wrap{position:relative}
+#fchips .mf-btn .lb{max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.g-leg .gl-o{width:12px;height:12px;border-radius:50%;background:#fff;box-sizing:border-box;display:inline-block}
+/* emergente de proyecto */
+.pm-wrap{display:block}
+.pm-wrap>#m-proyecto-block{display:grid;grid-template-columns:minmax(0,1fr) 280px}
+.pm-wrap .pm-desc{padding:24px 28px 24px}
+.pm-wrap .pm-ficha,.pm-ficha{grid-column:2;grid-row:1;background:var(--g10);padding:24px 20px;display:flex;flex-direction:column;gap:12px;border-left:1px solid var(--border)}
+#m-proyecto-block{border-bottom:0}
+.pm-sec{padding:24px 28px;border-top:4px solid var(--g100)}
+.pm-wrap>#m-proyecto-block{border-bottom:0}
+.doc-actions-row{border-bottom:4px solid var(--g100)!important}
+.pm-h{font-family:var(--f-title);font-size:24px;font-weight:800;color:var(--navy);margin-bottom:14px;line-height:1.2}
+.er-t{font-size:15px}
+@media(max-width:768px){
+  .pm-wrap>#m-proyecto-block{grid-template-columns:1fr}
+  .pm-wrap .pm-ficha,.pm-ficha{grid-column:1;grid-row:auto;border-left:none;border-top:1px solid var(--border)}
+}
+/* reportes */
+.rep-hdr .rep-pager{margin:0;gap:8px}
+.rep-hdr .rep-pager button{width:32px;height:32px}
+#m-proyecto-block{display:grid;grid-template-columns:minmax(0,1fr) 280px;border-bottom:0}
+#m-proyecto-block .pm-desc{padding:24px 28px}
+@media(max-width:768px){#m-proyecto-block{grid-template-columns:1fr}}
+@media(max-width:768px){.rep-hdr .sw{flex:1 1 140px}}
 /* ---- LANDSCAPE MOBILE ---- */
 @media(max-height:500px){
   .ov{padding:4px;align-items:flex-start}
@@ -662,22 +739,18 @@ button,input,select,textarea{font-family:inherit}
         <div id="ind-c" style="display:none">
 
           <!-- KPIs -->
-          <div class="kpi-grid">
-            <div class="kpi"><div class="kpi-n" id="k0">0</div><div class="kpi-l">Proyectos totales</div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Estratégicos')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Estratégicos');}"><div class="kpi-n" id="k1">0</div><div class="kpi-l">Estratégicos <span class="go">↗</span></div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Complementarios')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Complementarios');}"><div class="kpi-n" id="k2">0</div><div class="kpi-l">Complementarios <span class="go">↗</span></div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Emergentes')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Emergentes');}"><div class="kpi-n" id="k3">0</div><div class="kpi-l">Emergentes <span class="go">↗</span></div></div>
-          </div>
-
+          <div class="top2"><div class="tot-blk"><div class="tot-strip"><div class="kpi-n" id="k0">0</div><div class="kpi-l">Proyectos totales</div><div class="seg" aria-hidden="true"><i id="seg1" style="background:#99E8FF"></i><i id="seg2" style="background:#F5E27A"></i><i id="seg3" style="background:#D9CFF5"></i></div></div><div class="cats">
+            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Estratégicos')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Estratégicos');}"><div class="kpi-n" id="k1">0</div><div class="kpi-l"><span class="cdot2" style="background:#99E8FF"></span>Estratégicos <span class="go">↗</span></div></div>
+            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Complementarios')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Complementarios');}"><div class="kpi-n" id="k2">0</div><div class="kpi-l"><span class="cdot2" style="background:#F5E27A"></span>Complementarios <span class="go">↗</span></div></div>
+            <div class="kpi clickable" role="button" tabindex="0" onclick="openKpiModal('Emergentes')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKpiModal('Emergentes');}"><div class="kpi-n" id="k3">0</div><div class="kpi-l"><span class="cdot2" style="background:#D9CFF5"></span>Emergentes <span class="go">↗</span></div></div>
+          </div></div>
 <!-- CLASIFICACIÓN GENERAL -->
-          <div id="cls-block" style="margin-bottom:24px">
-            <div id="cls-grid" class="est-grid">
+          <div id="cls-grid" class="est-grid">
               <div class="est-card" id="cls-act" style="--ec:#007BC7;--en:#007BC7" role="button" tabindex="0" onclick="selectCls('act')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCls('act');}"><div class="est-top"><span class="est-dot"></span>Activos</div><div class="est-n" id="cls-act-n">0</div><div class="est-trk"><div class="est-fill" id="cls-act-bar"></div></div><div class="est-pct"><span id="cls-act-pct">0%</span><span class="more">Ver desglose ↓</span></div></div>
               <div class="est-card" id="cls-sby" style="--ec:#FFA82E;--en:#B36B00" role="button" tabindex="0" onclick="selectCls('sby')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCls('sby');}"><div class="est-top"><span class="est-dot"></span>En stand-by</div><div class="est-n" id="cls-sby-n">0</div><div class="est-trk"><div class="est-fill" id="cls-sby-bar"></div></div><div class="est-pct"><span id="cls-sby-pct">0%</span><span class="more">Ver proyectos ↓</span></div></div>
               <div class="est-card" id="cls-fin" style="--ec:#26874A;--en:#26874A" role="button" tabindex="0" onclick="selectCls('fin')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCls('fin');}"><div class="est-top"><span class="est-dot"></span>Finalizados</div><div class="est-n" id="cls-fin-n">0</div><div class="est-trk"><div class="est-fill" id="cls-fin-bar"></div></div><div class="est-pct"><span id="cls-fin-pct">0%</span><span class="more">Ver proyectos ↓</span></div></div>
-            </div>
-            <div id="cls-detail" class="cls-detail" style="display:none"><div id="cls-detail-inner"></div></div>
-          </div>
+            </div></div>
+          <div id="cls-block" style="margin-bottom:24px"><div id="cls-detail" class="cls-detail" style="display:none"><div id="cls-detail-inner"></div></div></div>
 
           <!-- BARRAS + CARRUSEL -->
           <div class="row2">
@@ -698,9 +771,9 @@ button,input,select,textarea{font-family:inherit}
                 </div>
               </div>
               <div id="hcard" class="hc hc-n" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+                <span class="hchip" id="hchip" style="display:none"></span>
                 <div class="hp" id="hp"></div>
-                <div><span class="hd" id="hd"></span><span class="hchip" id="hchip" style="display:none"></span></div>
-                <div class="hm" id="hm"></div>
+                <div class="hcal"><div class="hm" id="hm"></div><div class="hd" id="hd"></div></div>
                 <div class="hx" id="hx"></div>
               </div>
               <div class="cdots" id="cdots"></div>
@@ -716,33 +789,29 @@ button,input,select,textarea{font-family:inherit}
           <!-- BADGES TIPO DE INVERSION -->
           <div id="inv-badges-grid" class="kpi-grid">
             <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Pública')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Pública');}"><div class="kpi-n" id="bdg-pub">0</div><div class="kpi-l"><span class="dot" style="background:#153244"></span>Pública <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="kpi-n" id="bdg-priv">0</div><div class="kpi-l"><span class="dot" style="background:#7C5CD6"></span>Privada <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="kpi-n" id="bdg-mix">0</div><div class="kpi-l"><span class="dot" style="background:#1796A8"></span>Mixta <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
+            <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="kpi-n" id="bdg-priv">0</div><div class="kpi-l"><span class="dot" style="background:#1796A8"></span>Privada <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
+            <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="kpi-n" id="bdg-mix">0</div><div class="kpi-l"><span class="dot" style="background:#7C5CD6"></span>Mixta <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
             <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('No valorizada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('No valorizada');}"><div class="kpi-n" id="bdg-noval">0</div><div class="kpi-l"><span class="dot" style="background:#8A97A6"></span>No valorizada <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
           </div>
 
           <!-- TORTA + BARRAS -->
           <div class="row2" style="margin-bottom:24px;align-items:stretch">
             <div class="box" id="box-inversion">
-              <div class="box-t">Monto total por tipo de inversión</div>
-              <div style="padding-bottom:16px;border-bottom:1px solid var(--g50);margin-bottom:8px">
-                <div class="inv-tot-l">Total estimado</div>
-                <div class="inv-tot-n" id="inv-total">--</div>
-                <div class="inv-tot-u">USD millones</div>
-              </div>
-              <div id="inv-donut-row" style="display:flex;align-items:stretch;gap:0">
-                <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px 0">
-                  <div style="position:relative" id="donut-wrap">
-                    <svg id="donut-svg" width="280" height="280" viewBox="-20 -20 300 300" overflow="visible" role="img" aria-label="Distribución del monto por tipo de inversión"></svg>
+              <div class="inv-grid">
+                <div class="inv-l">
+                  <div class="box-t">Monto total por tipo de inversión</div>
+                  <div class="donut-box" id="donut-wrap">
+                    <svg id="donut-svg" viewBox="0 0 340 340" role="img" aria-label="Distribución del monto por tipo de inversión"></svg>
+                    <div class="donut-c"><div class="inv-tot-l">Total estimado</div><div class="inv-tot-n" id="inv-total">--</div><div class="inv-tot-u">USD millones</div></div>
                   </div>
                 </div>
-                <div id="inv-vdivider" style="width:1px;background:var(--g50);margin:4px 0;flex-shrink:0"></div>
-                <div id="inv-text-panel" style="flex:1;display:flex;flex-direction:column;gap:4px;justify-content:center;padding-left:16px">
+                <div class="inv-r" id="inv-text-panel">
                   <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Pública')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Pública');}"><div class="nm"><span class="dot" style="background:#153244"></span>Pública</div><div class="v" id="inv-pub">--</div><div class="u">USD millones</div></div>
                   <div class="inv-sep" style="height:1px;background:var(--g50)"></div>
-                  <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="nm"><span class="dot" style="background:#7C5CD6"></span>Privada</div><div class="v" id="inv-priv">--</div><div class="u">USD millones</div></div>
+                  <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="nm"><span class="dot" style="background:#1796A8"></span>Privada</div><div class="v" id="inv-priv">--</div><div class="u">USD millones</div></div>
                   <div class="inv-sep" style="height:1px;background:var(--g50)"></div>
-                  <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="nm"><span class="dot" style="background:#1796A8"></span>Mixta</div><div class="v" id="inv-mix">--</div><div class="u">USD millones</div></div>
+                  <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="nm"><span class="dot" style="background:#7C5CD6"></span>Mixta</div><div class="v" id="inv-mix">--</div><div class="u">USD millones</div></div>
+                
                 </div>
               </div>
             </div>
@@ -894,7 +963,12 @@ button,input,select,textarea{font-family:inherit}
     <div id="srep" style="display:none">
       <div class="sec">
         <div id="rep-hdr-row" class="rep-hdr">
-          <div id="rep-hdr-title" class="rep-title">Status Proyectos</div>
+          <div id="rep-hdr-title" class="rep-title">Reporte de proyectos</div>
+        <div class="rep-pager">
+          <button id="rep-prev" onclick="repNav(-1)" aria-label="Página anterior" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <span id="rep-plbl"></span>
+          <button id="rep-next" onclick="repNav(1)" aria-label="Página siguiente"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
           <select id="rep-week-sel" class="fl" aria-label="Semana del reporte" onchange="loadReportSnapshot(this.value)">
             <option value="current">Cargando...</option>
           </select>
@@ -924,11 +998,6 @@ button,input,select,textarea{font-family:inherit}
           </div>
           <div id="rep-pips" style="display:none"></div>
         </div>
-        <div class="rep-pager">
-          <button id="rep-prev" onclick="repNav(-1)" aria-label="Página anterior" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-          <span id="rep-plbl"></span>
-          <button id="rep-next" onclick="repNav(1)" aria-label="Página siguiente"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
-        </div>
       </div>
     </div>
 
@@ -938,10 +1007,10 @@ button,input,select,textarea{font-family:inherit}
         <div class="g-bar">
           <div class="sw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="gantt-search" class="si" type="text" placeholder="Buscar proyecto..." aria-label="Buscar proyecto" oninput="filterGantt(this.value)"></div>
           <div class="g-leg">
-            <div><span style="width:16px;height:8px;border-radius:3px;background:#153244;display:inline-block"></span>Sin atrasos</div>
-            <div><span style="width:16px;height:8px;border-radius:3px;background:#FFA82E;display:inline-block"></span>Hito atrasado</div>
-            <div><span style="width:12px;height:12px;border-radius:50%;background:#FFDB2E;border:2px solid #153244;display:inline-block;box-sizing:border-box"></span>Hito activo</div>
             <div><span style="width:12px;height:12px;border-radius:50%;background:#26874A;display:inline-block"></span>Hito cumplido</div>
+            <div><span class="gl-o" style="border:3px solid #26874A"></span>Hito activo</div>
+            <div><span class="gl-o" style="border:3px solid #FFA82E"></span>Hito atrasado</div>
+            <div><span class="gl-o" style="border:2px solid #8A97A6;background:#E6EBF0"></span>Pendiente</div>
           </div>
         </div>
         <div id="gantt-container">
@@ -1098,8 +1167,8 @@ button,input,select,textarea{font-family:inherit}
               </div>
               <div class="pm-ficha">
                 <div class="pm-money"><div class="l">Monto de inversión</div><div class="v" id="m-mo"></div></div>
-                <div class="pm-fi"><div class="l">Temática</div><div class="v" id="m-te"></div></div>
                 <div class="pm-fi"><div class="l">Tipo de inversión</div><div class="v" id="m-inv"></div></div>
+                <div class="pm-fi"><div class="l">Temática</div><div class="v" id="m-te"></div></div>
               </div>
             </div>
             <div class="pm-sec">
@@ -1390,6 +1459,7 @@ function renderInd(){
   var _k1=DATA.filter(function(p){return p.imp==="Estratégicos";}).length;
   var _k2=DATA.filter(function(p){return p.imp==="Complementarios";}).length;
   var _k3=DATA.filter(function(p){return p.imp==="Emergentes";}).length;
+  (function(){var t=_k0||1;[["seg1",_k1],["seg2",_k2],["seg3",_k3]].forEach(function(a){var e=eid(a[0]);if(e)e.style.width=(a[1]/t*100)+"%";});})();
   ["k0","k1","k2","k3"].forEach(function(id){var el=eid(id);if(el)el.textContent="0";});
   setTimeout(function(){
     animNum(eid("k0"),_k0);animNum(eid("k1"),_k1);
@@ -1413,9 +1483,15 @@ function renderInd(){
   var hitosSinFecha=[];
   DATA.forEach(function(p){
     if(!p.h||!p.h.trim())return;
-    var f=parseFecha(p.h);
-    if(f&&f>=hoy){hitosConFecha.push({p:p,fecha:f});}
-    else if(!f){hitosSinFecha.push(p);}
+    var lines=p.h.split(/\r?\n/).map(function(s){return s.trim();}).filter(Boolean);
+    var best=null,bestF=null,undated=null,anyDated=false;
+    lines.forEach(function(L){
+      var f=parseFecha(L);
+      if(f){anyDated=true;if(f>=hoy&&(!bestF||f<bestF)){best=L;bestF=f;}}
+      else if(undated===null){undated=L;}
+    });
+    if(bestF){hitosConFecha.push({p:Object.assign({},p,{h:best}),fecha:bestF});}
+    else if(!anyDated){hitosSinFecha.push(Object.assign({},p,{h:undated||lines[0]}));}
   });
   hitosConFecha.sort(function(a,b){return a.fecha-b.fecha;});
   // Primero los que tienen fecha futura, luego los "A definir" para llegar a 5
@@ -1430,7 +1506,7 @@ function renderCar(idx,anim){
   var h=HITOS[idx],ht=nl(h.h),dia="--",mes="",urg="hc-n",chipTxt="";
   var re=/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/;
   var m=ht.match(re);
-  if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];mes=mm[parseInt(m[2])]+(m[3]?" "+m[3]:" 2026");var dd=new Date(2026,parseInt(m[2])-1,parseInt(m[1]));var _t0=new Date();_t0.setHours(0,0,0,0);var diff=Math.round((dd-_t0)/86400000);urg=diff<30?"hc-u":diff<90?"hc-p":"hc-n";chipTxt=diff<=0?"Hoy":diff===1?"Mañana":diff<=60?"En "+diff+" días":"En "+Math.round(diff/30)+" meses";}
+  if(m){dia=m[1];var mm=["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];var _yy=m[3]?(parseInt(m[3])<100?2000+parseInt(m[3]):parseInt(m[3])):new Date().getFullYear();mes=mm[parseInt(m[2])]+" "+_yy;var dd=new Date(_yy,parseInt(m[2])-1,parseInt(m[1]));var _t0=new Date();_t0.setHours(0,0,0,0);var diff=Math.round((dd-_t0)/86400000);urg=diff<30?"hc-u":diff<90?"hc-p":"hc-n";chipTxt=diff<=0?"Hoy":diff===1?"Mañana":diff<=60?"En "+diff+" días":"En "+Math.round(diff/30)+" meses";}
   var card=eid("hcard");
   function upd(){card.className="hc "+urg;eid("hp").textContent=h.n;eid("hd").textContent=dia;eid("hm").textContent=mes;var _hc=eid("hchip");if(_hc){_hc.textContent=chipTxt;_hc.style.display=chipTxt?"inline-block":"none";}eid("hx").textContent=ht.replace(re,"").trim()||ht.substring(0,80);eid("ccnt").textContent=(idx+1)+"/"+HITOS.length;document.querySelectorAll(".cdot").forEach(function(d,i){d.className="cdot"+(i===idx?" on":"");});resetCT();}
   if(anim){card.style.opacity="0";setTimeout(function(){card.style.transition="opacity .25s";card.style.opacity="1";upd();},180);}else{upd();}
@@ -1478,7 +1554,7 @@ function animNum(el,v,suffix){
   el._animRAF=requestAnimationFrame(tick);
 }
 function renderInversion(){
-  var IC={"Pública":"#153244","Privada":"#7C5CD6","Mixta":"#1796A8","No valorizada":"#8A97A6"};
+  var IC={"Pública":"#153244","Privada":"#1796A8","Mixta":"#7C5CD6","No valorizada":"#8A97A6"};
   var counts={"Pública":0,"Privada":0,"Mixta":0,"No valorizada":0};
   var montos={"Pública":0,"Privada":0,"Mixta":0};
   var proyConMonto=[];
@@ -1500,12 +1576,12 @@ function renderInversion(){
   svg.innerHTML="";
   var segs=[
     {k:"Pública",v:montos["Pública"],c:"#153244"},
-    {k:"Privada",v:montos["Privada"],c:"#7C5CD6"},
-    {k:"Mixta",v:montos["Mixta"],c:"#1796A8"}
+    {k:"Privada",v:montos["Privada"],c:"#1796A8"},
+    {k:"Mixta",v:montos["Mixta"],c:"#7C5CD6"}
   ].filter(function(s){return s.v>0;});
   if(segs.length===0)return;
   var tot=segs.reduce(function(a,s){return a+s.v;},0)||1;
-  var cx=130,cy=130,R=90,r=58;
+  var cx=170,cy=170,R=150,r=88;
   var circumference=2*Math.PI*R;
 
   // Agregar keyframes de animación si no existen
@@ -1532,7 +1608,7 @@ function renderInversion(){
         +" L"+xi2+","+yi2+" A"+r+","+r+" 0 "+large+",0 "+xi1+","+yi1+" Z";
     var path=document.createElementNS("http://www.w3.org/2000/svg","path");
     path.setAttribute("d",d);
-    path.setAttribute("fill",seg.c);
+    path.setAttribute("fill",seg.c);path.setAttribute("stroke","#fff");path.setAttribute("stroke-width","3");
     path.setAttribute("opacity","0");
     svg.appendChild(path);
     // Animación: fade in escalonado
@@ -1551,44 +1627,24 @@ function renderInversion(){
   svg.appendChild(hole);
 
 
-  // % afuera del segmento con línea corta y color propio
-  var labelColors={"#153244":"#153244","#7C5CD6":"#5B3FB0","#1796A8":"#0F7080","#8A97A6":"#505E70"};
+  // % dentro del anillo, en blanco y centrado en el grosor del anillo
   setTimeout(function(){
+    var rm=(R+r)/2;
     paths.forEach(function(pd){
       var frac=pd.seg.v/tot;
-      if(frac<0.03)return;
+      if(frac<0.05)return;
       var midAngle=pd.startAngle+pd.sweepAngle/2;
-      var pct=Math.round(frac*100);
-      var lc=labelColors[pd.seg.c]||"#153244";
-      // Punto en el borde exterior del segmento
-      var ex=cx+R*Math.cos(midAngle);
-      var ey=cy+R*Math.sin(midAngle);
-      // Punto final de la línea (afuera)
-      var lx=cx+(R+18)*Math.cos(midAngle);
-      var ly=cy+(R+18)*Math.sin(midAngle);
-      // Línea corta
-      var line=document.createElementNS("http://www.w3.org/2000/svg","line");
-      line.setAttribute("x1",ex);line.setAttribute("y1",ey);
-      line.setAttribute("x2",lx);line.setAttribute("y2",ly);
-      line.setAttribute("stroke",lc);line.setAttribute("stroke-width","1");
-      svg.appendChild(line);
-      // Texto %
-      var anchor=Math.cos(midAngle)>=0?"start":"end";
-      var tx=lx+(Math.cos(midAngle)>=0?4:-4);
+      var mx=cx+rm*Math.cos(midAngle),my=cy+rm*Math.sin(midAngle);
       var txt=document.createElementNS("http://www.w3.org/2000/svg","text");
-      txt.setAttribute("x",tx);txt.setAttribute("y",ly-2);
-      txt.setAttribute("text-anchor",anchor);
-      txt.setAttribute("font-size","17");txt.setAttribute("font-weight","700");
-      txt.setAttribute("fill",lc);txt.setAttribute("font-family","Inter,system-ui,sans-serif");
-      txt.textContent=pct+"%";
+      txt.setAttribute("x",mx);txt.setAttribute("y",my-2);txt.setAttribute("text-anchor","middle");
+      txt.setAttribute("font-size","22");txt.setAttribute("font-weight","800");txt.setAttribute("fill","#fff");
+      txt.setAttribute("font-family","Inter,system-ui,sans-serif");
+      txt.textContent=Math.round(frac*100)+"%";
       svg.appendChild(txt);
-      // Subtexto nombre
       var sub=document.createElementNS("http://www.w3.org/2000/svg","text");
-      sub.setAttribute("x",tx);sub.setAttribute("y",ly+13);
-      sub.setAttribute("text-anchor",anchor);
-      sub.setAttribute("font-size","12");sub.setAttribute("font-weight","500");
-      sub.setAttribute("fill",lc);sub.setAttribute("font-family","Inter,system-ui,sans-serif");
-      sub.setAttribute("opacity","1");
+      sub.setAttribute("x",mx);sub.setAttribute("y",my+14);sub.setAttribute("text-anchor","middle");
+      sub.setAttribute("font-size","12");sub.setAttribute("font-weight","600");sub.setAttribute("fill","#fff");
+      sub.setAttribute("font-family","Inter,system-ui,sans-serif");
       sub.textContent=pd.seg.k;
       svg.appendChild(sub);
     });
@@ -1633,6 +1689,19 @@ function openInvModal(tipo){
 }
 function closeInvModal(ev){if(!ev||ev.target===eid("inv-ov"))eid("inv-ov").classList.remove("open");}
 
+function comunaSilueta(num,col){
+  try{
+    var f=COMUNAS_GEO.features.filter(function(x){return String(x.properties.comuna)===String(num);})[0];
+    if(!f)return "";
+    var g=f.geometry,polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+    var lat0=-34.6,k=Math.cos(lat0*Math.PI/180);
+    polys.forEach(function(p){p.forEach(function(ring){ring.forEach(function(c){var x=c[0]*k,y=-c[1];if(x<minx)minx=x;if(x>maxx)maxx=x;if(y<miny)miny=y;if(y>maxy)maxy=y;});});});
+    var w=maxx-minx,h=maxy-miny,s=86/Math.max(w,h),ox=(100-w*s)/2,oy=(100-h*s)/2,d="";
+    polys.forEach(function(p){p.forEach(function(ring){ring.forEach(function(c,i){var x=(c[0]*k-minx)*s+ox,y=(-c[1]-miny)*s+oy;d+=(i?"L":"M")+x.toFixed(1)+","+y.toFixed(1);});d+="Z";});});
+    return "<svg viewBox='0 0 100 100' aria-hidden='true'><path d='"+d+"' fill='"+col+"' stroke='#8A97A6' stroke-width='1.2' stroke-dasharray='3,3' stroke-linejoin='round'/></svg>";
+  }catch(e){return "";}
+}
 function renderComunas(){
   var COLS={"Comuna 1":"#D9CFF5","Comuna 4":"#99E8FF","Comuna 8":"#F5E27A","Comuna 9":"#CDE8B0"};
   var BARRIOS={"Comuna 1":["Constitución","San Telmo","Monserrat","Puerto Madero"],"Comuna 4":["La Boca","Barracas","Nueva Pompeya","Parque Patricios"],"Comuna 8":["Villa Soldati","Villa Lugano","Villa Riachuelo"],"Comuna 9":["Liniers","Mataderos","Parque Avellaneda"]};
@@ -1653,7 +1722,8 @@ function renderComunas(){
     var h="<div class='com-hd' role='button' tabindex='0' onclick='openCom(\""+com+"\")' onkeydown='if(event.key===\"Enter\"){openCom(\""+com+"\");}'>"
       +"<div class='com-nm'>"+com+"</div>"
       +"<div class='com-nn'><b class='com-count-anim' data-target='"+n+"'>0</b><span>proyectos</span></div>"
-      +"<div class='com-go'>Ver proyectos \u2192</div></div>";
+      +"<div class='com-go'>Ver proyectos \u2192</div>"
+      +"<div class='com-sil'>"+comunaSilueta(com.replace(/\D/g,""),col)+"</div></div>";
     h+="<div class='com-est'>"+Object.keys(estados).map(function(e){
       var c2=e==="Activo"?"#007BC7":e==="En stand-by"?"#FFA82E":"#26874A";
       return "<div><i style='background:"+c2+"'></i>"+estados[e]+" "+e+"</div>";
@@ -1706,23 +1776,25 @@ function openKpiModal(cat){
 function closeKpiModal(ev){if(!ev||ev.target===eid("kpi-ov"))eid("kpi-ov").classList.remove("open");}
 
 
-var FILTER_DEFS=[["fest","Estado",0],["fe","Etapa del proyecto",0],["ft","Temática",1],["fi","Tipo de inversión",0],["fc","Comuna",0],["fb","Barrio",1]];
+var FILTER_DEFS=[["fest","Estado"],["fe","Etapa"],["ft","Temática"],["fi","Inversión"],["fc","Comuna"],["fb","Barrio"]];
 function _chipVal(o){return o.value!==""?o.value:o.text;}
 function buildFilterGroup(id){
   var sel=eid(id),host=eid("fg-"+id);
   if(!sel||!host)return;
-  var h="";
+  var def=FILTER_DEFS.filter(function(d){return d[0]===id;})[0];
+  var h="<div class='mf-btn' id='fb-"+id+"' role='button' tabindex='0' aria-haspopup='listbox' onclick='toggleFilterDD(\""+id+"\",event)' onkeydown='if(event.key===\"Enter\"||event.key===\" \"){event.preventDefault();toggleFilterDD(\""+id+"\",event);}'><span class='k'>"+def[1]+":</span><span class='lb'></span><svg width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M2 4l4 4 4-4'/></svg></div><div class='mf-dd' id='fdd-"+id+"'>";
   Array.prototype.forEach.call(sel.options,function(o,i){
     var v=o.value!==""||i>0?_chipVal(o):"";
-    h+="<button type='button' class='pl' data-v=\""+escHtmlS(v).replace(/\"/g,"&quot;")+"\" onclick='setFilterChip(\""+id+"\",this.getAttribute(\"data-v\"))'>"+(i===0&&v===""?"Todos":escHtmlS(o.text))+"</button>";
+    var isAll=(i===0&&v==="");
+    h+="<div class='mf-o"+(isAll?" all":"")+"' data-v=\""+escHtmlS(v).replace(/\"/g,"&quot;")+"\" onclick='pickFilter(\""+id+"\",this.getAttribute(\"data-v\"),event)'><span>"+(isAll?"Todos":escHtmlS(o.text))+"</span><span class='ck'>\u2713</span></div>";
   });
-  host.querySelector(".pr").innerHTML=h;
+  host.innerHTML=h+"</div>";
   host.setAttribute("data-n",sel.options.length);
 }
 function buildFilterChips(){
   var box=eid("fchips");if(!box)return;
   if(!box.firstChild){
-    box.innerHTML=FILTER_DEFS.map(function(d){return "<div class='fg"+(d[2]?" wide":"")+"' id='fg-"+d[0]+"'><div class='fg-l'>"+d[1]+"</div><div class='pr'></div></div>";}).join("");
+    box.innerHTML=FILTER_DEFS.map(function(d){return "<div class='mf-wrap' id='fg-"+d[0]+"'></div>";}).join("");
     FILTER_DEFS.forEach(function(d){buildFilterGroup(d[0]);});
   }
 }
@@ -1731,12 +1803,31 @@ function syncFilterChips(){
   FILTER_DEFS.forEach(function(d){
     var sel=eid(d[0]),host=eid("fg-"+d[0]);if(!sel||!host)return;
     if(String(sel.options.length)!==host.getAttribute("data-n"))buildFilterGroup(d[0]);
-    var cur=sel.value;
-    host.querySelectorAll(".pl").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===cur);});
+    var cur=sel.value,txt="Todos",on=false;
+    host.querySelectorAll(".mf-o").forEach(function(b){
+      var isCur=b.getAttribute("data-v")===cur;
+      b.classList.toggle("sel",isCur);
+      if(isCur&&cur!==""){txt=b.firstChild.textContent;on=true;}
+    });
+    var lb=host.querySelector(".lb");if(lb)lb.textContent=txt;
+    var btn=host.querySelector(".mf-btn");if(btn)btn.classList.toggle("on",on);
   });
   var fest=eid("fest"),gfe=eid("fg-fe");
   if(gfe)gfe.style.display=(fest&&fest.value==="Activos")?"":"none";
 }
+function toggleFilterDD(id,e){
+  if(e)e.stopPropagation();
+  var dd=eid("fdd-"+id);if(!dd)return;
+  var open=dd.style.display==="block";
+  document.querySelectorAll("#fchips .mf-dd").forEach(function(x){x.style.display="none";});
+  dd.style.display=open?"none":"block";
+}
+function pickFilter(id,v,e){
+  if(e)e.stopPropagation();
+  document.querySelectorAll("#fchips .mf-dd").forEach(function(x){x.style.display="none";});
+  setFilterChip(id,v);
+}
+document.addEventListener("click",function(){document.querySelectorAll("#fchips .mf-dd").forEach(function(x){x.style.display="none";});});
 function setFilterChip(id,v){
   var sel=eid(id);if(!sel)return;
   sel.value=v;
@@ -1922,7 +2013,7 @@ function downloadProjectCardPDF(){
   var p=_modalCurrentP;
   if(!p)return;
 
-  var W=580;
+  var W=860;
   var outer=document.createElement("div");
   outer.style.cssText="position:absolute;top:0;left:0;z-index:-9999;pointer-events:none;width:"+W+"px";
   var wrap=document.createElement("div");
@@ -2091,7 +2182,7 @@ function reanimateInd(){
 // ── FILTROS DEL MAPA ──────────────────────────────────────────
 var MAP_FILT={inv:new Set(),com:new Set(),est:new Set(),tem:new Set(),bar:new Set()};
 var MAP_OPTS={
-  inv:[{v:"Pública",l:"Pública",c:"#153244"},{v:"Privada",l:"Privada",c:"#7C5CD6"},{v:"Mixta",l:"Mixta",c:"#1796A8"},{v:"No valorizada",l:"No valorizada",c:"#8A97A6"}],
+  inv:[{v:"Pública",l:"Pública",c:"#153244"},{v:"Privada",l:"Privada",c:"#1796A8"},{v:"Mixta",l:"Mixta",c:"#7C5CD6"},{v:"No valorizada",l:"No valorizada",c:"#8A97A6"}],
   com:[{v:"1",l:"Comuna 1",c:"#D9CFF5"},{v:"4",l:"Comuna 4",c:"#99E8FF"},{v:"8",l:"Comuna 8",c:"#F5E27A"},{v:"9",l:"Comuna 9",c:"#CDE8B0"}],
   est:[],
   tem:["Ambiente","Infraestructura","Deportes","Educación y empleo","Comercio","Vivienda","Salud","Desarrollo Urbano","Movilidad","Industria","Turismo"].map(function(v){return{v:v,l:v};}),
@@ -2179,8 +2270,8 @@ document.addEventListener("click",function(){
 function initMap(){
   var INV_COLORS={
     "Pública":      {f:"#153244",s:"#ffffff",key:"pub"},
-    "Privada":      {f:"#7C5CD6",s:"#ffffff",key:"priv"},
-    "Mixta":        {f:"#1796A8",s:"#ffffff",key:"mix"},
+    "Privada":      {f:"#1796A8",s:"#ffffff",key:"priv"},
+    "Mixta":        {f:"#7C5CD6",s:"#ffffff",key:"mix"},
     "No valorizada":{f:"#8A97A6",s:"#ffffff",key:"noval"}
   };
   var TAMANIOS={chico:8,mediano:12,grande:18};
@@ -2201,7 +2292,7 @@ function initMap(){
   var legend=L.control({position:"bottomleft"});
   legend.onAdd=function(){
     var d=L.DomUtil.create("div","map-legend");
-    d.innerHTML="<b>Tipo de inversión</b>"+[["Pública","#153244"],["Privada","#7C5CD6"],["Mixta","#1796A8"],["No valorizada","#8A97A6"]].map(function(x){return "<div><i style='background:"+x[1]+"'></i>"+x[0]+"</div>";}).join("");
+    d.innerHTML="<b>Tipo de inversión</b>"+[["Pública","#153244"],["Privada","#1796A8"],["Mixta","#7C5CD6"],["No valorizada","#8A97A6"]].map(function(x){return "<div><i style='background:"+x[1]+"'></i>"+x[0]+"</div>";}).join("");
     L.DomEvent.disableClickPropagation(d);
     return d;
   };
@@ -3045,7 +3136,7 @@ function renderRepFS(){
   content.innerHTML="";
   var hdr=document.createElement("div");
   hdr.style.cssText="text-align:center;margin-bottom:16px";
-  hdr.innerHTML="<div style='font-size:22px;font-weight:700;color:#153244;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+  hdr.innerHTML="<div style='font-size:22px;font-weight:700;color:#153244;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:.04em'>Reporte de proyectos</div>"
     +"<div style='font-size:13px;color:#6b8395;font-family:Inter,sans-serif;margin-top:4px'>"+REP_DATE_LABEL+"</div>";
   content.appendChild(hdr);
   if(REP_PAGES[REP_CUR]){
@@ -3104,7 +3195,7 @@ function downloadRepJPG(mode){
   container.style.cssText="background:#f2f6f9;padding:20px;font-family:Inter,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
   var hdr=document.createElement("div");
   hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
-  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Reporte de proyectos</div>"
     +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(REP_CUR+1)+" / "+REP_PAGES.length+"</div>";
   container.appendChild(hdr);
   var slide=eid("rep-slide-"+REP_CUR);
@@ -3136,7 +3227,7 @@ function downloadRepAllJPG(){
       container.style.cssText="background:#f2f6f9;padding:20px;font-family:Inter,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
       var hdr=document.createElement("div");
       hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
-      hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+      hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Reporte de proyectos</div>"
         +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(pi+1)+" / "+REP_PAGES.length+"</div>";
       container.appendChild(hdr);
       var slide=eid("rep-slide-"+pi);
@@ -3171,7 +3262,7 @@ function downloadRepPDF(mode){
   container.style.cssText="background:#f2f6f9;padding:20px;font-family:Inter,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
   var hdr=document.createElement("div");
   hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
-  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+  hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Reporte de proyectos</div>"
     +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(REP_CUR+1)+" / "+REP_PAGES.length+"</div>";
   container.appendChild(hdr);
   var slide=eid("rep-slide-"+REP_CUR);
@@ -3281,7 +3372,8 @@ function renderLogrosRecientes(){
   fetchSheetData("logros")
     .then(function(data){
       var TECOLS={"Infraestructura y movilidad":"#153244","Deportes":"#007BC7","Educación y empleo":"#FFA82E","Comercial y gastronómico":"#B8449F","Ambiental":"#26874A","Vivienda":"#7C5CD6","Salud":"#1796A8","Desarrollo urbano":"#8A97A6"};
-      var sorted=data.filter(function(l){return l.f&&l.l;}).slice(-5).reverse();
+      function _pfl(s){var m=String(s||"").match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);if(!m)return 0;var y=+m[3];if(y<100)y+=2000;return new Date(y,+m[2]-1,+m[1]).getTime();}
+      var sorted=data.filter(function(l){return l.f&&l.l;}).map(function(l,i){return{l:l,t:_pfl(l.f),i:i};}).sort(function(a,b){return (b.t-a.t)||(a.i-b.i);}).slice(0,5).map(function(o){return o.l;});
       if(!sorted.length){lr.innerHTML="<div style='font-size:14px;color:var(--muted);padding:8px 0'>Sin logros registrados</div>";return;}
       var out="";
       sorted.forEach(function(l){
@@ -3472,42 +3564,45 @@ function renderGantt(data){
     var widthPct=endD2&&startD?Math.round((endD2-startD)/range*100):50;
     widthPct=Math.max(widthPct,3);
 
-    var isAtrasado=p.hitos.some(function(h){return h.estado.toLowerCase()==="pendiente"&&parseGanttDate(h.fecha)>0&&parseGanttDate(h.fecha)<todayMs;});
-    var barColor=isAtrasado?"#FFA82E":"#153244";
-
-    var bar=document.createElement("div");
-    bar.style.cssText="position:absolute;height:18px;border-radius:var(--r2);background:"+barColor+";left:"+leftPct+"%;width:"+widthPct+"%;display:flex;align-items:center;padding:0 6px;overflow:hidden";
-    if(isAtrasado)bar.title="Este proyecto tiene un hito marcado \"Pendiente\" con fecha vencida";
-    bar.innerHTML="";
-    barArea.appendChild(bar);
-
-    // Línea verde de progreso (hitos cumplidos)
-    var hitosOrden=p.hitos.filter(function(h){
-      return parseGanttDate(h.fecha)>0&&h.fecha.toLowerCase().indexOf("a/d")<0;
-    });
-    var lastCumplido=null;
-    hitosOrden.forEach(function(h){
-      if(h.estado.toLowerCase()==="cumplido"||h.estado.toLowerCase()==="en curso")lastCumplido=h;
-    });
-    if(lastCumplido){
-      var lcD=parseGanttDate(lastCumplido.fecha);
-      var lcPct=Math.round((lcD-minD)/range*100);
-      var progBar=document.createElement("div");
-      progBar.style.cssText="position:absolute;height:2px;border-radius:1px;background:#26874A;left:"+leftPct+"%;width:"+Math.max(0,lcPct-leftPct)+"%;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none";
-      barArea.appendChild(progBar);
+    var _hs=ganttOrdenarHitos(p.hitos).filter(function(h){return !ganttEsAD(h);});
+    function _posOf(h){return Math.round((parseGanttDate(h.fecha)-minD)/range*1000)/10;}
+    var _lc=null,_act=null;
+    _hs.forEach(function(h){if((h.estado||"").toLowerCase()==="cumplido")_lc=h;});
+    _hs.forEach(function(h){if(!_act&&(h.estado||"").toLowerCase()==="en curso")_act=h;});
+    var _target=_act||_hs.filter(function(h){var e=(h.estado||"").toLowerCase();return e==="pendiente"&&parseGanttDate(h.fecha)<todayMs;})[0]||null;
+    var _late=!!(_target&&parseGanttDate(_target.fecha)<todayMs);
+    var _first=_hs.length?_posOf(_hs[0]):leftPct,_last=_hs.length?_posOf(_hs[_hs.length-1]):leftPct+widthPct;
+    var track=document.createElement("div");
+    track.style.cssText="position:absolute;height:2px;border-radius:1px;background:#D1D8E0;left:"+_first+"%;width:"+Math.max(0,_last-_first)+"%;top:50%;transform:translateY(-50%)";
+    barArea.appendChild(track);
+    var _gEnd=_lc?_posOf(_lc):_first;
+    if(_gEnd>_first){
+      var gl=document.createElement("div");
+      gl.style.cssText="position:absolute;height:3px;border-radius:2px;background:#26874A;left:"+_first+"%;width:"+(_gEnd-_first)+"%;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none";
+      barArea.appendChild(gl);
     }
-
+    if(_target){
+      var _tEnd=_posOf(_target);
+      if(_tEnd>_gEnd){
+        var sg=document.createElement("div");
+        sg.style.cssText="position:absolute;height:3px;border-radius:2px;background:"+(_late?"#FFA82E":"#26874A")+";left:"+_gEnd+"%;width:"+(_tEnd-_gEnd)+"%;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none";
+        barArea.appendChild(sg);
+      }
+    }
+    if(_late)row.title="Tiene un hito atrasado";
     // Hitos
     p.hitos.forEach(function(h){
-      var hd=parseGanttDate(h.fecha);
-      if(!hd||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0)return;
-      var hPct=Math.round((hd-minD)/range*100);
+      if(ganttEsAD(h))return;
+      var hPct=_posOf(h);
       var dot=document.createElement("div");
-      var est=h.estado.toLowerCase();
-      var dotColor=est==="cumplido"?"#26874A":est==="en curso"?"#FFDB2E":"rgba(255,255,255,0.5)";
-      var dotBorder=est==="en curso"?"#153244":"white";
+      var est=(h.estado||"").toLowerCase();
+      var isT=(_target&&h===_target);
+      var sz,bg,bd;
+      if(est==="cumplido"){sz=10;bg="#26874A";bd="2px solid #fff";}
+      else if(isT){sz=14;bg="#fff";bd="3px solid "+(_late?"#FFA82E":"#26874A");}
+      else{sz=10;bg="#fff";bd="2px solid #8A97A6";}
       dot.title=h.hito+" ("+h.fecha+")";
-      dot.style.cssText="position:absolute;width:10px;height:10px;border-radius:50%;background:"+dotColor+";border:2px solid "+dotBorder+";left:"+hPct+"%;top:50%;transform:translate(-50%,-50%);z-index:2";
+      dot.style.cssText="position:absolute;box-sizing:border-box;width:"+sz+"px;height:"+sz+"px;border-radius:50%;background:"+bg+";border:"+bd+";left:"+hPct+"%;top:50%;transform:translate(-50%,-50%);z-index:2";
       barArea.appendChild(dot);
     });
 
@@ -3515,7 +3610,7 @@ function renderGantt(data){
     if(todayPct>=0&&todayPct<=100){
       var todayEl=document.createElement("div");
       todayEl.title="Hoy";
-      todayEl.style.cssText="position:absolute;left:"+todayPct+"%;top:0;bottom:0;width:2px;background:#007BC7;z-index:3;border-radius:1px";
+      todayEl.style.cssText="position:absolute;left:"+todayPct+"%;top:0;bottom:0;width:2px;background:#505E70;z-index:3;border-radius:1px";
       barArea.appendChild(todayEl);
     }
 
@@ -3532,6 +3627,25 @@ function ganttOrdenarHitos(hitos){
   return conFecha.concat(sinFecha);
 }
 
+function ganttActColor(h){
+  var d=parseGanttDate(h.fecha),t=new Date();t.setHours(0,0,0,0);
+  return (d&&!ganttEsAD(h)&&d<t.getTime())?"#FFA82E":"#26874A";
+}
+function ganttApplyProgress(hs,circles,rel,prog,seg,ok,late){
+  if(!circles.length)return;
+  var t=new Date();t.setHours(0,0,0,0);
+  var lc=-1,ac=-1;
+  hs.forEach(function(h,i){if((h.estado||"").toLowerCase()==="cumplido")lc=i;});
+  for(var i=lc+1;i<hs.length;i++){if((hs[i].estado||"").toLowerCase()==="en curso"){ac=i;break;}}
+  function cx(i){var o=ganttOffsetIn(circles[i],rel);return o.x+circles[i].offsetWidth/2;}
+  var x0=cx(0);
+  prog.style.left=x0+"px";prog.style.width=(lc>=0?Math.max(0,cx(lc)-x0):0)+"px";
+  if(ac>=0){
+    var d=parseGanttDate(hs[ac].fecha),isLate=!!(d&&!ganttEsAD(hs[ac])&&d<t.getTime());
+    var xs=lc>=0?cx(lc):x0;
+    seg.style.left=xs+"px";seg.style.width=Math.max(0,cx(ac)-xs)+"px";seg.style.background=isLate?late:ok;seg.style.display="block";
+  }else seg.style.display="none";
+}
 function ganttBuildNode(h){
   var est=(h.estado||"").toLowerCase();
   var esAD=!parseGanttDate(h.fecha)||h.fecha.toLowerCase().indexOf("a/d")>=0||h.fecha.toLowerCase().indexOf("a definir")>=0;
@@ -3540,11 +3654,11 @@ function ganttBuildNode(h){
   node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0";
 
   var circle=document.createElement("div");
-  var bgC=est==="cumplido"?"#26874A":est==="en curso"?"#FFDB2E":"var(--g50)";
-  var borderC=est==="cumplido"?"#26874A":est==="en curso"?"#153244":"#8A97A6";
-  circle.style.cssText="width:36px;height:36px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";display:flex;align-items:center;justify-content:center;flex-shrink:0";
+  var bgC=est==="cumplido"?"#26874A":est==="en curso"?"#fff":"var(--g50)";
+  var borderC=est==="cumplido"?"#26874A":est==="en curso"?ganttActColor(h):"#8A97A6";
+  circle.style.cssText="width:36px;height:36px;border-radius:50%;background:"+bgC+";border:"+(est==="en curso"?3:2)+"px solid "+borderC+";display:flex;align-items:center;justify-content:center;flex-shrink:0";
   if(est==="cumplido")circle.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
-  else if(est==="en curso")circle.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="#153244" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  
 
   var date=document.createElement("div");
   date.className="gantt-node-date";
@@ -3564,19 +3678,27 @@ function ganttBuildNode(h){
 
 function renderGanttSingleLane(hitos,done,container){
   var minW=(window.innerWidth>768)?"min-width:"+(hitos.length*105)+"px;":"";
-  container.innerHTML="<div style='"+minW+"position:relative;padding:16px 0 48px'>"
-    +"<div id='gantt-tl-line' style='position:absolute;top:38px;left:0;right:0;height:2px;background:var(--border);border-radius:1px'></div>"
-    +"<div id='gantt-tl-progress' style='position:absolute;top:38px;left:0;height:2px;background:#26874A;transition:width .6s var(--ease-out);width:0%;border-radius:1px'></div>"
+  container.innerHTML="<div id='gantt-tl-wrap' style='"+minW+"position:relative;padding:16px 0 48px'>"
+    +"<div id='gantt-tl-line' style='position:absolute;top:37px;left:0;height:2px;background:var(--border);border-radius:1px'></div>"
+    +"<div id='gantt-tl-progress' style='position:absolute;top:36.5px;left:0;height:3px;background:#26874A;width:0;border-radius:2px'></div>"
+    +"<div id='gantt-tl-seg' style='position:absolute;top:36.5px;left:0;height:3px;width:0;border-radius:2px;display:none'></div>"
     +"<div id='gantt-tl-nodes' style='display:flex;justify-content:space-between;position:relative;z-index:2;gap:4px'></div>"
     +"</div>";
   var nodesContainer=container.querySelector("#gantt-tl-nodes");
-  ganttOrdenarHitos(hitos).forEach(function(h){
-    nodesContainer.appendChild(ganttBuildNode(h).node);
-  });
-  var progPct=hitos.length?Math.round(done/hitos.length*100):0;
-  var progEl=container.querySelector("#gantt-tl-progress");
-  if(progEl)progEl.style.width="0%";
-  setTimeout(function(){if(progEl)progEl.style.width=progPct+"%";},80);
+  var ordered=ganttOrdenarHitos(hitos),circles=[];
+  ordered.forEach(function(h){var b=ganttBuildNode(h);nodesContainer.appendChild(b.node);circles.push(b.circle);});
+  function place(){
+    var wrap=container.querySelector("#gantt-tl-wrap");if(!wrap||!circles.length)return;
+    var line=container.querySelector("#gantt-tl-line"),prog=container.querySelector("#gantt-tl-progress"),seg=container.querySelector("#gantt-tl-seg");
+    var first=circles[0],last=circles[circles.length-1];
+    var of=ganttOffsetIn(first,wrap),ol=ganttOffsetIn(last,wrap);
+    var cy=of.y+first.offsetHeight/2,x0=of.x+first.offsetWidth/2;
+    line.style.top=(cy-1)+"px";prog.style.top=seg.style.top=(cy-1.5)+"px";
+    line.style.left=x0+"px";line.style.width=Math.max(0,ol.x+last.offsetWidth/2-x0)+"px";
+    ganttApplyProgress(ordered,circles,wrap,prog,seg,"#26874A","#FFA82E");
+  }
+  setTimeout(place,80);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
 }
 
 function ganttEsAD(h){
@@ -3633,23 +3755,23 @@ function ganttOffsetIn(el,root){
 }
 
 var GANTT_CFG_SCREEN={colW:130,S:36,fd:13,fl:14,lblMax:115,ft:12,icons:true,
-  c:{ok:"#26874A",warn:"#FFDB2E",pend:"var(--g50)",border:"#8A97A6",dark:"#153244",text:"var(--text)",muted:"var(--muted)",bg:"var(--card)",line:"var(--border)",conn:"#62A8D8"}};
+  c:{ok:"#26874A",late:"#FFA82E",warn:"#FFDB2E",pend:"var(--g50)",border:"#8A97A6",dark:"#153244",text:"var(--text)",muted:"var(--muted)",bg:"var(--card)",line:"var(--border)",conn:"#8A97A6"}};
 var GANTT_CFG_PDF={colW:128,S:32,fd:11,fl:12,lblMax:108,ft:9,icons:false,
-  c:{ok:"#26874A",warn:"#FFDB2E",pend:"#E6EBF0",border:"#8A97A6",dark:"#153244",text:"#153244",muted:"#505E70",bg:"white",line:"#D1D8E0",conn:"#62A8D8"}};
+  c:{ok:"#26874A",late:"#FFA82E",warn:"#FFDB2E",pend:"#E6EBF0",border:"#8A97A6",dark:"#153244",text:"#153244",muted:"#505E70",bg:"white",line:"#D1D8E0",conn:"#8A97A6"}};
 
 function ganttNodeEl(h,cfg){
   var c=cfg.c,est=(h.estado||"").toLowerCase(),esAD=ganttEsAD(h);
   var node=document.createElement("div");
   node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0";
   var circle=document.createElement("div");
-  var bgC=est==="cumplido"?c.ok:est==="en curso"?c.warn:c.pend;
-  var bdC=est==="cumplido"?c.ok:est==="en curso"?c.dark:c.border;
-  circle.style.cssText="width:"+cfg.S+"px;height:"+cfg.S+"px;border-radius:50%;background:"+bgC+";border:2px solid "+bdC+";display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":c.dark);
+  var bgC=est==="cumplido"?c.ok:est==="en curso"?"#fff":c.pend;
+  var bdC=est==="cumplido"?c.ok:est==="en curso"?ganttActColor(h):c.border;
+  circle.style.cssText="width:"+cfg.S+"px;height:"+cfg.S+"px;border-radius:50%;background:"+bgC+";border:"+(est==="en curso"?3:2)+"px solid "+bdC+";display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":c.dark);
   if(cfg.icons){
     if(est==="cumplido")circle.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
-    else if(est==="en curso")circle.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="#153244" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    
   } else {
-    circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+    circle.textContent=est==="cumplido"?"✓":"";
   }
   // Fecha y descripción con fondo propio: el conector pasa por detrás y no se ve sobre el texto
   var date=document.createElement("div");
@@ -3686,8 +3808,11 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
     row.style.cssText="position:relative;padding:0 0 8px";
     var line=document.createElement("div");
     line.style.cssText="position:absolute;top:"+(R-1)+"px;left:0;right:0;height:2px;background:"+c.line+";border-radius:1px";
-    row.appendChild(line);
-    var laneRef={line:line,circles:[]};
+    var prog=document.createElement("div"),seg=document.createElement("div");
+    [prog,seg].forEach(function(e){e.style.cssText="position:absolute;height:3px;border-radius:2px;top:0;left:0;width:0";});
+    prog.style.background=c.ok;seg.style.background=c.ok;
+    row.appendChild(line);row.appendChild(prog);row.appendChild(seg);
+    var laneRef={line:line,prog:prog,seg:seg,hs:info.ordered[li],circles:[]};
     laneRefs.push(laneRef);
     var grid=document.createElement("div");
     grid.style.cssText="display:grid;grid-template-columns:repeat("+info.n+","+W+"px);position:relative;z-index:2";
@@ -3722,6 +3847,8 @@ function ganttBuildLanesView(lanes,laneOrder,cfg){
       lr.line.style.top=(of.y+first.offsetHeight/2-1)+"px";
       lr.line.style.right="auto";
       lr.line.style.width=(ol.x+last.offsetWidth/2)+"px";
+      lr.prog.style.top=lr.seg.style.top=(of.y+first.offsetHeight/2-1.5)+"px";
+      ganttApplyProgress(lr.hs,lr.circles,lr.line.offsetParent,lr.prog,lr.seg,c.ok,c.late||"#FFA82E");
     });
     var gutterCount={};
     Object.keys(nodeMap).forEach(function(key){
@@ -3907,8 +4034,8 @@ function downloadGanttPDF(){
       var node=document.createElement("div");
       node.style.cssText="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0";
       var circle=document.createElement("div");
-      circle.style.cssText="width:32px;height:32px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244")+";flex-shrink:0";
-      circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+      circle.style.cssText="width:32px;height:32px;border-radius:50%;background:"+bgC+";border:"+(est==="en curso"?3:2)+"px solid "+borderC+";display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244")+";flex-shrink:0";
+      circle.textContent=est==="cumplido"?"✓":"";
       var date=document.createElement("div");
       date.style.cssText="font-size:11px;font-weight:700;color:#153244;text-align:center;margin-top:2px;white-space:nowrap";
       date.textContent=esAD?"A definir":h.fecha;
@@ -3942,7 +4069,7 @@ function downloadGanttPDF(){
       row.style.cssText="display:flex;align-items:flex-start;gap:12px;padding:10px 0"+(i<hitosOrdenados.length-1?";border-bottom:0.5px solid #dce8ef":"");
       var circle=document.createElement("div");
       circle.style.cssText="width:26px;height:26px;border-radius:50%;background:"+bgC+";border:2px solid "+borderC+";flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:"+(est==="cumplido"?"white":"#153244");
-      circle.textContent=est==="cumplido"?"✓":(est==="en curso"?"▶":"");
+      circle.textContent=est==="cumplido"?"✓":"";
       var txt=document.createElement("div");
       txt.style.cssText="flex:1;min-width:0";
       var lbl=document.createElement("div");
@@ -4892,7 +5019,7 @@ function downloadRepAllPDF(){
       container.style.cssText="background:#f2f6f9;padding:20px;font-family:Inter,sans-serif;position:fixed;left:-9999px;top:0;width:1200px";
       var hdr=document.createElement("div");
       hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #153244";
-      hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Status Proyectos</div>"
+      hdr.innerHTML="<div style='font-size:20px;font-weight:700;color:#153244;text-transform:uppercase;letter-spacing:.04em'>Reporte de proyectos</div>"
         +"<div style='font-size:13px;color:#6b8395'>"+REP_DATE_LABEL+" — Pág. "+(pi+1)+" / "+REP_PAGES.length+"</div>";
       container.appendChild(hdr);
       var slide=eid("rep-slide-"+pi);
