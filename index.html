@@ -2049,7 +2049,7 @@ function fillEmpresaCell(id,raw){
 function fillModalEmpresas(p){
   var w=eid("m-emp-wrap");if(!w)return;
   var a=fillEmpresaCell("m-emp-inv",p.einv),b=fillEmpresaCell("m-emp-con",p.econ);
-  w.style.display=(a||b)?"":"none";
+  w.style.display="";
 }
 function openM(did){
   var p;
