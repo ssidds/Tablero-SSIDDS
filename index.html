@@ -525,6 +525,12 @@ button,input,select,textarea{font-family:inherit}
 #m-proyecto-block .pm-desc{padding:24px 28px}
 @media(max-width:768px){#m-proyecto-block{grid-template-columns:1fr}}
 @media(max-width:768px){.rep-hdr .sw{flex:1 1 140px}}
+.cet{font-size:13px;color:var(--g700);font-weight:600;border-top:1px solid var(--g50);padding-top:8px;margin-top:4px;line-height:1.4}
+.cresp{margin-top:6px;color:var(--g700)}
+.cresp svg{flex-shrink:0}
+.kpi-grid.sin-mixta{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.kpi-grid.sin-mixta{grid-template-columns:repeat(2,1fr)}}
+#m-estado-rows .er-head{position:sticky;top:0;z-index:5;background:#fff;padding-top:12px;margin-top:-2px;box-shadow:0 1px 0 var(--g100)}
 /* ---- LANDSCAPE MOBILE ---- */
 @media(max-height:500px){
   .ov{padding:4px;align-items:flex-start}
@@ -790,7 +796,7 @@ button,input,select,textarea{font-family:inherit}
           <div id="inv-badges-grid" class="kpi-grid">
             <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Pública')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Pública');}"><div class="kpi-n" id="bdg-pub">0</div><div class="kpi-l"><span class="dot" style="background:#153244"></span>Pública <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
             <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="kpi-n" id="bdg-priv">0</div><div class="kpi-l"><span class="dot" style="background:#1796A8"></span>Privada <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
-            <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="kpi-n" id="bdg-mix">0</div><div class="kpi-l"><span class="dot" style="background:#7C5CD6"></span>Mixta <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
+            <div class="kpi clickable" id="kpi-mixta" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="kpi-n" id="bdg-mix">0</div><div class="kpi-l"><span class="dot" style="background:#7C5CD6"></span>Mixta <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
             <div class="kpi clickable" role="button" tabindex="0" onclick="openInvModal('No valorizada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('No valorizada');}"><div class="kpi-n" id="bdg-noval">0</div><div class="kpi-l"><span class="dot" style="background:#8A97A6"></span>No valorizada <span class="go">↗</span></div><div class="kpi-s">proyectos</div></div>
           </div>
 
@@ -809,8 +815,8 @@ button,input,select,textarea{font-family:inherit}
                   <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Pública')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Pública');}"><div class="nm"><span class="dot" style="background:#153244"></span>Pública</div><div class="v" id="inv-pub">--</div><div class="u">USD millones</div></div>
                   <div class="inv-sep" style="height:1px;background:var(--g50)"></div>
                   <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Privada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Privada');}"><div class="nm"><span class="dot" style="background:#1796A8"></span>Privada</div><div class="v" id="inv-priv">--</div><div class="u">USD millones</div></div>
-                  <div class="inv-sep" style="height:1px;background:var(--g50)"></div>
-                  <div class="inv-leg" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="nm"><span class="dot" style="background:#7C5CD6"></span>Mixta</div><div class="v" id="inv-mix">--</div><div class="u">USD millones</div></div>
+                  <div class="inv-sep" id="inv-sep-mixta" style="height:1px;background:var(--g50)"></div>
+                  <div class="inv-leg" id="inv-leg-mixta" role="button" tabindex="0" onclick="openInvModal('Mixta')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvModal('Mixta');}"><div class="nm"><span class="dot" style="background:#7C5CD6"></span>Mixta</div><div class="v" id="inv-mix">--</div><div class="u">USD millones</div></div>
                 
                 </div>
               </div>
@@ -1172,10 +1178,10 @@ button,input,select,textarea{font-family:inherit}
               </div>
             </div>
             <div class="pm-sec">
-              <div class="pm-h">Estado</div>
+              <div class="pm-h">Status</div>
               <div class="est2" id="m-estado-fallback">
                 <div class="mcd"><div class="ml">Estado actual</div><div class="mv" id="m-st"></div></div>
-                <div class="mcd"><div class="ml">Próximo/s paso/s</div><div class="mv" id="m-hi"></div></div>
+                <div class="mcd"><div class="ml">Próximos pasos</div><div class="mv" id="m-hi"></div></div>
               </div>
               <div id="m-estado-rows" style="display:none"></div>
               <div class="pm-acc" id="m-ac-wrap">
@@ -1553,6 +1559,14 @@ function animNum(el,v,suffix){
   }
   el._animRAF=requestAnimationFrame(tick);
 }
+function toggleMixta(c,mo){
+  var hide=!(c>0||mo>0);
+  var a=eid("kpi-mixta"),b=eid("inv-leg-mixta"),s=eid("inv-sep-mixta"),g=eid("inv-badges-grid");
+  if(a)a.style.display=hide?"none":"";
+  if(b)b.style.display=hide?"none":"";
+  if(s)s.style.display=hide?"none":"";
+  if(g)g.classList.toggle("sin-mixta",hide);
+}
 function renderInversion(){
   var IC={"Pública":"#153244","Privada":"#1796A8","Mixta":"#7C5CD6","No valorizada":"#8A97A6"};
   var counts={"Pública":0,"Privada":0,"Mixta":0,"No valorizada":0};
@@ -1567,7 +1581,7 @@ function renderInversion(){
   anim("bdg-pub",counts["Pública"]);anim("bdg-priv",counts["Privada"]);anim("bdg-mix",counts["Mixta"]);anim("bdg-noval",counts["No valorizada"]);
   var total=montos["Pública"]+montos["Privada"]+montos["Mixta"];
   anim("inv-pub",Math.round(montos["Pública"]));anim("inv-priv",Math.round(montos["Privada"]));anim("inv-mix",Math.round(montos["Mixta"]));anim("inv-total",Math.round(total));
-  window._inv={counts:JSON.parse(JSON.stringify(counts)),montos:JSON.parse(JSON.stringify(montos))};
+  window._inv={counts:JSON.parse(JSON.stringify(counts)),montos:JSON.parse(JSON.stringify(montos))};toggleMixta(counts["Mixta"],montos["Mixta"]);
   window._inv={counts:JSON.parse(JSON.stringify(counts)),montos:JSON.parse(JSON.stringify(montos))};
 
   // --- SVG DONUT ---
@@ -1833,7 +1847,23 @@ function setFilterChip(id,v){
   sel.value=v;
   if(sel.onchange)sel.onchange();else renderCards();
 }
+function cardResponsables(p){
+  if(!window.EQUIPO_DATA||!EQUIPO_DATA.length)return [];
+  var k=normEq(p.n),out=[];
+  EQUIPO_DATA.forEach(function(e){
+    var lst=(e.proyectos||"").split(/[\n;,]+/).map(function(x){return normEq(x);}).filter(Boolean);
+    if(lst.indexOf(k)>=0&&e.nombre)out.push(e.nombre.trim());
+  });
+  return out;
+}
+var _eqCardsReq=false;
+function ensureEquipoCards(){
+  if(_eqCardsReq||(window.EQUIPO_DATA&&EQUIPO_DATA.length))return;
+  _eqCardsReq=true;
+  fetchSheetData("equipo",false).then(function(r){if(r&&r.length&&!EQUIPO_DATA.length){EQUIPO_DATA=r;renderCards();}}).catch(function(){});
+}
 function renderCards(){
+  ensureEquipoCards();
   syncFilterChips();
   var fe=eid("fe"),ft=eid("ft"),fi=eid("fi"),fc=eid("fc"),fb=eid("fb");
   var fev=fe?fe.value:"",ftv=ft?ft.value:"",fiv=fi?fi.value:"",fcv=fc?fc.value:"",fbv=fb?fb.value:"";
@@ -1857,10 +1887,10 @@ function renderCards(){
   if(!f.length){eid("cards").innerHTML="<div class='empty'>No se encontraron proyectos</div>";return;}
   eid("cards").innerHTML=f.map(function(p){
     var sty=proyStyle(p),ac=sty.band;
-    var st=nl(p.s).substring(0,85),ht=cardProximoPaso(p);
+    var rs=cardResponsables(p);
     var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class='card' style='--band:"+ac+"' role='button' tabindex='0' onclick='openM(\""+did+"\")' onkeydown='if(event.key===\"Enter\"){openM(\""+did+"\");}'><div class='cb2'><div class='cn'>"+nm+"</div>"+(sty.label?"<span class='bdg'>"+escHtmlS(sty.label)+"</span>":"")+(st?"<div class='cst'>"+st+(p.s.length>85?"...":"")+"</div>":"")+(ht?"<div class='cht'>Próximo/s paso/s: "+escHtmlS(ht)+"</div>":"")+"</div></div>";
+    return "<div class='card' style='--band:"+ac+"' role='button' tabindex='0' onclick='openM(\""+did+"\")' onkeydown='if(event.key===\"Enter\"){openM(\""+did+"\");}'><div class='cb2'><div class='cn'>"+nm+"</div>"+(p.e?"<div class='cet'>"+escHtmlS(p.e)+"</div>":"")+(rs.length?"<div class='tm-resp cresp'>"+USRI+escHtmlS(rs.slice(0,2).join(", ")+(rs.length>2?" +"+(rs.length-2):""))+"</div>":"")+"</div></div>";
   }).join("");
 }
 function setF(e){FILTRO=e;renderCards();}
@@ -1930,7 +1960,7 @@ function fillModalEstado(p){
   }
   if(fb)fb.style.display="none";
   var band=proyStyle(p).band;
-  var out="<div class='er-head'><div>Estado actual</div><div>Próximo/s paso/s</div></div>";
+  var out="<div class='er-head'><div>Estado actual</div><div>Próximos pasos</div></div>";
   function cell(t){t=(t||"").trim();return "<div class='er-c'>"+(t?escHtmlS(t):"--")+"</div>";}
   if(rp.gen&&((rp.gen.s||"").trim()||(rp.gen.pp||"").trim())){
     out+="<div class='er'>"+cell(rp.gen.s)+cell(rp.gen.pp)+"</div>";
