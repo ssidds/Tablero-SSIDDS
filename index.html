@@ -531,6 +531,14 @@ button,input,select,textarea{font-family:inherit}
 .kpi-grid.sin-mixta{grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.kpi-grid.sin-mixta{grid-template-columns:repeat(2,1fr)}}
 #m-estado-rows .er-head{position:sticky;top:0;z-index:5;background:#fff;padding-top:12px;margin-top:-2px;box-shadow:0 1px 0 var(--g100)}
+.pm-emp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pm-ec{padding:12px 10px;text-align:center;min-width:0}
+.pm-ec .l{font-size:12px;line-height:1.25;min-height:30px}
+.pm-ev{display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:8px}
+.pm-e1{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;max-width:100%}
+.pm-en{font-size:13px;font-weight:600;color:var(--navy);line-height:1.3;overflow-wrap:anywhere}
+.pm-e0{font-size:14px;color:var(--muted)}
+@media(max-width:900px){.pm-emp{max-width:360px}}
 /* ---- LANDSCAPE MOBILE ---- */
 @media(max-height:500px){
   .ov{padding:4px;align-items:flex-start}
@@ -1175,6 +1183,10 @@ button,input,select,textarea{font-family:inherit}
                 <div class="pm-money"><div class="l">Monto de inversión</div><div class="v" id="m-mo"></div></div>
                 <div class="pm-fi"><div class="l">Tipo de inversión</div><div class="v" id="m-inv"></div></div>
                 <div class="pm-fi"><div class="l">Temática</div><div class="v" id="m-te"></div></div>
+                <div class="pm-emp" id="m-emp-wrap">
+                  <div class="pm-fi pm-ec"><div class="l">Empresa inversora</div><div class="pm-ev" id="m-emp-inv"></div></div>
+                  <div class="pm-fi pm-ec"><div class="l">Empresa constructora</div><div class="pm-ev" id="m-emp-con"></div></div>
+                </div>
               </div>
             </div>
             <div class="pm-sec">
@@ -1303,7 +1315,7 @@ var SHEET_MAP={
     rows.forEach(function(row){
       function c(i){return row[i]!==undefined?String(row[i]).trim():"";}
       if(!c(0))return;
-      out.push({n:c(0),s:c(2),a:c(7),h:c(6),ac:c(4),mo:c(8),est:c(9),e:c(10),co:c(11),ba:c(12),te:c(13),inv:c(14),imp:c(15),desc:c(16),obj:c(17)});
+      out.push({n:c(0),s:c(2),a:c(7),h:c(6),ac:c(4),mo:c(8),est:c(9),e:c(10),co:c(11),ba:c(12),te:c(13),inv:c(14),imp:c(15),desc:c(16),obj:c(17),einv:c(19),econ:c(20)});
     });
     return out;
   },
@@ -1408,7 +1420,7 @@ function cargar(silent){
         n:p.n||"",est:p.est||"",e:p.e||"",s:p.s||"",
         a:p.a||"",h:p.h||"",ac:p.ac||"",mo:p.mo||"",
         te:p.te||"",inv:p.inv||"",co:p.co||"",ba:p.ba||"",
-        imp:p.imp||"",desc:p.desc||"",obj:p.obj||""
+        imp:p.imp||"",desc:p.desc||"",obj:p.obj||"",einv:p.einv||"",econ:p.econ||""
       };});
       var cambio=sigChanged("datos",nuevo);
       if(silent===true&&!cambio){setUpdLabel();return;}
@@ -2013,6 +2025,32 @@ window._modalRefresh=function(){
   }
 };
 
+function empBuscar(nombre){
+  var k=normEq(nombre);
+  if(!window.EMP_DATA)return null;
+  for(var i=0;i<EMP_DATA.length;i++){if(normEq(EMP_DATA[i].n)===k)return EMP_DATA[i];}
+  return null;
+}
+function fillEmpresaCell(id,raw){
+  var box=eid(id);if(!box)return false;
+  box.innerHTML="";
+  var names=(raw||"").split(/[\n;]+/).map(function(x){return x.trim();}).filter(Boolean);
+  if(!names.length){box.innerHTML="<div class='pm-e0'>--</div>";return false;}
+  names.forEach(function(nm){
+    var e=empBuscar(nm)||{n:nm,web:""};
+    var it=document.createElement("div");it.className="pm-e1";
+    it.appendChild(buildLogoEl(e,44));
+    var s=document.createElement("div");s.className="pm-en";s.textContent=nm;
+    it.appendChild(s);
+    box.appendChild(it);
+  });
+  return true;
+}
+function fillModalEmpresas(p){
+  var w=eid("m-emp-wrap");if(!w)return;
+  var a=fillEmpresaCell("m-emp-inv",p.einv),b=fillEmpresaCell("m-emp-con",p.econ);
+  w.style.display=(a||b)?"":"none";
+}
 function openM(did){
   var p;
   if(!isNaN(did)&&Number(did)>=0&&Number(did)<DATA.length){
@@ -2031,6 +2069,7 @@ function openM(did){
   eid("m-te").textContent=p.te||"--";
   eid("m-inv").textContent=p.inv||"--";
   fillModalEstado(p);
+  fillModalEmpresas(p);
   var _ac=nl(p.ac).trim();eid("m-ac").textContent=_ac&&_ac!=="--"?_ac:"Sin accionable";var _aw=eid("m-ac-wrap");if(_aw)_aw.classList.toggle("none",!(_ac&&_ac!=="--"));
   eid("m-act-wrap").innerHTML=renderActores(p.a);
   renderModalGantt(p);
