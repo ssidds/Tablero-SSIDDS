@@ -539,6 +539,19 @@ button,input,select,textarea{font-family:inherit}
 .pm-en{font-size:13px;font-weight:600;color:var(--navy);line-height:1.3;overflow-wrap:anywhere}
 .pm-e0{font-size:14px;color:var(--muted)}
 @media(max-width:900px){.pm-emp{max-width:360px}}
+
+.pm-stack{display:flex;flex-direction:column;gap:6px;align-items:center}
+.pm-srow{display:flex}
+.pm-lg{border:2px solid #fff;box-sizing:content-box!important;margin-left:-8px;cursor:default}
+.pm-srow>:first-child{margin-left:0}
+.pm-more{width:34px;height:34px;border:2px solid #fff;box-sizing:content-box;margin-left:-8px;border-radius:50%;background:#153244;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pm-more:first-child{margin-left:0}
+.pm-ver{font-size:11.5px;font-weight:700;color:#007BC7;cursor:pointer;margin-top:8px}
+@media(hover:none){.pm-lg{cursor:pointer}}
+.pm-lista{display:flex;flex-direction:column;max-height:380px;overflow-y:auto}
+.pm-li{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--g50);font-size:14px;font-weight:600;color:var(--navy)}
+.sb-logo{padding:22px 16px 18px}
+.sb-logo img{width:150px}
 /* ---- LANDSCAPE MOBILE ---- */
 @media(max-height:500px){
   .ov{padding:4px;align-items:flex-start}
@@ -1113,6 +1126,13 @@ button,input,select,textarea{font-family:inherit}
           <div id="inv-lista" style="display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto"></div>
           <div style="margin-top:16px;text-align:center"><button class="bv" onclick="closeInvModal()">Cerrar</button></div>
         </div>
+      </div>
+    </div>
+    <div class="ov" id="emp-ov" onclick="closeEmpLista(event)" style="z-index:1200">
+      <div class="modal" onclick="event.stopPropagation()" style="max-width:420px">
+        <div class="mh"><button class="mc" onclick="closeEmpLista()" aria-label="Cerrar">&times;</button><div class="mt2" id="emp-tit"></div></div>
+        <div class="mb"><div id="emp-lista" class="pm-lista"></div>
+        <div style="margin-top:16px;text-align:center"><button class="bv" onclick="closeEmpLista()">Cerrar</button></div></div>
       </div>
     </div>
     <!-- MODAL COMUNAS -->
@@ -1868,6 +1888,15 @@ function cardResponsables(p){
   });
   return out;
 }
+function cardRespLabel(rs){
+  var pri=rs.map(function(n){return n.trim().split(/\s+/)[0];}),cnt={};
+  pri.forEach(function(f){cnt[f]=(cnt[f]||0)+1;});
+  return rs.map(function(n,i){
+    var t=n.trim().split(/\s+/);
+    if(cnt[pri[i]]>1&&t.length>1)return pri[i]+" "+t[t.length-1].charAt(0).toUpperCase()+".";
+    return pri[i];
+  }).join(", ");
+}
 var _eqCardsReq=false;
 function ensureEquipoCards(){
   if(_eqCardsReq||(window.EQUIPO_DATA&&EQUIPO_DATA.length))return;
@@ -1902,7 +1931,7 @@ function renderCards(){
     var rs=cardResponsables(p);
     var nm=p.n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     var did=p.n.replace(/['"\\]/g,"_");
-    return "<div class='card' style='--band:"+ac+"' role='button' tabindex='0' onclick='openM(\""+did+"\")' onkeydown='if(event.key===\"Enter\"){openM(\""+did+"\");}'><div class='cb2'><div class='cn'>"+nm+"</div>"+(p.e?"<div class='cet'>"+escHtmlS(p.e)+"</div>":"")+(rs.length?"<div class='tm-resp cresp'>"+USRI+escHtmlS(rs.slice(0,2).join(", ")+(rs.length>2?" +"+(rs.length-2):""))+"</div>":"")+"</div></div>";
+    return "<div class='card' style='--band:"+ac+"' role='button' tabindex='0' onclick='openM(\""+did+"\")' onkeydown='if(event.key===\"Enter\"){openM(\""+did+"\");}'><div class='cb2'><div class='cn'>"+nm+"</div>"+(p.e?"<div class='cet'>"+escHtmlS(p.e)+"</div>":"")+(rs.length?"<div class='tm-resp cresp'>"+USRI+escHtmlS(cardRespLabel(rs))+"</div>":"")+"</div></div>";
   }).join("");
 }
 function setF(e){FILTRO=e;renderCards();}
@@ -2031,24 +2060,52 @@ function empBuscar(nombre){
   for(var i=0;i<EMP_DATA.length;i++){if(normEq(EMP_DATA[i].n)===k)return EMP_DATA[i];}
   return null;
 }
-function fillEmpresaCell(id,raw){
+var _empListas={};
+function fillEmpresaCell(id,raw,titulo){
   var box=eid(id);if(!box)return false;
   box.innerHTML="";
   var names=(raw||"").split(/[\n;]+/).map(function(x){return x.trim();}).filter(Boolean);
-  if(!names.length){box.innerHTML="<div class='pm-e0'>--</div>";return false;}
-  names.forEach(function(nm){
+  _empListas[id]={titulo:titulo,names:names};
+  if(!names.length){box.innerHTML="<div class='pm-e0'>--</div>";box.onclick=null;return false;}
+  var n=names.length,mostrar=n>9?names.slice(0,8):names;
+  var stack=document.createElement("div");stack.className="pm-stack";
+  var row=null;
+  mostrar.forEach(function(nm,i){
+    if(i%3===0){row=document.createElement("div");row.className="pm-srow";stack.appendChild(row);}
     var e=empBuscar(nm)||{n:nm,web:""};
-    var it=document.createElement("div");it.className="pm-e1";
-    it.appendChild(buildLogoEl(e,44));
-    var s=document.createElement("div");s.className="pm-en";s.textContent=nm;
-    it.appendChild(s);
-    box.appendChild(it);
+    var lg=buildLogoEl(e,34);
+    lg.classList.add("pm-lg");lg.title=nm;lg.setAttribute("aria-label",nm);
+    row.appendChild(lg);
   });
+  if(n>9){
+    var mas=document.createElement("div");mas.className="pm-more";mas.textContent="+"+(n-8);mas.title="Ver las "+n+" empresas";
+    row.appendChild(mas);
+  }
+  box.appendChild(stack);
+  if(n>9){var v=document.createElement("div");v.className="pm-ver";v.textContent="ver las "+n;box.appendChild(v);}
+  box.onclick=function(){
+    if(n>9||(window.matchMedia&&matchMedia("(hover:none)").matches))openEmpLista(id);
+  };
   return true;
 }
+function openEmpLista(id){
+  var d=_empListas[id];if(!d)return;
+  eid("emp-tit").textContent=d.titulo+" ("+d.names.length+")";
+  var l=eid("emp-lista");l.innerHTML="";
+  d.names.forEach(function(nm){
+    var e=empBuscar(nm)||{n:nm,web:""};
+    var it=document.createElement("div");it.className="pm-li";
+    it.appendChild(buildLogoEl(e,36));
+    var s=document.createElement("div");s.textContent=nm;
+    it.appendChild(s);
+    l.appendChild(it);
+  });
+  eid("emp-ov").classList.add("open");
+}
+function closeEmpLista(ev){if(!ev||ev.target===eid("emp-ov"))eid("emp-ov").classList.remove("open");}
 function fillModalEmpresas(p){
   var w=eid("m-emp-wrap");if(!w)return;
-  var a=fillEmpresaCell("m-emp-inv",p.einv),b=fillEmpresaCell("m-emp-con",p.econ);
+  var a=fillEmpresaCell("m-emp-inv",p.einv,"Empresas inversoras"),b=fillEmpresaCell("m-emp-con",p.econ,"Empresas constructoras");
   w.style.display="";
 }
 function openM(did){
@@ -2154,7 +2211,7 @@ function downloadProjectCardPDF(){
 }
 
 function closeAllModals(){
-  ["mov","inv-ov","com-ov","kpi-ov","tm-ov","doc-ov"].forEach(function(id){
+  ["mov","inv-ov","com-ov","kpi-ov","tm-ov","doc-ov","emp-ov"].forEach(function(id){
     var el=eid(id);if(el)el.classList.remove("open");
   });
 }
@@ -2665,23 +2722,31 @@ function loadLogros(silent){
     });
 }
 
+function lgFecha(f){
+  if(!f||typeof f!=="string")return null;
+  f=f.trim();
+  var m=f.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+  if(m)return{d:+m[1],m:+m[2],y:+m[3]};
+  m=f.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
+  if(m)return{d:+m[3],m:+m[2],y:+m[1]};
+  return null;
+}
 function renderLogros(){
   var data=window._logrosData||[];
   var selYr=eid("logros-yr"),selMes=eid("logros-mes");
-  var filtYr=selYr?selYr.value:"",filtMes=selMes?selMes.value:"";
+  var filtYr=selYr?(parseInt(selYr.value,10)||0):0,filtMes=selMes?(parseInt(selMes.value,10)||0):0;
   var filtered=data.filter(function(l){
-    if(!l.fecha||typeof l.fecha!=="string"||!l.fecha.trim())return false;
-    var parts=l.fecha.split("/");
-    if(parts.length<3)return false;
-    if(filtYr&&parts[2]&&parts[2].trim()!==filtYr)return false;
-    if(filtMes&&parts[1]&&parts[1].trim()!==filtMes)return false;
+    var p=lgFecha(l.fecha);
+    if(!p)return false;
+    if(filtYr&&p.y!==filtYr)return false;
+    if(filtMes&&p.m!==filtMes)return false;
     return true;
   });
   var countEl=eid("logros-count");
   if(countEl)countEl.textContent=filtered.length+(filtered.length===1?" logro":" logros");
   var byYear={},years=[];
   filtered.forEach(function(l){
-    var parts=(l.fecha||"").split("/");var yr=parts.length>=3?parts[2].trim():"";
+    var _p=lgFecha(l.fecha);var yr=_p?String(_p.y):"";
     if(!yr)return;
     if(!byYear[yr]){byYear[yr]=[];years.push(yr);}
     byYear[yr].push(l);
@@ -2701,7 +2766,7 @@ function renderLogros(){
     byYear[yr].forEach(function(l){
       var card=document.createElement("div");
       card.className="lg-card";
-      var parts=l.fecha.split("/");var dd=parts[0]||"";var mm=parseInt(parts[1]||"0");var fechaFmt=dd+" "+(MESES_N[mm]||"");
+      var _q=lgFecha(l.fecha);var dd=_q?_q.d:"";var mm=_q?_q.m:0;var fechaFmt=dd+" "+(MESES_N[mm]||"");
       var tc=TEC[l.tematica]||"#505E70";
       card.innerHTML="<div class='f'>"+fechaFmt+"</div>"
         +"<div style='flex:1;min-width:0'><div class='t'>"+l.logro+"</div>"
